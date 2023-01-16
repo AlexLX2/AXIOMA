@@ -1,0 +1,81 @@
+.log-form {
+  text-align: center;
+}
+@media (min-width: 47.99875em) {
+  .log-form {
+    max-width: 535px;
+    margin-left: auto;
+  }
+}
+.log-form__title {
+  font-weight: 700;
+  font-size: 48px;
+  line-height: 58px;
+  color: #00d1ff;
+  margin: 0 0 30px 0;
+  padding-top: 92px;
+  background-image: url("../../../assets/img/log/user-arr.svg");
+  background-position: top center;
+  background-repeat: no-repeat;
+  background-size: 68px;
+}
+.log-form__line {
+  background: rgba(120, 127, 132, 0.25);
+  border-radius: 40px;
+  margin: 0 0 26px 0;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding: 11px 25px;
+  background-position: 20px center;
+  background-repeat: no-repeat;
+  background-size: 20px;
+  /* .log-form__inp_user */
+}
+.log-form__line_user {
+  background-image: url("../../../assets/img/log/user.svg") !important;
+}
+.log-form__line_pass {
+  background-image: url("../../../assets/img/log/lock.svg") !important;
+}
+.log-form__inp {
+  width: 100%;
+  height: 55px;
+  background-color: transparent;
+  outline: none;
+  padding-left: 40px;
+  color: #b5bbbe;
+  font-size: 24px;
+}
+.log-form__show {
+  background-color: transparent;
+  width: 26px;
+  height: 26px;
+  background-image: url("../../../assets/img/log/show.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+.log-form__show._hidden {
+  background-image: url("../../../assets/img/log/eye.svg");
+}
+.log-form__btn {
+  display: flex;
+  max-width: 345px;
+  width: 100%;
+  padding: 0 10px;
+  margin: 37px auto 37px auto;
+  font-weight: 700;
+  font-size: 30px;
+  color: #ffffff;
+  align-items: center;
+  justify-content: center;
+  background: var(--colors-blue);
+  border-radius: 40px;
+  height: 55px;
+}
+.log-form__footer {
+  display: flex;
+  justify-content: space-between;
+  color: #b5bbbe;
+}

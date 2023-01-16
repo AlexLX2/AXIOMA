@@ -1,0 +1,135 @@
+<aside class="page-dashboard__aside aside" [class.menu-open]="isSideMenuOpened">
+  <!-- toggle click "aside__btn-open" class "menu-open" open/close menu to > 1200px -->
+  <!-- ex - <aside class="page-dashboard__aside aside menu-open"> -->
+  <button class="aside__btn-open icon-menu" (click)="toggleSideMenu()">
+    <span></span>
+  </button>
+  <a routerLink="/" class="aside__logo">AK</a>
+  <div class="aside__top">
+    <div class="aside__dropdown dropdown">
+      <span
+        (click)="toggleProfileDropdown()"
+        class="dropdown__name"
+        [ngClass]="{ '_active-drop': isOpenedProfileDropdown }"
+      >
+        Alex Kols
+        <span
+          [ngStyle]="{
+            transform: isOpenedProfileDropdown
+              ? 'rotate(0deg)'
+              : 'rotate(90deg)'
+          }"
+          class="dropdown__icon"
+        >
+          <svg fill="none">
+            <path
+              d="M6.49996 8.20529C6.26698 8.20529 6.03402 8.11633 5.85639 7.93878L0.266684 2.34902C-0.0888946 1.99344 -0.0888946 1.41693 0.266684 1.0615C0.622118 0.706063 1.19851 0.706063 1.55412 1.0615L6.49996 6.00763L11.4458 1.06167C11.8014 0.706236 12.3778 0.706236 12.7332 1.06167C13.0889 1.4171 13.0889 1.99361 12.7332 2.34919L7.14354 7.93896C6.96582 8.11653 6.73286 8.20529 6.49996 8.20529Z"
+            />
+          </svg>
+        </span>
+      </span>
+      <ul class="dropdown__items">
+        <li>
+          <a class="dropdown__item dropdown__item_conf" href="#"
+            >Configuration</a
+          >
+        </li>
+        <li><a class="dropdown__item" href="#">Log out</a></li>
+      </ul>
+    </div>
+    <button class="aside__btn btn-block" routerLink="/tickets-create">
+      <span>Create ticket</span>
+    </button>
+  </div>
+  <div class="aside__body">
+    <nav class="aside__nav nav-aside">
+      <ul class="nav-aside__list">
+        <li>
+          <a
+            routerLink="/tickets"
+            class="nav-aside__item"
+            routerLinkActive="_active"
+            >Tickets</a
+          >
+        </li>
+        <li>
+          <a
+            routerLink="/reports"
+            class="nav-aside__item"
+            routerLinkActive="_active"
+            >Reports</a
+          >
+        </li>
+<!--        <li>-->
+<!--            <a-->
+<!--              routerLink="/tickets-create"-->
+<!--              class="nav-aside__item"-->
+<!--              routerLinkActive="_active"-->
+<!--              >create ticket</a-->
+<!--            >-->
+<!--          </li>-->
+          <li>
+            <a
+              routerLink="/tickets-open"
+              class="nav-aside__item"
+              routerLinkActive="_active"
+              >open ticket</a
+            >
+          </li>
+          <li>
+            <a
+              routerLink="/tickets-redactor"
+              class="nav-aside__item"
+              routerLinkActive="_active"
+              >redactor ticket</a
+            >
+          </li>
+      </ul>
+    </nav>
+    <div class="aside__dropdown dropdown">
+      <span
+        (click)="toggleConfDropdown()"
+        class="dropdown__name dropdown__name_conf-icon"
+        [ngClass]="{ '_active-drop': isOpenedConfDropdown }"
+      >
+        Configuration
+        <span
+          [ngStyle]="{
+            transform: isOpenedConfDropdown ? 'rotate(0deg)' : 'rotate(90deg)'
+          }"
+          class="dropdown__icon"
+        >
+          <svg fill="none">
+            <path
+              d="M6.49996 8.20529C6.26698 8.20529 6.03402 8.11633 5.85639 7.93878L0.266684 2.34902C-0.0888946 1.99344 -0.0888946 1.41693 0.266684 1.0615C0.622118 0.706063 1.19851 0.706063 1.55412 1.0615L6.49996 6.00763L11.4458 1.06167C11.8014 0.706236 12.3778 0.706236 12.7332 1.06167C13.0889 1.4171 13.0889 1.99361 12.7332 2.34919L7.14354 7.93896C6.96582 8.11653 6.73286 8.20529 6.49996 8.20529Z"
+            />
+          </svg>
+        </span>
+      </span>
+      <ul class="dropdown__items">
+        <li>
+          <a class="dropdown__item dropdown__item _conf-icon" href="#"
+            >Configuration</a
+          >
+        </li>
+
+        <li><a class="dropdown__item" href="#">Log out</a></li>
+      </ul>
+    </div>
+    <div class="aside__switch aside-switch">
+      <span class="aside-switch_d">Dark</span>
+      <div [formGroup]="themeForm" class="aside-switch__wrapp">
+        <input formControlName="theme" type="checkbox" name="" id="switch" />
+        <label for="switch">
+          <div class="switch">
+            <div class="bar"></div>
+          </div>
+        </label>
+      </div>
+      <span class="aside-switch_l">Light</span>
+    </div>
+  </div>
+  <a href="#" class="aside__footer">
+    <img src="assets/img/log/logo.svg" alt="" />
+  </a>
+</aside>

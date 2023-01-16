@@ -1,0 +1,119 @@
+<header class="dashboard-content__header">
+    <div class="dashboard-content__l">
+      <h2 class="dashboard-content__title">{{title}}</h2>
+      <span class="dashboard-content__count">{{subtitle}}</span>
+    </div>
+    <div class="dashboard-content__r">
+      <div *ngIf="showSearchFilter" class="dashboard-content__actions">
+        <div
+          class="dashboard-content__line log-form__line log-form__line_search"
+        >
+          <input
+            type="search"
+            name="search"
+            placeholder="Search"
+            class="log-form__inp"
+          />
+        </div>
+        <div class="dashboard-content__actions">
+          <div class="dashboard-content__dropdown dropdown">
+            <!-- add class dropdown__name "_active-drop" open drop -->
+            <!-- exemple  <span class="dropdown__name"></span> -->
+            <span (click)="toggleSortsDropdown()" class="dropdown__name" [ngClass]="{'_active-drop': isOpenedSortsDropdown}">
+              <span class="dropdown__icon">
+                <svg fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M24.5453 15.2046C24.3344 14.9937 24.0483 14.8752 23.75 14.8752C23.4517 14.8752 23.1656 14.9937 22.9546 15.2046L19.25 18.9093V1.375C19.25 1.07663 19.1314 0.790483 18.9205 0.579505C18.7095 0.368526 18.4233 0.25 18.125 0.25C17.8266 0.25 17.5405 0.368526 17.3295 0.579505C17.1185 0.790483 17 1.07663 17 1.375V18.9093L13.2953 15.2046C13.0832 14.9997 12.799 14.8863 12.504 14.8889C12.209 14.8914 11.9269 15.0097 11.7183 15.2183C11.5097 15.4269 11.3914 15.7091 11.3888 16.004C11.3863 16.299 11.4997 16.5832 11.7046 16.7954L17.3296 22.4204C17.4341 22.5251 17.5582 22.6083 17.6949 22.665C17.8316 22.7217 17.9781 22.7509 18.1261 22.7509C18.2741 22.7509 18.4206 22.7217 18.5573 22.665C18.6939 22.6083 18.8181 22.5251 18.9226 22.4204L24.5476 16.7954C24.7582 16.5841 24.8763 16.2978 24.8759 15.9995C24.8754 15.7012 24.7565 15.4153 24.5453 15.2046Z"
+                  />
+                  <path
+                    d="M13.2954 6.20469L7.67036 0.579687C7.56558 0.474703 7.44089 0.391704 7.30361 0.335562C7.0284 0.221805 6.71931 0.221805 6.44411 0.335562C6.30682 0.391704 6.18213 0.474703 6.07736 0.579687L0.452356 6.20469C0.241409 6.41593 0.123019 6.70232 0.12323 7.00086C0.123441 7.29939 0.242236 7.58562 0.453481 7.79656C0.664726 8.00751 0.951117 8.1259 1.24965 8.12569C1.54819 8.12548 1.83441 8.00668 2.04536 7.79544L5.74998 4.09081V21.6251C5.74998 21.9234 5.86851 22.2096 6.07949 22.4206C6.29046 22.6315 6.57661 22.7501 6.87498 22.7501C7.17335 22.7501 7.4595 22.6315 7.67048 22.4206C7.88145 22.2096 7.99998 21.9234 7.99998 21.6251V4.09081L11.7046 7.79544C11.9168 8.00037 12.201 8.11376 12.4959 8.1112C12.7909 8.10863 13.0731 7.99032 13.2817 7.78173C13.4902 7.57315 13.6086 7.29099 13.6111 6.99601C13.6137 6.70104 13.5003 6.41686 13.2954 6.20469Z"
+                  />
+                </svg>
+              </span>
+            </span>
+            <ul class="dropdown__items">
+              <li>
+                <button (click)="toggleSortsDropdown()" class="dropdown__item">Last edited</button>
+              </li>
+              <li class="dropdown__parent">
+                <!-- add class dropdown__name "_active-drop" open drop -->
+                <!-- exemple  <span dropdown__item _active></span> -->
+                <button (click)="toggleSortsDropdown()" class="dropdown__item _active">
+                  Date created
+                </button>
+                <ul class="dropdown__sublist sublist-drop">
+                  <li>
+                    <form action="#" class="sublist-drop__row">
+                      <input
+                        type="text"
+                        name="day"
+                        placeholder="Day"
+                        class="sublist-drop__day"
+                      />
+                      <select class="sublist-drop__select" id="month">
+                        <option selected="selected">Month</option>
+                        <option value="1">January</option>
+                        <option value="2">February</option>
+                        <option value="3">March</option>
+                        <option value="4">April</option>
+                        <option value="5">May</option>
+                        <option value="6">June</option>
+                        <option value="7">July</option>
+                        <option value="8">August</option>
+                        <option value="9">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                      </select>
+                      <input
+                        type="text"
+                        name="year"
+                        placeholder="Year"
+                        class="sublist-drop__year"
+                      />
+                    </form>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+          <div class="dashboard-content__dropdown dropdown">
+            <!-- add class dropdown__name "_active-drop" open drop -->
+            <!-- exemple  <span class="dropdown__name _active-drop"></span> -->
+            <span (click)="toggleFilterDropdown()" class="dropdown__name" [ngClass]="{'_active-drop': isOpenedFilterDropdown}">
+              <span class="dropdown__icon">
+                <svg fill="none">
+                  <path
+                    d="M8.76038 10.8684C9.00174 11.131 9.13425 11.4741 9.13425 11.8291V22.2881C9.13425 22.9175 9.89383 23.237 10.3434 22.7945L13.2611 19.4509C13.6515 18.9824 13.8668 18.7505 13.8668 18.2867V11.8314C13.8668 11.4765 14.0017 11.1334 14.2407 10.8707L22.6126 1.78655C23.2397 1.10506 22.757 0 21.8294 0H1.17166C0.24408 0 -0.24101 1.10269 0.388423 1.78655L8.76038 10.8684Z"
+                  />
+                </svg>
+              </span>
+            </span>
+            <ul (click)="toggleFilterDropdown()" class="dropdown__items">
+              <li><button class="dropdown__item">Category</button></li>
+              <li class="dropdown__parent">
+                <!-- exemple  <span class="dropdown__item _active"></span> -->
+                <button class="dropdown__item">Priority</button>
+                <ul class="dropdown__sublist sublist-drop">
+                  <li class="sublist-drop__li">
+                    <button class="dropdown__item icon-high _active">
+                      High
+                    </button>
+                  </li>
+                  <li class="sublist-drop__li">
+                    <button class="dropdown__item">Medium</button>
+                  </li>
+                  <li class="sublist-drop__li">
+                    <button class="dropdown__item icon-low">Low</button>
+                  </li>
+                </ul>
+              </li>
+              <li><button class="dropdown__item">Status</button></li>
+              <li><button class="dropdown__item">Author</button></li>
+              <li><button class="dropdown__item">Responsible</button></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
