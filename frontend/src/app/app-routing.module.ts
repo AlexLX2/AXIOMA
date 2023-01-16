@@ -8,8 +8,9 @@ import { RedactorTicketComponent } from './components/tickets/redactor-ticket/re
 import {AuthGuard} from "./guards/auth.guard";
 
 const routes: Routes = [
-  { path: '', component: DetailTicketComponent, canActivate: [AuthGuard] },
+  { path: '', component: DetailTicketComponent, canActivate: [AuthGuard], pathMatch:"full" },
   { path: 'login', component: LoginComponent },
+  { path: 'tickets/:id', component: DetailTicketComponent, canActivate: [AuthGuard]},
   { path: 'tickets', component: DetailTicketComponent, canActivate: [AuthGuard] },
   { path: 'tickets-create', component: NewTicketComponent, canActivate: [AuthGuard] },
   { path: 'tickets-open', component: DetailTicketComponent, canActivate: [AuthGuard] },

@@ -48,3 +48,15 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+//TODO Add ticket list styles
+//TODO Add ticket messages (bodies) styling
+//TODO Add catalogues
+//TODO Add logout
+//TODO Fix main menu items
+//TODO Fix ticket list title
+//TODO Enable filters
+//TODO Enable sorting
+//TODO Enable pagination
+//TODO Add ticket edit/reply
+//TODO Fix create ticket

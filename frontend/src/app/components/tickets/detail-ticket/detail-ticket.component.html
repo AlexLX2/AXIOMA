@@ -6,236 +6,80 @@
           <axioma-header [showSearchFilter]="true" title="Open ticket" subtitle="Open ticket"></axioma-header>
           <div class="dashboard-content__body content-body" [class.content-body_columns]="isTicketOpened" >
 						<div class="content-body__rows">
-							<a href="#" class="content-body__row content-row _active">
-								<span class="content-row__icon content-row__icon_with"></span>
-								<div class="content-row__column">
-									<div class="content-row__title">
-										Ticket title
-									</div>
-									<span class="content-row__lable icon-high">
-									</span>
-								</div>
-								<div class="content-row__column">
-									<span class="content-row__username">User name</span>
-
-								</div>
-								<div class="content-row__column">
-									<span class="content-row__date">Created: 12.11.2022</span>
-									<span class="content-row__username">Edited: 13.11.2022</span>
-								</div>
-							</a>
-							<a href="#" class="content-body__row content-row">
-								<span class="content-row__icon content-row__icon_green"></span>
-								<div class="content-row__column">
-									<div class="content-row__title">
-										Ticket title
-									</div>
-								</div>
-								<div class="content-row__column">
-									<span class="content-row__username">User name</span>
-
-								</div>
-								<div class="content-row__column">
-									<span class="content-row__date">Created: 12.11.2022</span>
-									<span class="content-row__username">Edited: 13.11.2022</span>
-								</div>
-							</a>
-							<a href="#" class="content-body__row content-row">
+							<div *ngFor="let ticket of ticketList">
+							<a  routerLink="/tickets/{{ticket.ticketId}}" class="content-body__row content-row">
 								<span class="content-row__icon content-row__icon_blue"></span>
 								<div class="content-row__column">
 									<div class="content-row__title">
-
-										Ticket title
+										{{ticket.title}}
 									</div>
 								</div>
 								<div class="content-row__column">
-									<span class="content-row__username">User name</span>
+									<span class="content-row__username">{{ticket.createdBy}}</span>
 								</div>
 								<div class="content-row__column">
-									<span class="content-row__date">Created: 12.11.2022</span>
-									<span class="content-row__username">Edited: 13.11.2022</span>
+									<span class="content-row__date">Created: {{ticket.createdAt | date}}</span>
+									<span class="content-row__username">Edited: {{ticket.changedAt | date}}</span>
 								</div>
 							</a>
-							<div class="content-body__row content-row _red">
-								<span class="content-row__icon content-row__icon_red"></span>
-								<div class="content-row__column">
-									<div class="content-row__title">
-
-										Ticket title
-									</div>
-								</div>
-								<div class="content-row__column">
-									<span class="content-row__username">User name</span>
-								</div>
-								<div class="content-row__column">
-									<span class="content-row__date">Created: 12.11.2022</span>
-									<span class="content-row__username">Edited: 13.11.2022</span>
-								</div>
 							</div>
-							<a href="#" class="content-body__row content-row">
-								<span class="content-row__icon content-row__icon_with"></span>
-								<div class="content-row__column">
-									<div class="content-row__title">
+<!--							<a href="#" class="content-body__row content-row _active">-->
+<!--								<span class="content-row__icon content-row__icon_with"></span>-->
+<!--								<div class="content-row__column">-->
+<!--									<div class="content-row__title">-->
+<!--										Ticket title-->
+<!--									</div>-->
+<!--									<span class="content-row__lable icon-high">-->
+<!--									</span>-->
+<!--								</div>-->
+<!--								<div class="content-row__column">-->
+<!--									<span class="content-row__username">User name</span>-->
 
-										Ticket title
-									</div>
-									<!-- <span class="content-row__lable icon-high">
-									</span> -->
-								</div>
-								<div class="content-row__column">
-									<span class="content-row__username">User name</span>
-								</div>
-								<div class="content-row__column">
-									<span class="content-row__date">Created: 12.11.2022</span>
-									<span class="content-row__username">Edited: 13.11.2022</span>
-								</div>
-							</a>
-							<a href="#" class="content-body__row content-row">
-								<span class="content-row__icon content-row__icon_with"></span>
-								<div class="content-row__column">
-									<div class="content-row__title">
+<!--								</div>-->
+<!--								<div class="content-row__column">-->
+<!--									<span class="content-row__date">Created: 12.11.2022</span>-->
+<!--									<span class="content-row__username">Edited: 13.11.2022</span>-->
+<!--								</div>-->
+<!--							</a>-->
+<!--							<div class="content-body__row content-row _red">-->
+<!--								<span class="content-row__icon content-row__icon_red"></span>-->
+<!--								<div class="content-row__column">-->
+<!--									<div class="content-row__title">-->
 
-										Ticket title
-									</div>
-									<span class="content-row__lable icon-high">
-									</span>
-								</div>
-								<div class="content-row__column">
-									<span class="content-row__username">User name</span>
-
-								</div>
-								<div class="content-row__column">
-									<span class="content-row__date">Created: 12.11.2022</span>
-									<span class="content-row__username">Edited: 13.11.2022</span>
-								</div>
-							</a>
-							<a href="#" class="content-body__row content-row">
-								<span class="content-row__icon content-row__icon_with"></span>
-								<div class="content-row__column">
-									<div class="content-row__title">
-										Ticket title
-									</div>
-									<span class="content-row__lable icon-high">
-									</span>
-								</div>
-								<div class="content-row__column">
-									<span class="content-row__username">User name</span>
-
-								</div>
-								<div class="content-row__column">
-									<span class="content-row__date">Created: 12.11.2022</span>
-									<span class="content-row__username">Edited: 13.11.2022</span>
-								</div>
-							</a>
-							<a href="#" class="content-body__row content-row">
-								<span class="content-row__icon content-row__icon_green"></span>
-								<div class="content-row__column">
-									<div class="content-row__title">
-										Ticket title
-									</div>
-								</div>
-								<div class="content-row__column">
-									<span class="content-row__username">User name</span>
-
-								</div>
-								<div class="content-row__column">
-									<span class="content-row__date">Created: 12.11.2022</span>
-									<span class="content-row__username">Edited: 13.11.2022</span>
-								</div>
-							</a>
-							<a href="#" class="content-body__row content-row">
-								<span class="content-row__icon content-row__icon_blue"></span>
-								<div class="content-row__column">
-									<div class="content-row__title">
-
-										Ticket title
-									</div>
-								</div>
-								<div class="content-row__column">
-									<span class="content-row__username">User name</span>
-								</div>
-								<div class="content-row__column">
-									<span class="content-row__date">Created: 12.11.2022</span>
-									<span class="content-row__username">Edited: 13.11.2022</span>
-								</div>
-							</a>
-							<div class="content-body__row content-row _red">
-								<span class="content-row__icon content-row__icon_red"></span>
-								<div class="content-row__column">
-									<div class="content-row__title">
-
-										Ticket title
-									</div>
-								</div>
-								<div class="content-row__column">
-									<span class="content-row__username">User name</span>
-								</div>
-								<div class="content-row__column">
-									<span class="content-row__date">Created: 12.11.2022</span>
-									<span class="content-row__username">Edited: 13.11.2022</span>
-								</div>
-							</div>
-							<a href="#" class="content-body__row content-row">
-								<span class="content-row__icon content-row__icon_with"></span>
-								<div class="content-row__column">
-									<div class="content-row__title">
-
-										Ticket title
-									</div>
-									<!-- <span class="content-row__lable icon-high">
-									</span> -->
-								</div>
-								<div class="content-row__column">
-									<span class="content-row__username">User name</span>
-								</div>
-								<div class="content-row__column">
-									<span class="content-row__date">Created: 12.11.2022</span>
-									<span class="content-row__username">Edited: 13.11.2022</span>
-								</div>
-							</a>
-							<a href="#" class="content-body__row content-row">
-								<span class="content-row__icon content-row__icon_with"></span>
-								<div class="content-row__column">
-									<div class="content-row__title">
-
-										Ticket title
-									</div>
-									<span class="content-row__lable icon-high">
-									</span>
-								</div>
-								<div class="content-row__column">
-									<span class="content-row__username">User name</span>
-
-								</div>
-								<div class="content-row__column">
-									<span class="content-row__date">Created: 12.11.2022</span>
-									<span class="content-row__username">Edited: 13.11.2022</span>
-								</div>
-							</a>
-
+<!--										Ticket title red-->
+<!--									</div>-->
+<!--								</div>-->
+<!--								<div class="content-row__column">-->
+<!--									<span class="content-row__username">User name</span>-->
+<!--								</div>-->
+<!--								<div class="content-row__column">-->
+<!--									<span class="content-row__date">Created: 12.11.2022</span>-->
+<!--									<span class="content-row__username">Edited: 13.11.2022</span>-->
+<!--								</div>-->
+<!--							</div>-->
 
 						</div>
 						<div class="content-body__rows ticket-info" *ngIf="isTicketOpened">
 							<div class="ticket-info__header">
 								<div class="ticket-info__top">
 									<h4 class="ticket-info__title">
-										Ticket open title
+										{{currentTicket.title}}
 									</h4>
 									<div class="ticket-info__info">
 										<div class="ticket-info__status icon-high">
-											Hight priority
+											{{currentTicket.priority}}
 										</div>
-										<span>Category</span>
+										<span>{{currentTicket.category}}</span>
 									</div>
 								</div>
 								<div class="ticket-info__top ticket-body">
-									<p class="ticket-body__text">Ticket body</p>
+									<p class="ticket-body__text">{{ticketMainBody.subject}}</p>
 									<div class="ticket-body__bottom">
 										<div class="ticket-body__l">
-											<span class="ticket-body__name">User name</span>
+											<span class="ticket-body__name">{{ticketMainBody.createdBy}}</span>
 											<div class="ticket-body__date">
-												<span class="ticket-body__hor">14:00</span>
-												, 12 November 2022
+												<span class="ticket-body__hor">{{ticketMainBody.createdAt | date:"HH:mm"}}</span>
+												, {{ticketMainBody.createdAt | date}}
 											</div>
 										</div>
 										<a href="#" class="ticket-body__show  btn-block">
