@@ -8,19 +8,19 @@
 
                 </div>
                 <div class="page-home__column">
-                    <form action="#" class="page-home__form log-form">
+                    <form [formGroup]="loginForm" (ngSubmit)="login()" class="page-home__form log-form">
                         <h3 class="log-form__title">
                             Sign in
                         </h3>
                         <div class="log-form__line log-form__line_user">
-                            <input type="text" name="login" placeholder="Login" class="log-form__inp ">
+                            <input type="text" name="login" placeholder="Login" class="log-form__inp " formControlName="login">
                         </div>
                         <div class="log-form__line log-form__line_pass">
-                            <input type="password" name="password" placeholder="Password" class="log-form__inp ">
+                            <input type="password" name="password" placeholder="Password" class="log-form__inp " formControlName="password">
                             <button class="log-form__show _hidden"></button>
                             <!-- remove class hidden  -->
                         </div>
-                        <button type="submit" class="log-form__btn">Login</button>
+                        <button type="submit" (click)="login()" class="log-form__btn">Login</button>
                         <div class="log-form__footer">
                             <div class="checkbox">
                                 <input id="formLog" type="checkbox" name="remember" class="checkbox__input _req">
