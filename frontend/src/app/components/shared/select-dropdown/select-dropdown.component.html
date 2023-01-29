@@ -1,0 +1,38 @@
+<!--<div class="ticket-create__line move_to_top" >-->
+<!--    <span class="ticket-create__lable">{{catalogName | titlecase}}:</span>-->
+<!--    <div class="ticket-create__dropdown dropdown">-->
+<!--        <span class="dropdown__name"-->
+<!--              [class._active-drop]="isDropdownOpened"-->
+<!--              >-->
+<!--&lt;!&ndash;              (click)="openDropdowns()">&ndash;&gt;-->
+
+<!--        <div *ngIf="currentItem === undefined; else currentSelect" class="dropdown__names" >Select {{catalogName}}...</div>-->
+<!--            <ng-template #currentSelect>-->
+<!--                <div class="dropdown__names" >{{currentItem?.name | titlecase}}</div>-->
+<!--            </ng-template>-->
+<!--        <span class="dropdown__icon">-->
+<!--            <svg fill="none">-->
+<!--                <path-->
+<!--                        d="M6.49996 8.20529C6.26698 8.20529 6.03402 8.11633 5.85639 7.93878L0.266684 2.34902C-0.0888946 1.99344 -0.0888946 1.41693 0.266684 1.0615C0.622118 0.706063 1.19851 0.706063 1.55412 1.0615L6.49996 6.00763L11.4458 1.06167C11.8014 0.706236 12.3778 0.706236 12.7332 1.06167C13.0889 1.4171 13.0889 1.99361 12.7332 2.34919L7.14354 7.93896C6.96582 8.11653 6.73286 8.20529 6.49996 8.20529Z"-->
+<!--                />-->
+<!--            </svg>-->
+<!--        </span>-->
+<!--    </span>-->
+<!--    <ul class="dropdown__items move_to_top">-->
+<!--        <li *ngFor="let item of itemList" class="move_to_top">-->
+<!--            <button (click)="select(item)" class="dropdown__item move_to_top" hover-class="_active">-->
+<!--                {{item.name}}-->
+<!--            </button>-->
+<!--        </li>-->
+<!--    </ul>-->
+<!--    </div>-->
+<!--</div>-->
+
+<div class="form-floating">
+
+<select class="form-select" id="selectItems" aria-label="Default select example">
+    <option *ngFor="let item of itemList" (click)="select(item)">{{item.name}}</option>
+</select>
+    <label for="selectItems">{{catalogName | titlecase}}</label>
+
+</div>

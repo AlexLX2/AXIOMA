@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -64,6 +65,11 @@ public class TicketController {
     @GetMapping("/count")
     public ResponseEntity<?> getCount(){
         return ResponseEntity.ok(ticketServices.findCount());
+    }
+
+    @PostMapping("/createTicket")
+    public ResponseEntity<Map<String,Integer>> createTicket(){
+       return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
     @PostMapping("/createTicketHeader")

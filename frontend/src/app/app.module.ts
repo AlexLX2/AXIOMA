@@ -15,6 +15,10 @@ import { RedactorTicketComponent } from './components/tickets/redactor-ticket/re
 import {JWT_OPTIONS, JwtHelperService} from "@auth0/angular-jwt";
 import {AuthInterceptor} from "./interceptors/auth.interceptor";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
+import { SelectDropdownComponent } from './components/shared/select-dropdown/select-dropdown.component';
+import { HoverClassDirective } from './directives/hover-class.directive';
+import {QuillEditorComponent, QuillModule} from "ngx-quill";
+import {NgbModal, NgbModule} from "@ng-bootstrap/ng-bootstrap";
 
 @NgModule({
   declarations: [
@@ -28,13 +32,18 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
     DetailTicketComponent,
     NewTicketComponent,
     RedactorTicketComponent,
+    SelectDropdownComponent,
+    HoverClassDirective,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    QuillEditorComponent,
+    QuillModule.forRoot(),
+    NgbModule
   ],
   providers: [[{
     provide: HTTP_INTERCEPTORS,
@@ -60,3 +69,6 @@ export class AppModule { }
 //TODO Enable pagination
 //TODO Add ticket edit/reply
 //TODO Fix create ticket
+//TODO Add clients directory
+//TODO Add employee directory
+//TODO Add favicon
