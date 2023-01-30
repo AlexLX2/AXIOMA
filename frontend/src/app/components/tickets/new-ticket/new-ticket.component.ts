@@ -5,6 +5,8 @@ import {Ticket} from "../../../interfaces/ticket";
 import {TicketService} from "../../../services/ticket.service";
 import {TicketBody} from "../../../interfaces/ticket-body";
 import {TicketDto} from "../../../dto/ticket-dto";
+import {AngularEditorConfig} from "@kolkov/angular-editor";
+import {Editor} from "ngx-editor";
 
 @Component({
   selector: 'app-new-ticket',
@@ -19,6 +21,15 @@ export class NewTicketComponent {
   priorityList: Catalog[] = [];
   priorityName: string = 'priority';
 
+  editorConfig: AngularEditorConfig = {
+      editable: true,
+      height: '100%',
+      minHeight: '150px',
+      maxHeight: 'auto',
+      placeholder: 'Tell us more about your problem...'
+}
+
+    editor: Editor = new Editor();
   selectedPriority: Catalog = {id:1, name: 'Normal'};
   statusList: Catalog[] = [];
 
@@ -51,20 +62,23 @@ export class NewTicketComponent {
   handleSelect($event: any) {
       console.log('event', $event)
       switch ($event.type) {
-          case 'Priority':{
+          case 'priority':{
               this.selectedPriority = $event.value;
               break;
           }
-          case 'Category': {
+          case 'category': {
               this.selectedCategory = $event.value;
               break;
           }
           default:
+              console.log('WTF?', $event.type)
               break;
       }
   }
 
   createTicket() {
+
+        console.log('body', this.body);
 
         this.newTicket = new TicketDto(0,
             "Test subj",
@@ -72,10 +86,12 @@ export class NewTicketComponent {
             this.selectedCategory,
             this.selectedPriority,
             this.selectedStatus,
-            "Test text ak",
+            this.body,
             [],
             "Test client",
             "Vi Bri");
+
+        console.log('new ticket', this.newTicket);
 
         this.ticketService.createTicket(this.newTicket).subscribe(data => {
             console.log('createticket', data);

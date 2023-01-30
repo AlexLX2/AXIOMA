@@ -17,8 +17,9 @@ import {AuthInterceptor} from "./interceptors/auth.interceptor";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import { SelectDropdownComponent } from './components/shared/select-dropdown/select-dropdown.component';
 import { HoverClassDirective } from './directives/hover-class.directive';
-import {QuillEditorComponent, QuillModule} from "ngx-quill";
-import {NgbModal, NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import {AngularEditorModule} from "@kolkov/angular-editor";
+import {NgxEditorModule} from "ngx-editor";
 
 @NgModule({
   declarations: [
@@ -41,9 +42,9 @@ import {NgbModal, NgbModule} from "@ng-bootstrap/ng-bootstrap";
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    QuillEditorComponent,
-    QuillModule.forRoot(),
-    NgbModule
+    NgbModule,
+    AngularEditorModule,
+    NgxEditorModule
   ],
   providers: [[{
     provide: HTTP_INTERCEPTORS,

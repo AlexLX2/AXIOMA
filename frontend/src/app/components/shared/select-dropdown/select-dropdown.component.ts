@@ -18,33 +18,23 @@ export class SelectDropdownComponent implements OnInit{
   //isDropdownOpened: boolean = false;
 
   constructor(private catalogService: CatalogService) {
-
   }
 
   ngOnInit(): void {
-    // console.log('catalog', this.catalogName);
     this.catalogService.getCatalogItemList(this.catalogName).subscribe(data => {
-      // console.log('data', data);
       this.itemList = data;
-
-
     })
-    console.log('curr', this.currentItem)
     }
 
+  select(selectedItem: any) {
 
-  openDropdowns() {
-    this.isDropdownOpened = !this.isDropdownOpened;
-  }
-
-  select(selectedItem: Catalog) {
-    console.log('click!');
-    //this.openDropdowns();
-    this.currentItem = selectedItem;
+    this.currentItem = this.itemList.find( s => {
+      return s.id == selectedItem.target.value
+    });
 
     const result = {
       type: this.catalogName,
-      value: this.selectItem
+      value: this.currentItem
     }
 
     this.selectItem.emit(result);
