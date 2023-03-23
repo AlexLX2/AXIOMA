@@ -21,9 +21,12 @@
     "@auth0/angular-jwt": "^5.1.2",
     "@kolkov/angular-editor": "^3.0.0-beta.0",
     "@ng-bootstrap/ng-bootstrap": "^14.0.1",
+    "@ng-select/ng-select": "^10.0.3",
     "@popperjs/core": "^2.11.6",
+    "@types/quill": "^1.3.7",
     "bootstrap": "^5.2.3",
-    "ngx-editor": "^15.1.0",
+    "ngx-quill": "^20.0.1",
+    "quill": "^1.3.7",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.12.0"

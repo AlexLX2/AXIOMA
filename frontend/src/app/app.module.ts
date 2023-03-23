@@ -19,7 +19,8 @@ import { SelectDropdownComponent } from './components/shared/select-dropdown/sel
 import { HoverClassDirective } from './directives/hover-class.directive';
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {AngularEditorModule} from "@kolkov/angular-editor";
-import {NgxEditorModule} from "ngx-editor";
+import {NgSelectModule} from "@ng-select/ng-select";
+import {QuillModule} from "ngx-quill";
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import {NgxEditorModule} from "ngx-editor";
     HttpClientModule,
     NgbModule,
     AngularEditorModule,
-    NgxEditorModule
+    NgSelectModule,
+      QuillModule.forRoot()
   ],
   providers: [[{
     provide: HTTP_INTERCEPTORS,
@@ -72,4 +74,5 @@ export class AppModule { }
 //TODO Fix create ticket
 //TODO Add clients directory
 //TODO Add employee directory
-//TODO Add favicon
+//TODO Fix favicon
+//TODO Add due date to ticket

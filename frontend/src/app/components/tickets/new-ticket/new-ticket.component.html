@@ -1,173 +1,180 @@
 <div class="wrapper">
-  <main class="page page-dashboard">
-    <div class="page-dashboard__row">
-      <axioma-sidebar></axioma-sidebar>
-      <div class="page-dashboard__content dashboard-content">
-        <axioma-header
-          [showSearchFilter]="false"
-          title="Create ticket"
-          subtitle="New ticket"
-        ></axioma-header>
-        <div class="dashboard-content__body content-body">
-          <form action="#" class="content-body__rows ticket-info">
-            <div class="ticket-info__header">
-              <div class="ticket-info__top ticket-create">
-                <div class="ticket-create__colum">
-                  <div class="ticket-create__line">
-                    <span class="ticket-create__lable">*Client:</span>
+    <main class="page page-dashboard">
+        <div class="page-dashboard__row">
+            <axioma-sidebar></axioma-sidebar>
+            <div class="page-dashboard__content dashboard-content">
+                <axioma-header
+                        [showSearchFilter]="false"
+                        subtitle="New ticket"
+                        title="Create ticket"
+                ></axioma-header>
+                <div class="dashboard-content__body content-body">
+                    <form [formGroup]="vForm" action="#" class="content-body__rows ticket-info">
+                        <div class="ticket-info__header">
+                            <div class="ticket-info__top ticket-create">
+                                <div class="ticket-create__colum">
+                                    <div class="ticket-create__line">
+                                        <span class="ticket-create__lable">*Client:</span>
+                                        <ng-select class="custom" formControlName="client" required>
+                                            <ng-option
+                                                    *ngFor="let empl of employeeList"
+                                            [value]="empl.id"> {{empl.firstName}} {{empl.lastName}}</ng-option>
+                                        </ng-select>
+                                    </div>
+                                    <div class="ticket-create__line">
+                                        <span class="ticket-create__lable">Assign to:</span>
+                                        <ng-select [multiple]="true" class="custom" formControlName="employee">
+                                            <ng-option *ngFor="let empl of employeeList"
+                                                       [value]=empl.id> {{empl.firstName}} {{empl.lastName}}</ng-option>
+                                        </ng-select>
+                                    </div>
+                                    <div class="ticket-create__line">
+                                        <span class="ticket-create__lable">*Subject:</span>
+                                        <input class="form-control rounded-5" type="text" required formControlName="subject">
+                                    </div>
+                                </div>
+                                <div class="ticket-create__colum">
+                                    <div class="ticket-create__line">
+                                        <span class="ticket-create__lable">Category:</span>
+                                        <ng-select class="custom" formControlName="category">
+                                            <ng-option *ngFor="let category of categoryList"
+                                                       [value]="category.id"> {{category.name | titlecase}}</ng-option>
+                                        </ng-select>
+                                    </div>
+                                    <div class="ticket-create__line">
+                                        <span class="ticket-create__lable">Priority:</span>
+                                        <ng-select class="custom" formControlName="priority">
+                                            <ng-option *ngFor="let priority of priorityList"
+                                                       [value]="priority.id"> {{priority.name | titlecase}}</ng-option>
+                                        </ng-select>
+                                    </div>
+                                    <div class="ticket-create__line">
+                                        <span class="ticket-create__lable">Status:</span>
+                                        <ng-select class="custom" formControlName="status">
+                                            <ng-option *ngFor="let status of statusList"
+                                                       [value]="status.id"> {{status.name | titlecase}}</ng-option>
+                                        </ng-select>
+                                    </div>
 
-                    <div class="ticket-create__dropdown dropdown">
-                      <span class="dropdown__name">
-                        <input placeholder="Start typing client name...">
-                      </span>
-                    </div></div>
-                  <div class="ticket-create__line">
-                    <span class="ticket-create__lable">To:</span>
+                                </div>
+                            </div>
 
-                    <div class="ticket-create__dropdown dropdown">
-                       <span class="dropdown__name">
-                        <input placeholder="Start typing employee name...">
-                      </span>
-                    </div></div>
-                  <div class="ticket-create__line">
-                    <span class="ticket-create__lable">*Subject:</span>
-                    <div class="ticket-create__dropdown dropdown">
-                       <span class="dropdown__name">
-                        <input>
-                      </span>
-                    </div></div>
+                        </div>
+
+                        <div class="ticket-info__footer form-ticket form-ticket_redactor">
+                            <div class="form-ticket__elements">
+                                <div class="row h-100 pb-3 pt-3">
+                                    <quill-editor formControlName="body"></quill-editor>
+                                </div>
+                                <div class="form-ticket__row">
+
+                                    <div class="">
+                                        <input class="form-control rounded-5 m-auto"
+                                               id="fileInput"
+                                               multiple
+                                               name="fileInput"
+                                               type="file"
+                                               formControlName="file"
+                                        />
+                                    </div>
+
+                                    <div class="form-ticket__btns">
+                                        <a (click)="createTicket()" class="ticket-body__show btn-block"> Send </a>
+                                        <a class="ticket-body__show ticket-body__show_border btn-block" routerLink="/">Cancel</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-                <div class="ticket-create__colum">
-                  <app-select-dropdown [catalogName]="categoryName" (selectItem)="handleSelect($event)" [isDropdownOpened]="isCategoryOpened" (click)="openCategories()"></app-select-dropdown>
-                  <br>
-                  <app-select-dropdown [catalogName]="priorityName" (selectItem)="handleSelect($event)" [isDropdownOpened]="isPriorityOpened" (click)="openPriorities()"></app-select-dropdown>
-                </div>
-              </div>
-            </div>
-
-            <div class="ticket-info__footer form-ticket form-ticket_redactor">
-              <div class="form-ticket__elements">
-                <div class="form-ticket__body NgxEditor__Wrapper">
-
-<!--                  <quill-editor-->
-<!--                          class="ql-editor"-->
-<!--                  placeholder="Tell us more about your problem here..."-->
-<!--                    [(ngModel)]="body"-->
-<!--                          [ngModelOptions]="{standalone:true}"-->
-<!--                  ></quill-editor>-->
-<!--                  <angular-editor [placeholder]="'Enter text here...'"-->
-<!--                                  [(ngModel)]="body"-->
-<!--                                  [ngModelOptions]="{standalone:true}"-->
-<!--                                  [config] = editorConfig-->
-<!--                                  class="angular-editor-wrapper"-->
-<!--                  ></angular-editor>-->
-
-                 <ngx-editor-menu [editor]="editor"></ngx-editor-menu>
-                  <ngx-editor [editor]="editor" [(ngModel)]="body" [ngModelOptions]="{standalone: true}" [disabled] = false [placeholder]="'Type here...'"></ngx-editor>
-                </div>
-
-                <div class="form-ticket__row">
-                  <div class="form-ticket__select">
-                    Ticket status
-                    <select name="status" id="#">
-                      <option *ngFor="let status of statusList">{{status.name | titlecase}}</option>
-                    </select>
-                  </div>
-                  <div class="form-ticket__btns">
-                    <a href="#" class="ticket-body__show btn-block" (click)="createTicket()"> Send </a>
-                    <a
-                      routerLink="/"
-                      class="ticket-body__show ticket-body__show_border btn-block"
-
-                    >
-                      Cancel
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </form>
-        </div>
-        <footer class="dashboard-content__footer footer-dash">
-          <div class="footer-dash__left">
-            <div class="footer-dash__drop">
-              <div class="footer-dash__dropdown dropdown">
-                <!-- add class dropdown__name "_active-drop" open drop -->
-                <!-- exemple  <span class="dropdown__name _active-drop"></span> -->
-                <span class="dropdown__name">
+                <footer class="dashboard-content__footer footer-dash">
+                    <div class="footer-dash__left">
+                        <div class="footer-dash__drop">
+                            <div class="footer-dash__dropdown dropdown">
+                                <!-- add class dropdown__name "_active-drop" open drop -->
+                                <!-- exemple  <span class="dropdown__name _active-drop"></span> -->
+                                <span class="dropdown__name">
                   100
                   <span class="dropdown__icon">
                     <svg fill="none">
                       <path
-                        d="M6.49996 8.20529C6.26698 8.20529 6.03402 8.11633 5.85639 7.93878L0.266684 2.34902C-0.0888946 1.99344 -0.0888946 1.41693 0.266684 1.0615C0.622118 0.706063 1.19851 0.706063 1.55412 1.0615L6.49996 6.00763L11.4458 1.06167C11.8014 0.706236 12.3778 0.706236 12.7332 1.06167C13.0889 1.4171 13.0889 1.99361 12.7332 2.34919L7.14354 7.93896C6.96582 8.11653 6.73286 8.20529 6.49996 8.20529Z"
+                              d="M6.49996 8.20529C6.26698 8.20529 6.03402 8.11633 5.85639 7.93878L0.266684 2.34902C-0.0888946 1.99344 -0.0888946 1.41693 0.266684 1.0615C0.622118 0.706063 1.19851 0.706063 1.55412 1.0615L6.49996 6.00763L11.4458 1.06167C11.8014 0.706236 12.3778 0.706236 12.7332 1.06167C13.0889 1.4171 13.0889 1.99361 12.7332 2.34919L7.14354 7.93896C6.96582 8.11653 6.73286 8.20529 6.49996 8.20529Z"
                       />
                     </svg>
                   </span>
                 </span>
-                <ul class="dropdown__items">
-                  <li>
-                    <button class="dropdown__item dropdown__item_custum">
-                      Custom
-                    </button>
-                  </li>
-                  <li><button class="dropdown__item _active">100</button></li>
-                  <li><button class="dropdown__item">50</button></li>
-                  <li><button class="dropdown__item">30</button></li>
-                  <li><button class="dropdown__item">20</button></li>
-                </ul>
-              </div>
-              per page
-            </div>
-            <div class="footer-dash__center pagination">
-              <nav class="pagination__nav">
-                <ul class="pagination__list">
-                  <li class="pagination__li pagination__li_icon">
-                    <button
-                      class="pagination__btn pagination__btn_icon pagination__btn_icon-l"
-                    ></button>
-                  </li>
-                  <li class="pagination__li pagination__li_icon">
-                    <button
-                      class="pagination__btn pagination__btn_icon pagination__btn_icon-l_m"
-                    ></button>
-                  </li>
+                                <ul class="dropdown__items">
+                                    <li>
+                                        <button class="dropdown__item dropdown__item_custum">
+                                            Custom
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button class="dropdown__item _active">100</button>
+                                    </li>
+                                    <li>
+                                        <button class="dropdown__item">50</button>
+                                    </li>
+                                    <li>
+                                        <button class="dropdown__item">30</button>
+                                    </li>
+                                    <li>
+                                        <button class="dropdown__item">20</button>
+                                    </li>
+                                </ul>
+                            </div>
+                            per page
+                        </div>
+                        <div class="footer-dash__center pagination">
+                            <nav class="pagination__nav">
+                                <ul class="pagination__list">
+                                    <li class="pagination__li pagination__li_icon">
+                                        <button
+                                                class="pagination__btn pagination__btn_icon pagination__btn_icon-l"
+                                        ></button>
+                                    </li>
+                                    <li class="pagination__li pagination__li_icon">
+                                        <button
+                                                class="pagination__btn pagination__btn_icon pagination__btn_icon-l_m"
+                                        ></button>
+                                    </li>
 
-                  <li class="pagination__li">
-                    <button class="pagination__item _active">1</button>
-                  </li>
-                  <li class="pagination__li">
-                    <button class="pagination__item">3</button>
-                  </li>
-                  <li class="pagination__li">
-                    <button class="pagination__item">4</button>
-                  </li>
-                  <li class="pagination__li">
-                    <button class="pagination__item">5</button>
-                  </li>
-                  <li class="pagination__li">
-                    <button class="pagination__item">...</button>
-                  </li>
-                  <li class="pagination__li">
-                    <button class="pagination__item">20</button>
-                  </li>
+                                    <li class="pagination__li">
+                                        <button class="pagination__item _active">1</button>
+                                    </li>
+                                    <li class="pagination__li">
+                                        <button class="pagination__item">3</button>
+                                    </li>
+                                    <li class="pagination__li">
+                                        <button class="pagination__item">4</button>
+                                    </li>
+                                    <li class="pagination__li">
+                                        <button class="pagination__item">5</button>
+                                    </li>
+                                    <li class="pagination__li">
+                                        <button class="pagination__item">...</button>
+                                    </li>
+                                    <li class="pagination__li">
+                                        <button class="pagination__item">20</button>
+                                    </li>
 
-                  <li class="pagination__li pagination__li_icon">
-                    <button
-                      class="pagination__btn pagination__btn_icon pagination__btn_icon-r"
-                    ></button>
-                  </li>
-                  <li class="pagination__li pagination__li_icon">
-                    <button
-                      class="pagination__btn pagination__btn_icon pagination__btn_icon-r_m"
-                    ></button>
-                  </li>
-                </ul>
-              </nav>
+                                    <li class="pagination__li pagination__li_icon">
+                                        <button
+                                                class="pagination__btn pagination__btn_icon pagination__btn_icon-r"
+                                        ></button>
+                                    </li>
+                                    <li class="pagination__li pagination__li_icon">
+                                        <button
+                                                class="pagination__btn pagination__btn_icon pagination__btn_icon-r_m"
+                                        ></button>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                    <axioma-footer></axioma-footer>
+                </footer>
             </div>
-          </div>
-          <axioma-footer></axioma-footer>
-        </footer>
-      </div>
-    </div>
-  </main>
+        </div>
+    </main>
 </div>

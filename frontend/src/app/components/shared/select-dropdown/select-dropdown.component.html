@@ -1,8 +1,13 @@
-<div class="form-floating">
+<!--<div class="form-floating">-->
 
-<select class="form-select" id="selectItems" (change)="select($event)" aria-label="Default select example">
-    <option [value]="item.id" *ngFor="let item of itemList">{{item.name}}</option>
-</select>
-    <label for="selectItems">{{catalogName | titlecase}}</label>
+<!--<select class="form-select" id="selectItems" (change)="select($event)" aria-label="Default select example">-->
+<!--    <option [value]="item.id" *ngFor="let item of itemList">{{item.name}}</option>-->
+<!--</select>-->
+<!--    <label for="selectItems">{{catalogName | titlecase}}</label>-->
 
-</div>
+<!--</div>-->
+
+<label for="selectItems">{{catalogName | titlecase}}:</label>
+<ng-select>
+    <ng-option id="selectItems" [value]="item.id" *ngFor="let item of itemList"> {{item.name}}</ng-option>
+</ng-select>

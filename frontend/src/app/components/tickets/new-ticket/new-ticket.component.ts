@@ -1,101 +1,115 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CatalogService} from "../../../services/catalog.service";
 import {Catalog} from "../../../interfaces/catalog";
-import {Ticket} from "../../../interfaces/ticket";
 import {TicketService} from "../../../services/ticket.service";
-import {TicketBody} from "../../../interfaces/ticket-body";
 import {TicketDto} from "../../../dto/ticket-dto";
-import {AngularEditorConfig} from "@kolkov/angular-editor";
-import {Editor} from "ngx-editor";
+import {Employee} from "../../../interfaces/employee";
+import {EmployeeService} from "../../../services/employee.service";
+import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 
 @Component({
-  selector: 'app-new-ticket',
-  templateUrl: './new-ticket.component.html',
-  styleUrls: ['./new-ticket.component.scss']
+    selector: 'app-new-ticket',
+    templateUrl: './new-ticket.component.html',
+    styleUrls: ['./new-ticket.component.scss']
 })
-export class NewTicketComponent {
+export class NewTicketComponent implements OnInit {
 
+    priorityList: Catalog[] = [];
 
-  categoryName: string = 'category';
-  selectedCategory: Catalog = { id:1, name:'Support'};
-  priorityList: Catalog[] = [];
-  priorityName: string = 'priority';
+    employeeList: Employee[] = [];
 
-  editorConfig: AngularEditorConfig = {
-      editable: true,
-      height: '100%',
-      minHeight: '150px',
-      maxHeight: 'auto',
-      placeholder: 'Tell us more about your problem...'
-}
+    categoryList: Catalog[] = [];
 
-    editor: Editor = new Editor();
-  selectedPriority: Catalog = {id:1, name: 'Normal'};
-  statusList: Catalog[] = [];
+    statusList: Catalog[] = [];
 
-  selectedStatus: Catalog = {id:1, name: 'New'};
-
-  newTicket?: TicketDto;
-  isCategoryOpened: boolean = false;
-  isPriorityOpened: boolean = false;
-  body: string = '';
+    newTicket?: TicketDto;
+    fileName: string = 'Select file';
+    vForm: FormGroup;
+    currentFile?: File;
+    files: File[] = [];
 
     constructor(private catalogService: CatalogService,
-                private ticketService: TicketService) {
+                private ticketService: TicketService,
+                private emplService: EmployeeService,
+                private fb: FormBuilder) {
 
-    this.catalogService.getCatalogItemList('status').subscribe(
-        data => {
-          this.statusList = data;
-        }
-    )
-  }
+        this.vForm = fb.group(
+            {
+                employee:     new FormControl(''),
+                status:       new FormControl(null),
+                client:       new FormControl(''),
+                subject:      new FormControl(''),
+                category:     new FormControl(null),
+                priority:     new FormControl(null),
+                file:         new FormControl(''),
+                body:         new FormControl('')
+            }
+        );
 
-  openCategories() {
-      this.isCategoryOpened = !this.isCategoryOpened;
-      this.isPriorityOpened = false;
-  }
 
-  openPriorities() {
-    this.isPriorityOpened = !this.isPriorityOpened;
-    this.isCategoryOpened = false;
-  }
-  handleSelect($event: any) {
-      console.log('event', $event)
-      switch ($event.type) {
-          case 'priority':{
-              this.selectedPriority = $event.value;
-              break;
-          }
-          case 'category': {
-              this.selectedCategory = $event.value;
-              break;
-          }
-          default:
-              console.log('WTF?', $event.type)
-              break;
-      }
-  }
+    }
 
-  createTicket() {
+    ngOnInit(): void {
+        this.emplService.getAllEmployees().subscribe(data => {
+            this.employeeList = data;
+        });
 
-        console.log('body', this.body);
+        this.catalogService.getCatalogItemList('status').subscribe(
+            data => {
+                this.statusList = data;
+            }
+        );
+
+        this.catalogService.getCatalogItemList('priority').subscribe(
+            data => {
+                this.priorityList = data;
+            }
+        )
+
+        this.catalogService.getCatalogItemList('category').subscribe(
+            data => {
+                this.categoryList = data;
+            }
+        )
+
+
+    }
+
+    createTicket() {
+
+        console.log('client', this.vForm.get('client')?.value);
+        console.log('empl', this.vForm.get('employee')?.value);
+        console.log('body', this.vForm.get('body')?.value);
+
 
         this.newTicket = new TicketDto(0,
-            "Test subj",
+            this.vForm.get('subject')?.value,
             "AK",
-            this.selectedCategory,
-            this.selectedPriority,
-            this.selectedStatus,
-            this.body,
+            this.vForm.get('category')?.value,
+            this.vForm.get('priority')?.value,
+            this.vForm.get('status')?.value,
+            this.vForm.get('body')?.value,
             [],
-            "Test client",
-            "Vi Bri");
+            this.vForm.get('client')?.value,
+            this.vForm.get('employee')?.value);
 
         console.log('new ticket', this.newTicket);
 
         this.ticketService.createTicket(this.newTicket).subscribe(data => {
             console.log('createticket', data);
         });
-  }
+    }
+
+    selectFile(event: any): void {
+        console.log('Event', event);
+        if (event.target.files && event.target.files[0]) {
+            [...event.target.files].forEach((file: File) => {
+                this.files.push(file)
+                this.fileName = this.fileName + file.name;
+            })
+        } else {
+            this.fileName = 'Select File';
+        }
+    }
 
 }

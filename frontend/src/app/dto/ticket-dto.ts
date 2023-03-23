@@ -3,16 +3,16 @@ import {TicketAttachment} from "../interfaces/ticket-attachment";
 
 export class TicketDto {
 
-    constructor(private id: number,
-                private subject: string,
+    constructor(private ticketId: number,
+                private title: string,
                 private author: string,
-                private category: Catalog,
-                private priority: Catalog,
-                private status: Catalog,
+                private category: number,
+                private priority: number,
+                private status: number,
                 private body: string,
                 private attachments: TicketAttachment[],
                 private client: string,
-                private to: string
+                private to: string[]
                 ) {
     }
 

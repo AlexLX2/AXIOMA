@@ -68,7 +68,7 @@ public class TicketController {
     }
 
     @PostMapping("/createTicket")
-    public ResponseEntity<Map<String,Integer>> createTicket(){
+    public ResponseEntity<Map<String,Integer>> createTicket(@RequestBody TicketDTO ticketDTO){
        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 

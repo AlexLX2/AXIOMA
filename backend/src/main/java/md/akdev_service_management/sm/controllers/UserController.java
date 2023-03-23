@@ -5,6 +5,7 @@ import md.akdev_service_management.sm.dto.UserDTO;
 import md.akdev_service_management.sm.models.User;
 import md.akdev_service_management.sm.services.UserService;
 import md.akdev_service_management.sm.utils.MappingUtils;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +41,12 @@ public class UserController {
     @GetMapping("/all")
     public List<UserDTO> getTicketAll(){
         return mappingUtils.mapList(userService.findAll(),UserDTO.class);
+    }
+
+    @GetMapping("/searchByName")
+    public ResponseEntity<List<UserDTO>> getUsersByPartName(@RequestParam(value = "partialName") String partialName) {
+        System.out.println("Searching user: " + partialName);
+        return new ResponseEntity<>(mappingUtils.mapList(userService.findByPartialName(partialName), UserDTO.class), HttpStatus.OK);
     }
 
 

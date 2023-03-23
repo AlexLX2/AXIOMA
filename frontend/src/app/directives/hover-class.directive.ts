@@ -16,5 +16,4 @@ export class HoverClassDirective {
     this.elementRef.nativeElement.classList.remove(this.hoverClass);
   }
 
-
 }

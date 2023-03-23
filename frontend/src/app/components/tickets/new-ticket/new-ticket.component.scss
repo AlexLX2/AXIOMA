@@ -1,22 +1,10 @@
-.ql-container {
-  min-height: 10rem;
-  height: 100%;
-  flex: 1;
-  display: flex;
-  display: -webkit-flex;
-  flex-direction: column;
-  padding: 0;
+
+quill-editor {
+  height: 22rem;
+  width: 100%;
 }
 
-.ql-editor {
-  //height: 100%;
-  max-width: fit-content;
+.ng-select {
+  width: 100%;
 }
 
-.angular-editor-wrapper {
-  max-width: 90%;
-}
-
-.angular-editor-wrapper img {
-  max-width: 90%;
-}

@@ -1,5 +1,6 @@
 package md.akdev_service_management.sm.services;
 
+import md.akdev_service_management.sm.dto.UserDTO;
 import md.akdev_service_management.sm.models.User;
 import md.akdev_service_management.sm.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,5 +35,9 @@ public class UserService {
 
     public User finByUsername(String username){
         return  userRepository.findByLogin(username).orElseThrow();
+    }
+
+    public List<User> findByPartialName(String partialName) {
+        return userRepository.findByFirstNameContainsIgnoreCaseOrLastNameContainsIgnoreCase(partialName, partialName);
     }
 }
