@@ -10,7 +10,6 @@ export class TicketDto {
                 private priority: number,
                 private status: number,
                 private body: string,
-                private attachments: TicketAttachment[],
                 private client: string,
                 private to: string[]
                 ) {

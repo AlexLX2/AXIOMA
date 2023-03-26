@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { SidebarService, themeTypes } from './sidebar.service';
+import {AuthService} from "../../../services/auth.service";
 
 @Component({
   selector: 'axioma-sidebar',
@@ -21,7 +22,9 @@ export class SidebarComponent {
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private sidebarService: SidebarService
+    private sidebarService: SidebarService,
+    private authService: AuthService,
+    private router: Router
   ) {
     this.themeForm.valueChanges.subscribe(({ theme }) => {
       const newTheme = theme ? themeTypes.white : themeTypes.dark;
@@ -37,4 +40,9 @@ export class SidebarComponent {
   toggleSideMenu() {
     this.isSideMenuOpened = !this.isSideMenuOpened
   }
+
+    logout() {
+        this.authService.logout();
+        this.router.navigateByUrl('/');
+    }
 }

@@ -9,10 +9,10 @@ import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 
 @Component({
     selector: 'app-new-ticket',
-    templateUrl: './new-ticket.component.html',
-    styleUrls: ['./new-ticket.component.scss']
+    templateUrl: './create-ticket.component.html',
+    styleUrls: ['./create-ticket.component.scss']
 })
-export class NewTicketComponent implements OnInit {
+export class CreateTicketComponent implements OnInit {
 
     priorityList: Catalog[] = [];
 
@@ -89,7 +89,6 @@ export class NewTicketComponent implements OnInit {
             this.vForm.get('priority')?.value,
             this.vForm.get('status')?.value,
             this.vForm.get('body')?.value,
-            [],
             this.vForm.get('client')?.value,
             this.vForm.get('employee')?.value);
 

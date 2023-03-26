@@ -1,5 +1,7 @@
-@import url(https://fonts.googleapis.com/css?family=Inter:400,500,600,700,800,900&display=swap);
 @charset "UTF-8";
+@import url(https://fonts.googleapis.com/css?family=Inter:400,500,600,700,800,900&display=swap);
+@import "~bootstrap/dist/css/bootstrap.css";
+
 .wrapper {
   min-height: 100%;
   display: flex;
@@ -74,7 +76,7 @@ body {
 input,
 button,
 textarea {
-  font-family: "Inter";
+  font-family: "Inter", sans-serif;
   font-size: inherit;
 }
 
@@ -759,8 +761,8 @@ body[data-theme=light] .dropdown__item_conf,
   width: 100%;
   border-radius: 50px;
   color: #fff;
-  height: 40px;
-  font-size: 18px;
+  height: 2.375rem;
+  font-size: 1rem;
   padding: 0 20px;
   transition: all 0.4s;
 }
@@ -1416,10 +1418,10 @@ body[data-theme=light] .log-form__line_search {
   /* .ticket-info__top */
 }
 @media (min-width: 820px) {
-  .ticket-info__header {
-    position: sticky;
-    top: 0;
-  }
+  //.ticket-info__header {
+  //  position: sticky;
+  //  top: 0;
+  //}
   .ticket-info__header::before {
     content: "";
     position: absolute;
@@ -1484,8 +1486,8 @@ body[data-theme=light] .log-form__line_search {
   }
 }
 .ticket-body__show {
-  height: 30px;
-  font-size: 16px;
+  height: 2.375rem;
+  font-size: 1rem;
   max-width: 200px;
   padding: 0 15px;
   /* .ticket-body__share_blue */
@@ -1885,12 +1887,6 @@ body[data-theme=light] .log-form__line_search {
 body[data-theme=light] .aside-switch_l {
   color: #1CA6C5;
 }
-
-
-.aside-ak {
-  @media (max-width: 1200px) {
-
-      width: 0
-
-  }
+.ng-select.custom div{
+  border-radius: 20px;
 }
