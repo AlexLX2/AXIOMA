@@ -11,11 +11,7 @@ export class ViewTicketComponent implements OnChanges, OnInit {
     currentTicket: Ticket | any = {}
     @Input() currentTicketId: number | undefined;
 
-    constructor(private ticketService: TicketService) {
-
-
-        // console.log('id', this.currentTicketId);
-    }
+    constructor(private ticketService: TicketService) {}
 
     ngOnChanges(changes: SimpleChanges): void {
         console.log('changes', changes);
@@ -34,9 +30,9 @@ export class ViewTicketComponent implements OnChanges, OnInit {
                 }
             );
         }
-
-        console.log('initiated', this.currentTicketId);
     }
 
-
+    isAgentBody(ticketBody: any): boolean {
+        return ticketBody.id % 3=== 0;
+    }
 }

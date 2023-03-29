@@ -1,6 +1,7 @@
 @charset "UTF-8";
 @import url(https://fonts.googleapis.com/css?family=Inter:400,500,600,700,800,900&display=swap);
 @import "~bootstrap/dist/css/bootstrap.css";
+@import 'webdatarocks/webdatarocks.min.css';
 
 .wrapper {
   min-height: 100%;
@@ -601,6 +602,7 @@ h6 {
   transition: all 0.2s;
   /* .dropdown__item_conf */
 }
+
 .dropdown__item:hover {
   opacity: 0.8;
 }

@@ -2,10 +2,11 @@ import {Component, OnInit} from '@angular/core';
 import {CatalogService} from "../../../services/catalog.service";
 import {Catalog} from "../../../interfaces/catalog";
 import {TicketService} from "../../../services/ticket.service";
-import {TicketDto} from "../../../dto/ticket-dto";
 import {Employee} from "../../../interfaces/employee";
 import {EmployeeService} from "../../../services/employee.service";
 import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
+import {Ticket} from "../../../interfaces/ticket";
+import {TicketBody} from "../../../interfaces/ticket-body";
 
 @Component({
     selector: 'app-new-ticket',
@@ -22,7 +23,7 @@ export class CreateTicketComponent implements OnInit {
 
     statusList: Catalog[] = [];
 
-    newTicket?: TicketDto;
+    newTicket?: Ticket;
     fileName: string = 'Select file';
     vForm: FormGroup;
     currentFile?: File;
@@ -77,24 +78,30 @@ export class CreateTicketComponent implements OnInit {
 
     createTicket() {
 
-        console.log('client', this.vForm.get('client')?.value);
-        console.log('empl', this.vForm.get('employee')?.value);
-        console.log('body', this.vForm.get('body')?.value);
+        const ticketBody: TicketBody[] = [];
+        ticketBody.push(
+            {
+                body: this.vForm.get('body')?.value,
+                from: "AK",
+                id: 0,
+                subject: this.vForm.get('subject')?.value,
+                ticketAttachment: [],
+                to: "VB"
+            }
+        )
 
-
-        this.newTicket = new TicketDto(0,
-            this.vForm.get('subject')?.value,
-            "AK",
-            this.vForm.get('category')?.value,
-            this.vForm.get('priority')?.value,
-            this.vForm.get('status')?.value,
-            this.vForm.get('body')?.value,
-            this.vForm.get('client')?.value,
-            this.vForm.get('employee')?.value);
+        this.newTicket = {
+            author: "AK",
+            category:  this.vForm.get('category')?.value,
+            priority: this.vForm.get('priority')?.value,
+            status:   this.vForm.get('status')?.value,
+            ticketBody: ticketBody,
+            ticketId: 0,
+            title:  this.vForm.get('subject')?.value};
 
         console.log('new ticket', this.newTicket);
 
-        this.ticketService.createTicket(this.newTicket).subscribe(data => {
+        this.ticketService.createTicketHeader(this.newTicket).subscribe(data => {
             console.log('createticket', data);
         });
     }

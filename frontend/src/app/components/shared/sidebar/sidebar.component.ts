@@ -43,6 +43,6 @@ export class SidebarComponent {
 
     logout() {
         this.authService.logout();
-        this.router.navigateByUrl('/');
+        this.router.navigateByUrl('/login');
     }
 }

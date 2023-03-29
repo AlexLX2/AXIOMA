@@ -24,6 +24,7 @@
     "@popperjs/core": "^2.11.6",
     "@types/quill": "^1.3.7",
     "bootstrap": "^5.2.3",
+    "ng-webdatarocks": "^1.4.7",
     "ngx-quill": "^20.0.1",
     "quill": "^1.3.7",
     "rxjs": "~7.8.0",

@@ -23,6 +23,10 @@ export class TicketService {
   }
 
   createTicket(ticket: TicketDto): Observable<any> {
-    return this.http.post(`${this.baseUrl}/api/createTicket`, ticket);
+    return this.http.post(`${this.baseUrl}/api/tickets/createTicket`, ticket);
+  }
+
+  createTicketHeader(ticket: Ticket): Observable<any> {
+    return this.http.post(`${this.baseUrl}/api/tickets/createTicketHeader`, ticket);
   }
 }
