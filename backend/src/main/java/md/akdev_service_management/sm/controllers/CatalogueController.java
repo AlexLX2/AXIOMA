@@ -5,8 +5,9 @@ import md.akdev_service_management.sm.models.TicketCategory;
 import md.akdev_service_management.sm.models.TicketPriority;
 import md.akdev_service_management.sm.models.TicketStatus;
 import md.akdev_service_management.sm.repositories.TicketCategoryRepository;
-import md.akdev_service_management.sm.repositories.TicketPriorityRepository;
-import md.akdev_service_management.sm.repositories.TicketStatusRepository;
+import md.akdev_service_management.sm.services.TicketCategoryService;
+import md.akdev_service_management.sm.services.TicketPriorityService;
+import md.akdev_service_management.sm.services.TicketStatusService;
 import md.akdev_service_management.sm.utils.CstErrorResponse;
 import md.akdev_service_management.sm.utils.DuplicateException;
 import md.akdev_service_management.sm.utils.NotFoundException;
@@ -18,35 +19,35 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 @RepositoryRestController
 public class CatalogueController {
-    private  final TicketCategoryRepository categoryRepository;
-    private final TicketPriorityRepository priorityRepository;
-    private final TicketStatusRepository statusRepository;
+    private final TicketCategoryService ticketCategoryService;
+    private final TicketPriorityService priorityService;
+    private final TicketStatusService ticketStatusService;
+
     @Autowired
-    public CatalogueController(TicketCategoryRepository categoryRepository, TicketPriorityRepository priorityRepository, TicketStatusRepository statusRepository) {
-        this.categoryRepository = categoryRepository;
-        this.priorityRepository = priorityRepository;
-        this.statusRepository = statusRepository;
+    public CatalogueController(TicketCategoryService ticketCategoryService, TicketPriorityService priorityService, TicketStatusService ticketStatusService) {
+        this.ticketCategoryService = ticketCategoryService;
+        this.priorityService = priorityService;
+        this.ticketStatusService = ticketStatusService;
     }
 
 
     ///##################////
     @GetMapping("/category")
     ResponseEntity<?> ticketCategory(){
-        List<TicketCategory> ticketCategories = this.categoryRepository.findAll();
+        List<TicketCategory> ticketCategories = this.ticketCategoryService.findAll();
         List<CatalogueDTO>  ticketCategoriesDTO  = ticketCategories.stream().map(CatalogueDTO::new).collect(Collectors.toList());
         return ResponseEntity.ok(ticketCategoriesDTO);
     }
 
     @GetMapping("/category/{id}")
     ResponseEntity<?> ticketCategoryById(@PathVariable("id") int id) {
-        TicketCategory ticketCategory = this.categoryRepository.findById(id).orElseThrow(NotFoundException::new);
+        TicketCategory ticketCategory = this.ticketCategoryService.findById(id).orElseThrow(NotFoundException::new);
         CatalogueDTO catalogueDTO =  new CatalogueDTO(ticketCategory);
         return ResponseEntity.ok(catalogueDTO);
     }
@@ -55,17 +56,29 @@ public class CatalogueController {
     public ResponseEntity<?> createNewTicketCategory(@Valid @RequestBody TicketCategory ticketCategory){
 
         try{
-            this.categoryRepository.save(ticketCategory);
+            this.ticketCategoryService.newTicketCategory(ticketCategory);
         }catch(DataIntegrityViolationException e){
             throw new DuplicateException(e.getMostSpecificCause().getLocalizedMessage());
         }
 
         return ResponseEntity.ok(Map.of("new ticket category id",ticketCategory.getId()));
     }
+
+    @PatchMapping("/category/update")
+    public ResponseEntity<?>updateTicketCategory(@Valid @RequestBody TicketCategory ticketCategory){
+       if(this.ticketCategoryService.findById(ticketCategory.getId()).isPresent()){
+           this.ticketCategoryService.updateTicketCategory(ticketCategory);
+       }else{
+           throw new NotFoundException();
+       }
+       return ResponseEntity.ok("update successful");
+    }
+
+
     ///##################////
     @GetMapping("/priority")
     ResponseEntity<?> ticketPriority(){
-        List<TicketPriority> ticketPriorities = this.priorityRepository.findAll();
+        List<TicketPriority> ticketPriorities = this.priorityService.findAll();
         List<CatalogueDTO> catalogueDTO = ticketPriorities.stream().map(CatalogueDTO::new).collect(Collectors.toList());
         return ResponseEntity.ok(catalogueDTO);
     }
@@ -73,7 +86,7 @@ public class CatalogueController {
     @GetMapping("/priority/{id}")
     ResponseEntity<?> ticketPriorityById(@PathVariable("id") int id) {
 
-        TicketPriority ticketPriority = this.priorityRepository.findById(id).orElseThrow(NotFoundException::new);
+        TicketPriority ticketPriority = this.priorityService.findById(id).orElseThrow(NotFoundException::new);
         CatalogueDTO catalogueDTO =  new CatalogueDTO(ticketPriority);
         return ResponseEntity.ok(catalogueDTO);
     }
@@ -81,23 +94,35 @@ public class CatalogueController {
     @PostMapping("/priority/new")
     public ResponseEntity<?> createNewTicketPriority(@RequestBody TicketPriority ticketPriority){
         try{
-            this.priorityRepository.save(ticketPriority);
+            this.priorityService.newTicketPriority(ticketPriority);
         }catch (DataIntegrityViolationException e){
             throw new DuplicateException(e.getMostSpecificCause().getLocalizedMessage());
         }
         return ResponseEntity.ok(Map.of("new ticket priority id",ticketPriority.getId()));
     }
+
+    @PatchMapping("/priority/update")
+    public ResponseEntity<?> updateTicketPriority(@RequestBody TicketPriority ticketPriority){
+        if(this.priorityService.findById(ticketPriority.getId()).isPresent()){
+             priorityService.update(ticketPriority);
+        }else {
+            throw new NotFoundException();
+        }
+
+        return ResponseEntity.ok("update successful");
+    }
+
     ///##################////
     @GetMapping("/status")
     ResponseEntity<?> ticketStatus() {
-        List<TicketStatus> ticketStatuses = this.statusRepository.findAll();
+        List<TicketStatus> ticketStatuses = this.ticketStatusService.findAll();
         List<CatalogueDTO> ticketStatusDTO = ticketStatuses.stream().map(CatalogueDTO::new).collect(Collectors.toList());
         return ResponseEntity.ok(ticketStatusDTO);
     }
 
     @GetMapping("/status/{id}")
     ResponseEntity<?> ticketStatusById(@PathVariable("id") int id) {
-        TicketStatus ticketStatus = this.statusRepository.findById(id).orElseThrow(NotFoundException::new);
+        TicketStatus ticketStatus = this.ticketStatusService.findById(id).orElseThrow(NotFoundException::new);
         CatalogueDTO catalogueDTO =  new CatalogueDTO(ticketStatus);
         return ResponseEntity.ok(catalogueDTO);
     }
@@ -105,11 +130,22 @@ public class CatalogueController {
     @PostMapping("/status/new")
     public ResponseEntity<?> createNewTicketStatus(@RequestBody TicketStatus ticketStatus){
         try{
-            this.statusRepository.save(ticketStatus);
+            this.ticketStatusService.newTicketStatus(ticketStatus);
         }catch (DataIntegrityViolationException e) {
             throw new DuplicateException(e.getMostSpecificCause().getLocalizedMessage());
         }
         return ResponseEntity.ok(Map.of("new ticket status id = ",ticketStatus.getId()));
+    }
+
+    @PatchMapping("/status/update")
+    public ResponseEntity<?>updateTicketStatus(@RequestBody TicketStatus ticketStatus){
+        if(ticketStatusService.findById(ticketStatus.getId()).isPresent()){
+            ticketStatusService.updateTicketStatus(ticketStatus);
+        }
+        else {
+            throw new NotFoundException();
+        }
+        return ResponseEntity.ok("update successful");
     }
 
 

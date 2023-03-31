@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin
@@ -60,6 +61,22 @@ public class UserController {
     @GetMapping("/all")
     public List<UserDTO> getAll(){
         return mappingUtils.mapList(userService.findAll(),UserDTO.class);
+    }
+
+    @PatchMapping("/update")
+    public ResponseEntity<?> updateUser(@RequestBody UserDTO userDTO){
+        if (userService.findById(userDTO.getId()).isPresent()){
+            userService.update(mappingUtils.map(userDTO, User.class));
+        }else {
+            throw new NotFoundException();
+        }
+        return ResponseEntity.ok("update successful");
+    }
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteUser(@PathVariable("id") int id){
+        User user = userService.findById(id).orElseThrow(NotFoundException::new);
+        userService.delete(user);
+        return ResponseEntity.ok("delete successful");
     }
 
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)

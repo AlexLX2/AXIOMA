@@ -36,4 +36,24 @@ public class UserService {
     public Optional<User> finByUsername(String username){
         return  Optional.of(userRepository.findByLogin(username).orElseThrow(NotFoundException::new));
     }
+    @Transactional
+    public void update(User user){
+        userRepository.findById(user.getId()).ifPresent(
+                userToUpdate ->{
+                    userToUpdate.setEmail(user.getEmail());
+                    userToUpdate.setFirstName(user.getFirstName());
+                    userToUpdate.setLastName(user.getLastName());
+                    userToUpdate.setValid(user.isValid());
+
+                    userRepository.save(userToUpdate);
+                }
+        );
+    }
+
+    @Transactional
+    public void delete(User user){
+        userRepository.findById(user.getId()).ifPresent(
+                userRepository::delete
+        );
+    }
 }
