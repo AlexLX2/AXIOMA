@@ -21,9 +21,11 @@ import {NgSelectModule} from "@ng-select/ng-select";
 import {QuillModule} from "ngx-quill";
 import { ViewTicketComponent } from './components/tickets/view-ticket/view-ticket.component';
 import { SafehtmlPipe } from './pipes/safehtml.pipe';
-import { ListCatalogsComponent } from './components/catalogs/list-catalogues/list-catalogs.component';
-import { ListUsersComponent } from './components/catalogs/list-users/list-users.component';
+import { ListCatalogsComponent } from './components/catalogs/list-catalogs/list-catalogs.component';
+import { ListUsersComponent } from './components/catalogs/users/list-users/list-users.component';
 import {WebdatarocksPivotModule} from "ng-webdatarocks";
+import { CreateUserComponent } from './components/catalogs/users/create-user/create-user.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -42,6 +44,7 @@ import {WebdatarocksPivotModule} from "ng-webdatarocks";
     SafehtmlPipe,
     ListCatalogsComponent,
     ListUsersComponent,
+    CreateUserComponent,
   ],
     imports: [
         BrowserModule,
@@ -52,7 +55,8 @@ import {WebdatarocksPivotModule} from "ng-webdatarocks";
         NgbModule,
         NgSelectModule,
         QuillModule.forRoot(),
-        WebdatarocksPivotModule
+        WebdatarocksPivotModule,
+        BrowserAnimationsModule
     ],
   providers: [[{
     provide: HTTP_INTERCEPTORS,

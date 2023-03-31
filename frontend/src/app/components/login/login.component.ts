@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from "../../services/auth.service";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {User} from "../../interfaces/user";
 import {ActivatedRoute, Router} from "@angular/router";
 import {StorageService} from "../../services/storage.service";
+import {Login} from "../../interfaces/login";
 
 @Component({
   selector: 'app-login',
@@ -14,7 +14,7 @@ export class LoginComponent implements OnInit{
 
   loginForm: FormGroup;
 
-  user: User = {login: "", password: ""};
+  userLogin: Login = {login: "", password: ""};
 
   returnUrl: string = '';
 
@@ -34,11 +34,11 @@ export class LoginComponent implements OnInit{
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
   login() {
-    this.user.login = this.loginForm.get('login')?.value;
-    this.user.password = this.loginForm.get('password')?.value;
+    this.userLogin.login = this.loginForm.get('login')?.value;
+    this.userLogin.password = this.loginForm.get('password')?.value;
 
     if(!this.loginForm.invalid) {
-      this.authService.login(this.user).subscribe(data =>{
+      this.authService.login(this.userLogin).subscribe(data =>{
         if(!data['jwt-token']){
           console.error('Auth error:', data.message)
       } else {

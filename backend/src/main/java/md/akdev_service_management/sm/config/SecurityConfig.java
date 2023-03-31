@@ -18,6 +18,13 @@ import javax.servlet.http.HttpServletResponse;
 
 @EnableWebSecurity
 public class SecurityConfig  {
+    private static final String[] AUTH_WHITELIST = {
+            "/swagger-resources/**",
+            "/swagger-ui/**",
+            "/v3/api-docs",
+            "/v2/api-docs",
+            "/webjars/**"
+    };
 
     private final UserDetailsService userDetailsService;
     private final JWTFilter jwtFilter;
@@ -42,6 +49,7 @@ public class SecurityConfig  {
         }).and();
 
         http.authorizeRequests()
+                .antMatchers(AUTH_WHITELIST).permitAll()
                 .antMatchers("/auth/login/**","/api/users/new/**").permitAll()
                 .antMatchers("/category/new").access("hasRole('ROLE_ADMIN')")
                 .antMatchers("/priority/new").access("hasRole('ROLE_ADMIN')")

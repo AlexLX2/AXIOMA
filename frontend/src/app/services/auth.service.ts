@@ -5,6 +5,7 @@ import {User} from "../interfaces/user";
 import {StorageService} from "./storage.service";
 import {JwtHelperService} from "@auth0/angular-jwt";
 import {environment} from "../../environments/environment";
+import {Login} from "../interfaces/login";
 
 @Injectable({
   providedIn: 'root'
@@ -18,8 +19,8 @@ export class AuthService {
                private jwtHelper: JwtHelperService
   ) { }
 
-  login(user: User): Observable<any> {
-    return this.http.post<any>(`${this.baseUrl}/auth/login` , user);
+  login(login: Login): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/auth/login` , login);
   }
 
   logout() {

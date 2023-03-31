@@ -6,8 +6,9 @@ import { ListTicketComponent } from './components/tickets/list-ticket/list-ticke
 import { CreateTicketComponent } from './components/tickets/create-ticket/create-ticket.component';
 import { RedactorTicketComponent } from './components/tickets/redactor-ticket/redactor-ticket.component';
 import {AuthGuard} from "./guards/auth.guard";
-import {ListCatalogsComponent} from "./components/catalogs/list-catalogues/list-catalogs.component";
-import {ListUsersComponent} from "./components/catalogs/list-users/list-users.component";
+import {ListCatalogsComponent} from "./components/catalogs/list-catalogs/list-catalogs.component";
+import {ListUsersComponent} from "./components/catalogs/users/list-users/list-users.component";
+import {CreateUserComponent} from "./components/catalogs/users/create-user/create-user.component";
 
 const routes: Routes = [
   { path: '', component: ListTicketComponent, canActivate: [AuthGuard], pathMatch:"full" },
@@ -19,8 +20,10 @@ const routes: Routes = [
   { path: 'tickets-redactor', component: RedactorTicketComponent, canActivate: [AuthGuard] },
   { path: 'reports', component: ReportsComponent, canActivate: [AuthGuard] },
   { path: 'catalogs', component:ListCatalogsComponent, canActivate: [AuthGuard]},
-  { path: 'users', component:ListUsersComponent, canActivate: [AuthGuard]}
+  { path: 'users', component:ListUsersComponent, canActivate: [AuthGuard], pathMatch:'full'},
+  { path: 'users/create', component:CreateUserComponent, canActivate: [AuthGuard]}
 ];
+
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

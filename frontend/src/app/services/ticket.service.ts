@@ -3,7 +3,6 @@ import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {environment} from "../../environments/environment";
 import {Ticket} from "../interfaces/ticket";
-import {TicketDto} from "../dto/ticket-dto";
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +21,7 @@ export class TicketService {
     return this.http.get(`${this.baseUrl}/api/tickets/${id}`);
   }
 
-  createTicket(ticket: TicketDto): Observable<any> {
+  createTicket(ticket: Ticket): Observable<any> {
     return this.http.post(`${this.baseUrl}/api/tickets/createTicket`, ticket);
   }
 
