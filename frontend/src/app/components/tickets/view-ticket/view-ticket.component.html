@@ -1,0 +1,178 @@
+
+    <div class="ticket-info__header">
+        <div class="ticket-info__top">
+            <h4 class="ticket-info__title">
+                {{currentTicket.title}}
+            </h4>
+            <div class="ticket-info__info">
+                <div class="ticket-info__status icon-high">
+                    {{currentTicket.priority}}
+                </div>
+                <span>{{currentTicket.category}}</span>
+            </div>
+        </div>
+        <div class="ticket-info__top ticket-body">
+            <p class="ticket-body__text">{{currentTicket.ticketBody[0].subject}}</p>
+            <div class="ticket-body__bottom">
+                <div class="ticket-body__l">
+                    <span class="ticket-body__name">{{currentTicket.ticketBody[0].createdBy}}</span>
+                    <div class="ticket-body__date">
+                        <span class="ticket-body__hor">{{currentTicket.ticketBody[0].createdAt | date:"HH:mm"}}</span>
+                        , {{currentTicket.ticketBody[0].createdAt | date}}
+                    </div>
+                </div>
+                <a href="#" class="ticket-body__show  btn-block">
+                    <span>Show attachments</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div >
+        <div class="ticket-info__message message-ticket"
+             *ngFor="let ticketBody of currentTicket.ticketBody"
+             [ngClass]="{'message-ticket_modif': isAgentBody(ticketBody)}">
+            <p class="message-ticket__text"
+               [innerHTML]="ticketBody.body | safehtml" >
+            </p>
+            <div class="message-ticket__bottom ticket-body__bottom">
+                <div class="ticket-body__l">
+                    <span class="ticket-body__name">{{ticketBody.createdBy}}</span>
+                    <div class="ticket-body__date">
+                        <span class="ticket-body__hor">{{ticketBody.createdAt | date:'HH:mm'}}</span>
+                        , {{ticketBody.createdAt | date:'DD MMM YYYY'}}
+                    </div>
+                </div>
+                <div class="ticket-body__r">
+                    <a  *ngIf="ticketBody.ticketAttachment" href="#" class="ticket-body__show ticket-body__show_blue btn-block">
+                        <span>Show attachments</span>
+                    </a>
+                    <a href="#" class="ticket-body__reply">
+                        <span>Reply</span>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+<!--        <div class="ticket-info__message message-ticket message-ticket_modif">-->
+<!--            <p class="message-ticket__text">-->
+<!--                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur consequatur cupiditate deleniti, deserunt eaque eum ipsam maxime odit praesentium quam rem repellendus soluta tempora tenetur ullam, vero voluptate voluptates! Quos?-->
+<!--            </p>-->
+<!--            <div class="message-ticket__bottom ticket-body__bottom">-->
+<!--                <div class="ticket-body__l">-->
+<!--                    <span class="ticket-body__name">User name</span>-->
+<!--                    <div class="ticket-body__date">-->
+<!--                        <span class="ticket-body__hor">14:00</span>-->
+<!--                        , 12 November 2022-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="ticket-body__r">-->
+<!--                    <a href="#" class="ticket-body__show ticket-body__show_blue btn-block">-->
+<!--                        <span>Show attachments</span>-->
+<!--                    </a>-->
+<!--                    <a href="#" class="ticket-body__reply">-->
+<!--                        <span>Reply</span>-->
+<!--                    </a>-->
+<!--                </div>-->
+
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="ticket-info__message message-ticket ">-->
+<!--            <p class="message-ticket__text">-->
+<!--                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid aspernatur, assumenda consequuntur, deserunt ea eos esse exercitationem hic inventore iste iure nemo nisi optio perspiciatis praesentium qui quidem ratione repudiandae totam voluptate. A asperiores deleniti dicta doloribus esse ex harum hic, nesciunt, reprehenderit saepe soluta veritatis vitae voluptas! Nihil, nostrum.-->
+<!--            </p>-->
+<!--            <div class="message-ticket__bottom ticket-body__bottom">-->
+<!--                <div class="ticket-body__l">-->
+<!--                    <span class="ticket-body__name">User name</span>-->
+<!--                    <div class="ticket-body__date">-->
+<!--                        <span class="ticket-body__hor">14:00</span>-->
+<!--                        , 12 November 2022-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="ticket-body__r">-->
+
+<!--                    <a href="#" class="ticket-body__reply">-->
+<!--                        <span>Reply</span>-->
+<!--                    </a>-->
+<!--                </div>-->
+
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        <div class="ticket-info__message message-ticket ">-->
+<!--            <p class="message-ticket__text">-->
+
+<!--            </p>-->
+<!--            <div class="message-ticket__bottom ticket-body__bottom">-->
+<!--                <div class="ticket-body__l">-->
+<!--                    <span class="ticket-body__name">User name</span>-->
+<!--                    <div class="ticket-body__date">-->
+<!--                        <span class="ticket-body__hor">14:00</span>-->
+<!--                        , 12 November 2022-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="ticket-body__r">-->
+<!--                    <a href="#" class="ticket-body__show ticket-body__show_blue btn-block">-->
+<!--                        <span>Show attachments</span>-->
+<!--                    </a>-->
+<!--                    <a href="#" class="ticket-body__reply">-->
+<!--                        <span>Reply</span>-->
+<!--                    </a>-->
+<!--                </div>-->
+
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="ticket-info__message message-ticket message-ticket_modif">-->
+<!--            <p class="message-ticket__text">-->
+
+<!--            </p>-->
+<!--            <div class="message-ticket__bottom ticket-body__bottom">-->
+<!--                <div class="ticket-body__l">-->
+<!--                    <span class="ticket-body__name">User name</span>-->
+<!--                    <div class="ticket-body__date">-->
+<!--                        <span class="ticket-body__hor">14:00</span>-->
+<!--                        , 12 November 2022-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="ticket-body__r">-->
+<!--                    <a href="#" class="ticket-body__show ticket-body__show_blue btn-block">-->
+<!--                        <span>Show attachments</span>-->
+<!--                    </a>-->
+<!--                    <a href="#" class="ticket-body__reply">-->
+<!--                        <span>Reply</span>-->
+<!--                    </a>-->
+<!--                </div>-->
+
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="ticket-info__message message-ticket ">-->
+<!--            <p class="message-ticket__text">-->
+
+<!--            </p>-->
+<!--            <div class="message-ticket__bottom ticket-body__bottom">-->
+<!--                <div class="ticket-body__l">-->
+<!--                    <span class="ticket-body__name">User name</span>-->
+<!--                    <div class="ticket-body__date">-->
+<!--                        <span class="ticket-body__hor">14:00</span>-->
+<!--                        , 12 November 2022-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="ticket-body__r">-->
+<!--                    <a href="#" class="ticket-body__show ticket-body__show_blue btn-block">-->
+<!--                        <span>Show attachments</span>-->
+<!--                    </a>-->
+<!--                    <a href="#" class="ticket-body__reply">-->
+<!--                        <span>Reply</span>-->
+<!--                    </a>-->
+<!--                </div>-->
+
+<!--            </div>-->
+<!--        </div>-->
+
+
+    </div>
+
+    <div class="ticket-info__footer form-ticket">
+        <form action="#" class="form-ticket__elements">
+            <textarea class="form-ticket__textarea" name="text" id="#">Start typing...</textarea>
+        </form>
+    </div>

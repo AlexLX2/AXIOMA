@@ -1,97 +1,46 @@
 <div class="wrapper">
     <main class="page page-dashboard">
       <div class="page-dashboard__row">
-          <axioma-sidebar></axioma-sidebar>
+          <axioma-sidebar class="aside-ak"></axioma-sidebar>
         <div class="page-dashboard__content dashboard-content">
-          <axioma-header title="Report List" subtitle="120 reports"></axioma-header>
-          <div class="dashboard-content__body content-body">
+          <axioma-header [showSearchFilter]="true" title="Ticket list"></axioma-header>
+          <div class="dashboard-content__body content-body content-body_columns" [class.content-body_columns]="isTicketOpened" >
 
-            <div class="content-body__rows">
-                <a href="#" class="content-body__row content-row content-row_reaports">
-                    <div class="content-row__title">
-                        Report text
-                    </div>
+			  <!--			Список тикетов			-->
 
-                </a>
-                <app-wbr-pivot [toolbar]="true"
-                               [width]="'100%'"
-                               [report]="ticketList"
-                               [height]="'500'">
-                    Report sample
-                </app-wbr-pivot>
-                <a href="#" class="content-body__row content-row content-row_reaports">
-                    <div class="content-row__title">
-                        Report text
-                    </div>
-                </a>
-                <a href="#" class="content-body__row content-row content-row_reaports">
-                    <div class="content-row__title">
-                        Report text
-                    </div>
-                </a>
-                <a href="#" class="content-body__row content-row content-row_reaports">
-                    <div class="content-row__title">
-                        Report text
-                    </div>
-                </a>
-                <a href="#" class="content-body__row content-row content-row_reaports">
-                    <div class="content-row__title">
-                        Report text
-                    </div>
-                </a>
-                <a href="#" class="content-body__row content-row content-row_reaports">
-                    <div class="content-row__title">
-                        Report text
-                    </div>
-                </a>
-                <a href="#" class="content-body__row content-row content-row_reaports">
-                    <div class="content-row__title">
-                        Report text
-                    </div>
-                </a>
-                <a href="#" class="content-body__row content-row content-row_reaports">
-                    <div class="content-row__title">
-                        Report text
-                    </div>
-                </a>
-                <a href="#" class="content-body__row content-row content-row_reaports">
-                    <div class="content-row__title">
-                        Report text
-                    </div>
-                </a>
-                <a href="#" class="content-body__row content-row content-row_reaports">
-                    <div class="content-row__title">
-                        Report text
-                    </div>
-                </a>
-                <a href="#" class="content-body__row content-row content-row_reaports">
-                    <div class="content-row__title">
-                        Report text
-                    </div>
-                </a>
-                <a href="#" class="content-body__row content-row content-row_reaports">
-                    <div class="content-row__title">
-                        Report text
-                    </div>
-                </a>
-                <a href="#" class="content-body__row content-row content-row_reaports">
-                    <div class="content-row__title">
-                        Report text
-                    </div>
-                </a>
-                <a href="#" class="content-body__row content-row content-row_reaports">
-                    <div class="content-row__title">
-                        Report text
-                    </div>
-                </a>
-                <a href="#" class="content-body__row content-row content-row_reaports">
-                    <div class="content-row__title">
-                        Report text
-                    </div>
-                </a>
+			  <div class="content-body__rows">
+<!--							<a *ngFor="let ticket of ticketList" routerLink="/tickets/{{ticket.ticketId}}"-->
+							<a *ngFor="let ticket of ticketList" (click)="openTicket(ticket.ticketId)"
+							   class="content-body__row content-row"
+							   [ngClass]="{'_red': ticket.status==='overdue',
+							   '_active': isTicketOpened&&ticket.ticketId===currentTicketId}">
+								<span class="content-row__icon content-row__icon_blue"
+								[ngClass]="{'content-row__icon_blue': ticket.status === 'open',
+								'content-row__icon_green': ticket.status==='new',
+								'content-row__icon_red': ticket.status==='overdue',
+								'content-row__icon_with': ticket.status ==='closed'}"></span>
+								<div class="content-row__column">
+									<div class="content-row__title">
+										{{ticket.title}}
+									</div>
+									<span class="content-row__lable icon-high" [ngClass]="{'icon-high': ticket.priority==='high'}"> </span>
+								</div>
+								<div class="content-row__column">
+									<span class="content-row__username">{{ticket.createdBy}}</span>
+								</div>
+								<div class="content-row__column">
+									<span class="content-row__date">Created: {{ticket.createdAt | date}}</span>
+									<span class="content-row__username">Edited: {{ticket.changedAt | date}}</span>
+								</div>
+							</a>
+			  </div>
 
+<!--			  Открытый тикет-->
+            <div *ngIf="isTicketOpened" class="content-body__rows ticket-info">
+                <app-view-ticket [currentTicketId]="currentTicketId"></app-view-ticket>
             </div>
-        </div>
+
+		  </div>
           <footer class="dashboard-content__footer footer-dash">
             <div class="footer-dash__left">
               <div class="footer-dash__drop">
@@ -135,7 +84,7 @@
                         class="pagination__btn pagination__btn_icon pagination__btn_icon-l_m"
                       ></button>
                     </li>
-  
+
                     <li class="pagination__li">
                       <button class="pagination__item _active">1</button>
                     </li>
@@ -154,7 +103,7 @@
                     <li class="pagination__li">
                       <button class="pagination__item">20</button>
                     </li>
-  
+
                     <li class="pagination__li pagination__li_icon">
                       <button
                         class="pagination__btn pagination__btn_icon pagination__btn_icon-r"
@@ -175,4 +124,3 @@
       </div>
     </main>
   </div>
-  
