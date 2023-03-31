@@ -1,6 +1,7 @@
 package md.akdev_service_management.sm.models;
 
 import lombok.*;
+import md.akdev_service_management.sm.utils.DTO;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedBy;
@@ -17,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Table(name = "ticket")
 @EntityListeners(AuditingEntityListener.class)
-public class Ticket {
+public class Ticket implements DTO {
 
     @Id
     @Column(name = "id")

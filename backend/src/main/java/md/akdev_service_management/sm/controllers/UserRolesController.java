@@ -9,14 +9,21 @@ import md.akdev_service_management.sm.models.UserRole;
 import md.akdev_service_management.sm.services.RoleService;
 import md.akdev_service_management.sm.services.UserRoleService;
 import md.akdev_service_management.sm.services.UserService;
+import md.akdev_service_management.sm.utils.CstErrorResponse;
+import md.akdev_service_management.sm.utils.DuplicateException;
 import md.akdev_service_management.sm.utils.MappingUtils;
+import md.akdev_service_management.sm.utils.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -37,47 +44,64 @@ public class UserRolesController {
 
     @GetMapping("get_by_username/{username}")
     public ResponseEntity<?> getRolesByUserName(@PathVariable("username") String username){
+        User user = userService.finByUsername(username).orElseThrow(NullPointerException::new);
 
-        List<UserRole> userRole = userRoleService.findByUser(userService.finByUsername(username));
+        List<UserRole> userRole = userRoleService.findByUser(user);
+        List<RolesDTO> roles = new ArrayList<>(mappingUtils.mapList(userRole.stream().map(UserRole::getRole).collect(Collectors.toList()), RolesDTO.class));
 
-        List<RolesDTO> roles = new ArrayList<>();
-
-        userRole.forEach(i -> roles.add(mappingUtils.map(i.getRole(), RolesDTO.class)));
-
-        return ResponseEntity.ok(Map.of(username,roles));
+        return ResponseEntity.ok(Map.of(user.getId(),roles));
     }
 
     @GetMapping("get_by_roles/{rolename}")
     public ResponseEntity<?> getUsersByRoleName(@PathVariable("rolename") String roleName){
-        List<UserRole> userRoles = userRoleService.findByRole(roleService.findByRoleName(roleName));
 
-        List<UserDTO> users = new ArrayList<>();
+        Roles roles = roleService.findByRoleName(roleName).orElseThrow(NotFoundException::new);
+        List<UserRole> userRoles = userRoleService.findByRole(roles);
 
-        userRoles.forEach(i -> users.add(mappingUtils.map(i.getUser(),UserDTO.class)));
+        List<Map> finUser = new ArrayList<>();
+        for(UserRole ur: userRoles){
+            Map<String, String> users = new HashMap<>();
+                users.put("id", String.valueOf(ur.getUser().getId()));
+                users.put("username", ur.getUser().getLogin());
+          finUser.add(users);
+        }
 
-        return ResponseEntity.ok(Map.of(roleName,users));
+        return ResponseEntity.ok(Map.of(roleName,finUser));
     }
 
     @PostMapping("/new_role_user")
     public ResponseEntity<?> newUserRole(@RequestBody UserRoleDTO userRoleDTO){
 
-       UserRole userRole  = new UserRole();
-       userRole.setUser(userService.finByUsername(userRoleDTO.getUser()));
-       userRole.setRole(roleService.findByRoleName(userRoleDTO.getRole()));
-       userRoleService.save(userRole);
+        UserRole userRole  = new UserRole();
 
-       return ResponseEntity.ok(Map.of("Role successful added: ",userRoleDTO));
+        userRole.setUser(userService.finByUsername(userRoleDTO.getUser()).orElseThrow(NotFoundException::new));
+        userRole.setRole(roleService.findByRoleName(userRoleDTO.getRole()).orElseThrow(NotFoundException::new));
+
+        try {
+            userRoleService.save(userRole);
+        }catch(DataIntegrityViolationException e){
+            throw new DuplicateException(e.getMostSpecificCause().getLocalizedMessage());
+        }
+
+        return ResponseEntity.ok(Map.of("role to user",userRoleDTO.getRole() + " to " + userRoleDTO.getUser()));
     }
 
-    @PostMapping("/delete_role_user")
-    public ResponseEntity<?> deleteUserRole(@RequestBody UserRoleDTO userRoleDTO){
+    @PostMapping("/delete_role_user/{id}")
+    public ResponseEntity<?> deleteUserRole(@PathVariable("id") int id){
 
-        User user = userService.finByUsername(userRoleDTO.getUser());
-        Roles roles = roleService.findByRoleName(userRoleDTO.getRole());
-
-        UserRole userRole = userRoleService.findByUserAndRole(user, roles);
+        UserRole userRole = userRoleService.findById(id).orElseThrow(NotFoundException::new);
 
         userRoleService.delete(userRole);
-        return  ResponseEntity.ok(Map.of("Role deleted ", userRoleDTO));
+        return  ResponseEntity.ok(Map.of("role deleted", userRole.getUser().getLogin() + "<>" + userRole.getRole().getName()));
+    }
+
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ExceptionHandler({NotFoundException.class, DuplicateException.class})
+    private ResponseEntity<CstErrorResponse> handeException(Exception e){
+        CstErrorResponse cstErrorResponse = new CstErrorResponse(
+                e.getMessage(),
+                System.currentTimeMillis()
+        );
+        return new ResponseEntity<>(cstErrorResponse, HttpStatus.UNPROCESSABLE_ENTITY );
     }
 }

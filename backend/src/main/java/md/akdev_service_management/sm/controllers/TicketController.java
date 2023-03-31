@@ -69,7 +69,11 @@ public class TicketController {
 
     @PostMapping("/createTicket")
     public ResponseEntity<Map<String,Integer>> createTicket(@RequestBody TicketDTO ticketDTO){
-       return new ResponseEntity<>(HttpStatus.ACCEPTED);
+
+        Ticket ticket   = mappingUtils.map(ticketDTO, Ticket.class);
+        ticketServices.newTicket(ticket);
+
+        return ResponseEntity.ok(Map.of("ticket id: ", ticket.getTicketId()));
     }
 
     @PostMapping("/createTicketHeader")

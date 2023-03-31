@@ -1,8 +1,8 @@
 package md.akdev_service_management.sm.services;
 
-import md.akdev_service_management.sm.dto.UserDTO;
 import md.akdev_service_management.sm.models.User;
 import md.akdev_service_management.sm.repositories.UserRepository;
+import md.akdev_service_management.sm.utils.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,15 +29,11 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public User findById(int id){
-        return userRepository.findById(id).orElse(new User());
+    public Optional<User> findById(int id){
+        return Optional.of(userRepository.findById(id).orElseThrow(NotFoundException::new));
     }
 
-    public User finByUsername(String username){
-        return  userRepository.findByLogin(username).orElseThrow();
-    }
-
-    public List<User> findByPartialName(String partialName) {
-        return userRepository.findByFirstNameContainsIgnoreCaseOrLastNameContainsIgnoreCase(partialName, partialName);
+    public Optional<User> finByUsername(String username){
+        return  Optional.of(userRepository.findByLogin(username).orElseThrow(NotFoundException::new));
     }
 }

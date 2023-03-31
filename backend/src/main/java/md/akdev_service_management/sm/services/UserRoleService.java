@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = false)
@@ -30,6 +31,11 @@ public class UserRoleService {
 
         public UserRole findByUserAndRole(User user, Roles roles){
                 return userRolesRepository.findUserRoleByUserAndRole(user, roles);
+
+        }
+
+        public Optional<UserRole> findById(int id){
+                return userRolesRepository.findById(id);
         }
 
         @Transactional
