@@ -58,7 +58,7 @@ public class UserRolesController {
         Roles roles = roleService.findByRoleName(roleName).orElseThrow(NotFoundException::new);
         List<UserRole> userRoles = userRoleService.findByRole(roles);
 
-        List<Map> finUser = new ArrayList<>();
+        List<Map<?,?>> finUser = new ArrayList<>();
         for(UserRole ur: userRoles){
             Map<String, String> users = new HashMap<>();
                 users.put("id", String.valueOf(ur.getUser().getId()));
