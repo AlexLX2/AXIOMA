@@ -1,18 +1,14 @@
 <div class="dashboard-content__body content-body">
 
     <div class="content-body__rows">
-        <a *ngFor="let empl of emplList"
+        <a *ngFor="let role of roleList"
            class="content-body__row content-row">
                             <span class="content-row__icon content-row__icon_green">
                             </span>
             <div class="content-row__column">
                 <div class="content-row__title">
-                    {{empl.firstName}} {{empl.lastName}}
+                 {{role.name}}
                 </div>
-            </div>
-            <div class="content-row__column">
-                <span class="content-row__username">[ROLES]</span>
-                [CLIENT]
             </div>
             <div class="content-row__column">
                 <span class="content-row__date">Created: </span>

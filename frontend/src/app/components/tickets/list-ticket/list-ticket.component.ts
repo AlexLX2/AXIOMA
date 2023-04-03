@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {TicketService} from "../../../services/ticket.service";
 import {Ticket} from "../../../interfaces/ticket";
+import {TitleService} from "../../../services/title.service";
 
 @Component({
   selector: 'app-detail-ticket',
@@ -12,7 +13,8 @@ export class ListTicketComponent implements OnInit {
   ticketList: Ticket[] = [];
 
   public currentTicketId: number = 0;
-  constructor(private ticketService: TicketService) {
+  constructor(private ticketService: TicketService,
+              private titleService: TitleService) {
   }
 
   ngOnInit(): void {
@@ -20,6 +22,7 @@ export class ListTicketComponent implements OnInit {
       this.ticketList = data;
       console.log('Ticket list: ', this.ticketList);
     });
+    this.titleService.showTitleMsg('Tickets', '', true);
   }
 
   openTicket(ticketId: number) {

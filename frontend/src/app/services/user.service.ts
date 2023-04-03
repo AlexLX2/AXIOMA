@@ -4,6 +4,7 @@ import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Employee} from "../interfaces/employee";
 import {User} from "../interfaces/user";
+import {Role} from "../interfaces/role";
 
 @Injectable({
   providedIn: 'root'
@@ -23,8 +24,13 @@ export class UserService {
     );
   }
 
+  getAllRoles(): Observable<Role[]> {
+    return this.http.get<Role[]>(`${this.baseUrl}/api/user_role/get_all_roles/`);
+  }
+
   createUser(user: User): Observable<any> {
-    return this.http.post(`${this.baseUrl}/api/users/new`, user);
+    return this.http.post(`${this.baseUrl}/api/users/new`, user)
+        .pipe();
   }
 
 }

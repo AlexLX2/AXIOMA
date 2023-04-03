@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -21,5 +22,9 @@ public class RoleService {
 
     public Optional<Roles> findByRoleName(String roleName){
         return Optional.ofNullable(roleRepository.findRolesByName(roleName).orElseThrow(NotFoundException::new));
+    }
+
+    public List<Roles> getAllRoles() {
+        return roleRepository.findAll();
     }
 }

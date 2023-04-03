@@ -1,67 +1,51 @@
-<div class="wrapper">
-    <main class="page page-dashboard">
-        <div class="page-dashboard__row">
-            <axioma-sidebar></axioma-sidebar>
-            <div class="page-dashboard__content dashboard-content">
-                <axioma-header
-                        [showSearchFilter]="false"
-                        title="Create user"
-                ></axioma-header>
-                <div class="dashboard-content__body content-body">
-                    <form [formGroup]="vForm" action="#" class="content-body__rows ticket-info">
-                        <div class="ticket-info__header">
-                            <div class="ticket-info__top ticket-create">
-                                <div class="user-create__colum">
-                                    <div class="ticket-create__line">
-                                        <span class="ticket-create__lable">First name:</span>
-                                        <input class="form-control rounded-5" type="text" required formControlName="firstName">
-                                    </div>
-                                    <div class="ticket-create__line">
-                                        <span class="ticket-create__lable">Last name:</span>
-                                        <input class="form-control rounded-5" type="text" required formControlName="lastName">
-                                    </div>
-                                    <div class="ticket-create__line">
-                                        <span class="ticket-create__lable">Password:</span>
-                                        <input class="form-control rounded-5" type="password" required formControlName="password">
-                                    </div>
-                                    <div class="ticket-create__line">
-                                        <span class="ticket-create__lable">Confirm password:</span>
-                                        <input class="form-control rounded-5" type="password" required formControlName="confirmPassword">
-                                    </div>
-
-                                    <div class="ticket-create__line">
-                                        <span class="ticket-create__lable">Email:</span>
-                                        <input class="form-control rounded-5" type="email" required formControlName="email">
-                                    </div>
-                                    <div class="ticket-create__line">
-                                        <span class="ticket-create__lable">Login:</span>
-                                        <input class="form-control rounded-5" type="text" required formControlName="login">
-                                    </div>
-                                    <div class="ticket-create__line">
-                                        <span class="validation_error" *ngIf="passwordMatchError">
+<div class="dashboard-content__body content-body">
+    <form [formGroup]="vForm" action="#" class="content-body__rows ticket-info">
+        <div class="ticket-info__header">
+            <div class="ticket-info__top ticket-create">
+                <div class="user-create__colum">
+                    <div class="ticket-create__line">
+                        <span class="ticket-create__lable">First name:</span>
+                        <input class="form-control rounded-5" formControlName="firstName" required type="text">
+                    </div>
+                    <div class="ticket-create__line">
+                        <span class="ticket-create__lable">Last name:</span>
+                        <input class="form-control rounded-5" formControlName="lastName" required type="text">
+                    </div>
+                    <div class="ticket-create__line">
+                        <span class="ticket-create__lable">Email:</span>
+                        <input class="form-control rounded-5" formControlName="email" required type="email">
+                    </div>
+                    <div class="ticket-create__line">
+                        <span class="ticket-create__lable">Login:</span>
+                        <input class="form-control rounded-5" formControlName="login" required type="text">
+                    </div>
+                    <div class="ticket-create__line">
+                        <span class="ticket-create__lable">Password:</span>
+                        <input class="form-control rounded-5" formControlName="password" required type="password">
+                    </div>
+                    <div class="ticket-create__line">
+                        <span class="ticket-create__lable">Confirm password:</span>
+                        <input class="form-control rounded-5" formControlName="confirmPassword" required
+                               type="password">
+                    </div>
+                    <div class="ticket-create__line">
+                                        <span *ngIf="passwordMatchError" class="validation_error">
                                             Password does not match
                                         </span>
-                                    </div>
+                    </div>
 
-                                </div>
-                            </div>
-                            <div class="form-ticket__elements">
-
-                                <div class="form-ticket__row">
-                                    <div class="form-ticket__btns">
-                                        <button (click)="createUser()" class="btn-block">Create user</button>
-<!--                                        <a (click)="createUser()" class="ticket-body__show btn-block"> Create user </a>-->
-                                        <a class="ticket-body__show ticket-body__show_border btn-block" routerLink="/">Cancel</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
                 </div>
-                <footer class="dashboard-content__footer footer-dash">
-                    <axioma-footer></axioma-footer>
-                </footer>
+            </div>
+            <div class="form-ticket__elements">
+
+                <div class="form-ticket__row">
+                    <div class="form-ticket__btns">
+                        <button (click)="createUser()" class="btn-block">Create user</button>
+                        <!--                                        <a (click)="createUser()" class="ticket-body__show btn-block"> Create user </a>-->
+                        <a class="ticket-body__show ticket-body__show_border btn-block" routerLink="/users">Cancel</a>
+                    </div>
+                </div>
             </div>
         </div>
-    </main>
+    </form>
 </div>

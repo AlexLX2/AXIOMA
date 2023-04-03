@@ -1,3 +1,18 @@
 <body id="dataTheme" [attr.data-theme]='sidebarService.theme | async'>
-  <router-outlet></router-outlet>
+<div class="wrapper">
+  <main class="page page-dashboard">
+    <div class="page-dashboard__row">
+      <axioma-sidebar></axioma-sidebar>
+      <div class="page-dashboard__content dashboard-content">
+        <axioma-header></axioma-header>
+        <div class="main_content">
+          <router-outlet></router-outlet>
+        </div>
+        <axioma-footer>  </axioma-footer>
+      </div>
+    </div>
+  </main>
+
+</div>
+
 </body>

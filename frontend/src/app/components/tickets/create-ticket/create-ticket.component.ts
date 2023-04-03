@@ -7,6 +7,7 @@ import {EmployeeService} from "../../../services/employee.service";
 import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {Ticket} from "../../../interfaces/ticket";
 import {TicketBody} from "../../../interfaces/ticket-body";
+import {TitleService} from "../../../services/title.service";
 
 @Component({
     selector: 'app-new-ticket',
@@ -31,6 +32,7 @@ export class CreateTicketComponent implements OnInit {
 
     constructor(private catalogService: CatalogService,
                 private ticketService: TicketService,
+                private titleService: TitleService,
                 private emplService: EmployeeService,
                 private fb: FormBuilder) {
 
@@ -51,6 +53,7 @@ export class CreateTicketComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.titleService.showTitleMsg('Create ticket', '', false);
         this.emplService.getAllEmployees().subscribe(data => {
             this.employeeList = data;
         });

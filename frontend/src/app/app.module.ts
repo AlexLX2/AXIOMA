@@ -26,6 +26,9 @@ import { ListUsersComponent } from './components/catalogs/users/list-users/list-
 import {WebdatarocksPivotModule} from "ng-webdatarocks";
 import { CreateUserComponent } from './components/catalogs/users/create-user/create-user.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {AlertModule} from "./_alert";
+import { ListRolesComponent } from './components/catalogs/users/list-roles/list-roles.component';
+import { EditCatalogItemComponent } from './components/catalogs/edit-catalog-item/edit-catalog-item.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +48,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ListCatalogsComponent,
     ListUsersComponent,
     CreateUserComponent,
+    ListRolesComponent,
+    EditCatalogItemComponent
   ],
     imports: [
         BrowserModule,
@@ -56,7 +61,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
         NgSelectModule,
         QuillModule.forRoot(),
         WebdatarocksPivotModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
+        AlertModule
     ],
   providers: [[{
     provide: HTTP_INTERCEPTORS,

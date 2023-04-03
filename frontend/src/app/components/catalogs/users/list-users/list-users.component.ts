@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {EmployeeService} from "../../../../services/employee.service";
 import {Employee} from "../../../../interfaces/employee";
+import {TitleService} from "../../../../services/title.service";
 
 @Component({
   selector: 'app-list-users',
@@ -10,10 +11,12 @@ import {Employee} from "../../../../interfaces/employee";
 export class ListUsersComponent implements OnInit {
   emplList: Employee[] = [];
 
-  constructor(private emplService: EmployeeService) {
+  constructor(private emplService: EmployeeService,
+              private titleService: TitleService) {
   }
   ngOnInit(): void {
     this.initData();
+    this.titleService.showTitleMsg('User list', '', false);
   }
 
   private initData() {

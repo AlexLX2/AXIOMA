@@ -1,18 +1,14 @@
 <div class="dashboard-content__body content-body">
 
     <div class="content-body__rows">
-        <a *ngFor="let empl of emplList"
+        <a *ngFor="let catalog of catalogItemList"
            class="content-body__row content-row">
                             <span class="content-row__icon content-row__icon_green">
                             </span>
             <div class="content-row__column">
                 <div class="content-row__title">
-                    {{empl.firstName}} {{empl.lastName}}
+                    {{catalog.name}}
                 </div>
-            </div>
-            <div class="content-row__column">
-                <span class="content-row__username">[ROLES]</span>
-                [CLIENT]
             </div>
             <div class="content-row__column">
                 <span class="content-row__date">Created: </span>
@@ -31,6 +27,19 @@
             </div>
         </a>
 
-        <button class="btn-block" routerLink="/users/create">Create user</button>
+        <button class="btn-block" (click)="collapse.toggle()"
+                [attr.aria-expanded]="!isCollapsed"
+                aria-controls="collapseExample">Create new item</button>
+        <p></p>
+        <div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed">
+            <div class="content-body__row content-row">
+                <div class="ticket-create__line">
+                    <span class="ticket-create__lable">New item:</span>
+                    <input class="form-control rounded-5" [(ngModel)]="newItem" required type="text">
+                    <button class="btn-block" (click)="createItem()">Save</button>
+                    <button class="btn-block btn-warning" (click)="collapse.toggle()" >Dismiss</button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

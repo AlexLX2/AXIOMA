@@ -15,20 +15,25 @@ export class CatalogService {
 
   getCatalogItemList(catalog: string): Observable<Catalog[]> {
     catalog = catalog.toLowerCase();
-    return this.http.get(`${this.baseUrl}/${catalog}`).pipe(
-        map(data=> {
-              console.log('data', data)
-              return (<any>data)._embedded.catalogueDTOes;
-            }
-        )
-    );
+    return this.http.get<Catalog[]>(`${this.baseUrl}/${catalog}`);
+    //     // .pipe(
+    //     // map(data=> {
+    //     //       console.log('data', data)
+    //     //       return (<any>data)._embedded.catalogueDTOes;
+    //     //     }
+    //     // )
+    // );
   }
 
   editCatalogItem(catalog:string, catalogItem: Catalog): Observable<any> {
     return this.http.post(`${this.baseUrl}/${catalog}/createCatalogue`, catalogItem);
   }
 
-  createCatalogItem(item: Catalog, catalogType: string) {
-    return this.http.post(`${this.baseUrl}/${catalogType}/new`, item);
+  createCatalogItem(item: string, catalogType: string) {
+    const catalogItem: Catalog = {
+      id:0,
+      name:item
+    }
+    return this.http.post(`${this.baseUrl}/${catalogType}/new`, catalogItem);
   }
 }

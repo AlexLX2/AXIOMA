@@ -42,6 +42,11 @@ public class UserRolesController {
         this.mappingUtils = mappingUtils;
     }
 
+    @GetMapping("get_all_roles")
+    public ResponseEntity<?> getAllRoles(){
+        return ResponseEntity.ok(roleService.getAllRoles());
+    }
+
     @GetMapping("get_by_username/{username}")
     public ResponseEntity<?> getRolesByUserName(@PathVariable("username") String username){
         User user = userService.finByUsername(username).orElseThrow(NullPointerException::new);

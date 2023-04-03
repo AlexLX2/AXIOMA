@@ -9,6 +9,8 @@ import {AuthGuard} from "./guards/auth.guard";
 import {ListCatalogsComponent} from "./components/catalogs/list-catalogs/list-catalogs.component";
 import {ListUsersComponent} from "./components/catalogs/users/list-users/list-users.component";
 import {CreateUserComponent} from "./components/catalogs/users/create-user/create-user.component";
+import {ListRolesComponent} from "./components/catalogs/users/list-roles/list-roles.component";
+import {EditCatalogItemComponent} from "./components/catalogs/edit-catalog-item/edit-catalog-item.component";
 
 const routes: Routes = [
   { path: '', component: ListTicketComponent, canActivate: [AuthGuard], pathMatch:"full" },
@@ -19,9 +21,11 @@ const routes: Routes = [
   { path: 'tickets-open', component: ListTicketComponent, canActivate: [AuthGuard] },
   { path: 'tickets-redactor', component: RedactorTicketComponent, canActivate: [AuthGuard] },
   { path: 'reports', component: ReportsComponent, canActivate: [AuthGuard] },
-  { path: 'catalogs', component:ListCatalogsComponent, canActivate: [AuthGuard]},
+  { path: 'catalogs', component:ListCatalogsComponent, canActivate: [AuthGuard], pathMatch:'full'},
+  { path: 'catalogs/:catalogName', component:EditCatalogItemComponent, canActivate: [AuthGuard]},
   { path: 'users', component:ListUsersComponent, canActivate: [AuthGuard], pathMatch:'full'},
-  { path: 'users/create', component:CreateUserComponent, canActivate: [AuthGuard]}
+  { path: 'users/create', component:CreateUserComponent, canActivate: [AuthGuard], pathMatch:'prefix'},
+  { path: 'roles', component: ListRolesComponent, canActivate: [AuthGuard]}
 ];
 
 

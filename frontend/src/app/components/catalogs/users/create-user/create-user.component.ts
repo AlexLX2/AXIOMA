@@ -1,21 +1,25 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {UserService} from "../../../../services/user.service";
 import {User} from "../../../../interfaces/user";
 import {PasswordValidator} from "../../../../validators/password.validator";
 import {Router} from "@angular/router";
+import {AlertService} from "../../../../_alert";
+import {TitleService} from "../../../../services/title.service";
 
 @Component({
     selector: 'app-create-user-dialog',
     templateUrl: './create-user.component.html',
     styleUrls: ['./create-user.component.scss']
 })
-export class CreateUserComponent {
+export class CreateUserComponent implements OnInit{
     vForm: FormGroup;
 
     constructor(private fb: FormBuilder,
                 private userService: UserService,
-                private router: Router) {
+                private router: Router,
+                private alertService: AlertService,
+                private titleService: TitleService) {
         this.vForm = fb.group({
                 lastName: new FormControl('', [Validators.min(2)]),
                 firstName: new FormControl('', [Validators.min(2)]),
@@ -31,6 +35,10 @@ export class CreateUserComponent {
                 validator: [PasswordValidator.MatchValidator('password', 'confirmPassword')]
             }
         );
+    }
+
+    ngOnInit(): void {
+        this.titleService.showTitleMsg('Create user', '', false);
     }
 
     get passwordMatchError() {
@@ -52,7 +60,11 @@ export class CreateUserComponent {
             this.userService.createUser(user).subscribe(data => {
                 console.log('User creation: ', data);
                 this.router.navigateByUrl('/users');
+                this.alertService.success("User created! " + data.result, {keepAfterRouteChange:true, autoClose: true});
+            }, error => {
+                this.alertService.error("User creation failed: " + error, {keepAfterRouteChange:true, autoClose: true});
             });
         }
     }
+
 }
