@@ -1,8 +1,6 @@
 package md.akdev_service_management.sm.controllers;
 
-import md.akdev_service_management.sm.dto.RolesDTO;
-import md.akdev_service_management.sm.dto.UserDTO;
-import md.akdev_service_management.sm.dto.UserRoleDTO;
+import md.akdev_service_management.sm.dto.*;
 import md.akdev_service_management.sm.models.Roles;
 import md.akdev_service_management.sm.models.User;
 import md.akdev_service_management.sm.models.UserRole;
@@ -90,6 +88,51 @@ public class UserRolesController {
 
         return ResponseEntity.ok(Map.of("role to user",userRoleDTO.getRole() + " to " + userRoleDTO.getUser()));
     }
+
+    @PostMapping("/add_roles_by_single_user")
+    public ResponseEntity<?> addRolesBySingleUser(@RequestBody UserRolesDTO userRolesDTO){
+
+        User user = userService.finByUsername(userRolesDTO.getUser()).orElseThrow(NotFoundException::new);
+        userRoleService.deleteByUser(user);
+
+        for (RolesDTO role : userRolesDTO.getRole()){
+            UserRole userRole = new UserRole();
+
+            userRole.setUser(user);
+            userRole.setRole(roleService.findByRoleName(role.getName()).orElseThrow(NotFoundException::new));
+
+            try {
+                userRoleService.save(userRole);
+            }catch (DataIntegrityViolationException e){
+                throw new DuplicateException(e.getMostSpecificCause().getMessage());
+            }
+        }
+
+        return ResponseEntity.ok("roles mapped to user successfully");
+    }
+
+   @PostMapping("/add_users_by_single_role")
+   public ResponseEntity<?>addUsersBySingleRole(@RequestBody UsersRoleDTO usersRoleDTO){
+
+        Roles role = roleService.findByRoleName(usersRoleDTO.getRole()).orElseThrow(NotFoundException::new);
+
+        userRoleService.deleteByRole(role);
+
+        for(UserDTO userDTO: usersRoleDTO.getUsers()){
+            UserRole userRole = new UserRole();
+
+            userRole.setRole(role);
+            userRole.setUser(userService.finByUsername(userDTO.getLogin()).orElseThrow(NotFoundException::new));
+
+            try {
+                userRoleService.save(userRole);
+            }catch (DataIntegrityViolationException e){
+                throw new DuplicateException(e.getMostSpecificCause().getMessage());
+            }
+        }
+        return ResponseEntity.ok("users mapped to role");
+    }
+
 
     @PostMapping("/delete_role_user/{id}")
     public ResponseEntity<?> deleteUserRole(@PathVariable("id") int id){

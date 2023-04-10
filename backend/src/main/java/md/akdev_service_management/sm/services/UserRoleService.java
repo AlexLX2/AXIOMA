@@ -1,5 +1,6 @@
 package md.akdev_service_management.sm.services;
 
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import md.akdev_service_management.sm.models.Roles;
 import md.akdev_service_management.sm.models.User;
 import md.akdev_service_management.sm.models.UserRole;
@@ -33,11 +34,21 @@ public class UserRoleService {
                 return userRolesRepository.findUserRoleByUserAndRole(user, roles);
 
         }
-
         public Optional<UserRole> findById(int id){
                 return userRolesRepository.findById(id);
         }
 
+        public List<UserRole> findAll(){
+                return userRolesRepository.findAll();
+        }
+
+        @Transactional
+        public void deleteByUser(User user){
+                userRolesRepository.deleteByUser(user);
+        }
+
+        @Transactional
+        public void deleteByRole(Roles role){userRolesRepository.deleteByRole(role);}
         @Transactional
         public void delete(UserRole userRole){
                 userRolesRepository.delete(userRole);
