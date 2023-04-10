@@ -2,6 +2,8 @@ package md.akdev_service_management.sm.controllers;
 
 import md.akdev_service_management.sm.dto.UserCreateDTO;
 import md.akdev_service_management.sm.dto.UserDTO;
+import md.akdev_service_management.sm.models.AdvanceInfo;
+import md.akdev_service_management.sm.models.BasicInfo;
 import md.akdev_service_management.sm.models.User;
 import md.akdev_service_management.sm.services.UserService;
 import md.akdev_service_management.sm.utils.CstErrorResponse;
@@ -13,12 +15,12 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @CrossOrigin
@@ -36,7 +38,7 @@ public class UserController {
     }
     @PostMapping("/new")
 
-    public ResponseEntity<?> newUser(@Valid @RequestBody UserCreateDTO user) {
+    public ResponseEntity<?> newUser(@Validated({BasicInfo.class, AdvanceInfo.class}) @RequestBody UserCreateDTO user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         try {
             userService.newUser(mappingUtils.map(user,User.class));
@@ -52,9 +54,9 @@ public class UserController {
         return ResponseEntity.ok(mappingUtils.map(user, UserDTO.class));
     }
 
-    @GetMapping("/username/{username}")
-    public ResponseEntity<?> getByUserName(@PathVariable("username") String username){
-        User user = userService.finByUsername(username).orElseThrow(NotFoundException::new);
+    @RequestMapping(value = "/{login}", method = RequestMethod.GET)
+    public ResponseEntity<?> getByUserName(@PathVariable("login") String login){
+        User user = userService.finByUsername(login).orElseThrow(NotFoundException::new);
         return ResponseEntity.ok(mappingUtils.map(user, UserDTO.class));
     }
 
@@ -63,13 +65,16 @@ public class UserController {
         return mappingUtils.mapList(userService.findAll(),UserDTO.class);
     }
 
-    @PatchMapping("/update")
-    public ResponseEntity<?> updateUser(@RequestBody UserDTO userDTO){
-        if (userService.findById(userDTO.getId()).isPresent()){
-            userService.update(mappingUtils.map(userDTO, User.class));
+    @PatchMapping("/update/{id}")
+    public ResponseEntity<?> updateUser(@PathVariable("id") int id, @Validated(AdvanceInfo.class) @RequestBody UserCreateDTO userDTO){
+        if (userService.findById(id).isPresent()){
+            User user = mappingUtils.map(userDTO, User.class);
+            user.setId(id);
+            userService.update(user);
         }else {
             throw new NotFoundException();
         }
+
         return ResponseEntity.ok("update successful");
     }
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)

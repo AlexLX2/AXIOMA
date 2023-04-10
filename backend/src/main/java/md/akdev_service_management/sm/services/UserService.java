@@ -4,6 +4,7 @@ import md.akdev_service_management.sm.models.User;
 import md.akdev_service_management.sm.repositories.UserRepository;
 import md.akdev_service_management.sm.utils.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,8 +35,9 @@ public class UserService {
     }
 
     public Optional<User> finByUsername(String username){
-        return  Optional.of(userRepository.findByLogin(username).orElseThrow(NotFoundException::new));
+        return  userRepository.findByLogin(username);
     }
+
     @Transactional
     public void update(User user){
         userRepository.findById(user.getId()).ifPresent(
@@ -48,6 +50,7 @@ public class UserService {
                     userRepository.save(userToUpdate);
                 }
         );
+
     }
 
     @Transactional
