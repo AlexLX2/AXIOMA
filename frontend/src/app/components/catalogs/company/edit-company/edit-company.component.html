@@ -1,0 +1,36 @@
+<div class="dashboard-content__body content-body">
+    <form [formGroup]="vForm" action="#" class="content-body__rows ticket-info">
+        <div class="ticket-info__header">
+            <div class="ticket-info__top ticket-create user-create__roles">
+                <div class="user-create__colum">
+                    <h2>User info:</h2>
+                    <div class="ticket-create__line">
+                        <span class="ticket-create__lable">Company name:</span>
+                        <input class="form-control rounded-5" formControlName="name" required type="text">
+                    </div>
+                    <div class="ticket-create__line">
+                        <span class="ticket-create__lable">Address:</span>
+                        <input class="form-control rounded-5" formControlName="address" required type="text" [value]="currentCompany?.address">
+                    </div>
+                    <div class="ticket-create__line">
+                        <span class="ticket-create__lable">URL:</span>
+                        <input class="form-control rounded-5" formControlName="url" required type="text" [value]="currentCompany?.url">
+                    </div>
+                    <div class="ticket-create__line">
+                        <span class="ticket-create__lable">Comments:</span>
+                        <input class="form-control rounded-5" formControlName="comments" type="text" [value]="currentCompany?.comments">
+                    </div>
+                </div>
+            </div>
+            <div class="form-ticket__elements">
+                <div class="form-ticket__row">
+                    <div class="form-ticket__btns">
+                        <button (click)="editCompany()" class="btn-block">Update company</button>
+                        <!--                                        <a (click)="createUser()" class="ticket-body__show btn-block"> Create user </a>-->
+                        <a class="ticket-body__show ticket-body__show_border btn-block" routerLink="/companies">Cancel</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

@@ -5,8 +5,7 @@ import {FooterService} from "../../../../services/footer.service";
 import {UserService} from "../../../../services/user.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {User} from "../../../../interfaces/user";
-import {FormArray, FormBuilder, FormControl, FormControlName, FormGroup, Validators} from "@angular/forms";
-import {PasswordValidator} from "../../../../validators/password.validator";
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Role} from "../../../../interfaces/role";
 import {UserRole} from "../../../../interfaces/user-role";
 
@@ -103,7 +102,7 @@ export class EditUserComponent implements OnInit {
 
                 const userRoles: UserRole = {
                     user: this.vForm.get('login')?.value,
-                    role: Object.entries(roles).filter(([key, value]) => value).map(([key, value]) => ({name:key}))
+                    role: Object.entries(roles).filter(([, value]) => value).map(([key, value]) => ({name:key}))
                 };
 
                 console.log('userroles', userRoles);

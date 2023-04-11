@@ -32,6 +32,9 @@ import { EditCatalogItemComponent } from './components/catalogs/edit-catalog-ite
 import { EditUserComponent } from './components/catalogs/users/edit-user/edit-user.component';
 import { EditRoleComponent } from './components/catalogs/users/edit-role/edit-role.component';
 import { RolenamePipe } from './pipes/rolename.pipe';
+import { ListCompanyComponent } from './components/catalogs/company/list-company/list-company.component';
+import { CreateCompanyComponent } from './components/catalogs/company/create-company/create-company.component';
+import { EditCompanyComponent } from './components/catalogs/company/edit-company/edit-company.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +58,10 @@ import { RolenamePipe } from './pipes/rolename.pipe';
     EditCatalogItemComponent,
     EditUserComponent,
     EditRoleComponent,
-    RolenamePipe
+    RolenamePipe,
+    ListCompanyComponent,
+    CreateCompanyComponent,
+    EditCompanyComponent
   ],
     imports: [
         BrowserModule,

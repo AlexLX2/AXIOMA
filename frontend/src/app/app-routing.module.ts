@@ -13,6 +13,9 @@ import {ListRolesComponent} from "./components/catalogs/users/list-roles/list-ro
 import {EditCatalogItemComponent} from "./components/catalogs/edit-catalog-item/edit-catalog-item.component";
 import {EditUserComponent} from "./components/catalogs/users/edit-user/edit-user.component";
 import {EditRoleComponent} from "./components/catalogs/users/edit-role/edit-role.component";
+import {ListCompanyComponent} from "./components/catalogs/company/list-company/list-company.component";
+import {EditCompanyComponent} from "./components/catalogs/company/edit-company/edit-company.component";
+import {CreateCompanyComponent} from "./components/catalogs/company/create-company/create-company.component";
 
 const routes: Routes = [
   { path: '', component: ListTicketComponent, canActivate: [AuthGuard], pathMatch:"full" },
@@ -29,7 +32,11 @@ const routes: Routes = [
   { path: 'users/create', component:CreateUserComponent, canActivate: [AuthGuard], pathMatch:'prefix'},
   { path: 'users/edit/:id', component:EditUserComponent, canActivate: [AuthGuard], pathMatch:'prefix'},
   { path: 'roles', component: ListRolesComponent, canActivate: [AuthGuard]},
-  { path: 'roles/edit/:id', component: EditRoleComponent, canActivate: [AuthGuard]}
+  { path: 'roles/edit/:id', component: EditRoleComponent, canActivate: [AuthGuard]},
+  { path: 'companies', component: ListCompanyComponent, canActivate: [AuthGuard]},
+  { path: 'companies/edit/:id', component: EditCompanyComponent, canActivate: [AuthGuard]},
+  { path: 'companies/create', component: CreateCompanyComponent, canActivate: [AuthGuard]}
+
 ];
 
 
