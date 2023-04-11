@@ -34,7 +34,7 @@ public class JWTUtil {
     }
 
     public String generateToken(String username){
-        Date expirationDate = Date.from(ZonedDateTime.now().plusMinutes(120).toInstant());
+        Date expirationDate = Date.from(ZonedDateTime.now().plusMinutes(300).toInstant());
         UserDTO userDTO = mappingUtils.map(userService.finByUsername(username),UserDTO.class);
 
 

@@ -4,13 +4,13 @@ import md.akdev_service_management.sm.dto.user.*;
 import md.akdev_service_management.sm.models.user.Roles;
 import md.akdev_service_management.sm.models.user.User;
 import md.akdev_service_management.sm.models.user.UserRole;
-import md.akdev_service_management.sm.services.user.RoleService;
+import md.akdev_service_management.sm.services.roles.RoleService;
 import md.akdev_service_management.sm.services.user.UserRoleService;
 import md.akdev_service_management.sm.services.user.UserService;
-import md.akdev_service_management.sm.utils.CstErrorResponse;
-import md.akdev_service_management.sm.utils.DuplicateException;
+import md.akdev_service_management.sm.exceptions.CstErrorResponse;
+import md.akdev_service_management.sm.exceptions.DuplicateException;
 import md.akdev_service_management.sm.utils.MappingUtils;
-import md.akdev_service_management.sm.utils.NotFoundException;
+import md.akdev_service_management.sm.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -149,8 +149,7 @@ public class UserRolesController {
     @ExceptionHandler({NotFoundException.class, DuplicateException.class})
     private ResponseEntity<CstErrorResponse> handeException(Exception e){
         CstErrorResponse cstErrorResponse = new CstErrorResponse(
-                e.getMessage(),
-                System.currentTimeMillis()
+                e.getMessage()
         );
         return new ResponseEntity<>(cstErrorResponse, HttpStatus.UNPROCESSABLE_ENTITY );
     }

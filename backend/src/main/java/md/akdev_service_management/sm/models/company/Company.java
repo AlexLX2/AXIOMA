@@ -2,8 +2,10 @@ package md.akdev_service_management.sm.models.company;
 
 import lombok.Getter;
 import lombok.Setter;
+import md.akdev_service_management.sm.models.ticket.TicketPriority;
 import md.akdev_service_management.sm.models.user.Roles;
 import md.akdev_service_management.sm.models.user.User;
+import md.akdev_service_management.sm.utils.DTO;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedBy;
@@ -21,7 +23,7 @@ import java.util.List;
 @Entity
 @Table(name = "company")
 @EntityListeners(AuditingEntityListener.class)
-public class Company {
+public class Company implements DTO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -42,14 +44,6 @@ public class Company {
     @Size(max = 2000)
     @Column(name = "comments", length = 2000)
     private String comments;
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "company_roles",
-            joinColumns = @JoinColumn(name = "role_id"),
-            inverseJoinColumns = @JoinColumn(name="company_id")
-    )
-    private List<Roles> roles;
 
     @CreationTimestamp
     @Column(name = "create_at")

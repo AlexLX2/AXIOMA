@@ -6,10 +6,10 @@ import md.akdev_service_management.sm.models.ticket.AdvanceInfo;
 import md.akdev_service_management.sm.models.ticket.BasicInfo;
 import md.akdev_service_management.sm.models.user.User;
 import md.akdev_service_management.sm.services.user.UserService;
-import md.akdev_service_management.sm.utils.CstErrorResponse;
-import md.akdev_service_management.sm.utils.DuplicateException;
+import md.akdev_service_management.sm.exceptions.CstErrorResponse;
+import md.akdev_service_management.sm.exceptions.DuplicateException;
 import md.akdev_service_management.sm.utils.MappingUtils;
-import md.akdev_service_management.sm.utils.NotFoundException;
+import md.akdev_service_management.sm.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -86,8 +86,7 @@ public class UserController {
     @ExceptionHandler({NotFoundException.class, DuplicateException.class})
     private ResponseEntity<CstErrorResponse> handeException(Exception e){
         CstErrorResponse cstErrorResponse = new CstErrorResponse(
-                e.getMessage(),
-                System.currentTimeMillis()
+                e.getMessage()
         );
         return new ResponseEntity<>(cstErrorResponse, HttpStatus.UNPROCESSABLE_ENTITY );
     }

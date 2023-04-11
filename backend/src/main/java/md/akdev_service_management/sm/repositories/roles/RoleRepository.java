@@ -1,4 +1,4 @@
-package md.akdev_service_management.sm.repositories.user;
+package md.akdev_service_management.sm.repositories.roles;
 
 import md.akdev_service_management.sm.models.user.Roles;
 import org.springframework.data.jpa.repository.JpaRepository;

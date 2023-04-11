@@ -15,11 +15,11 @@ import javax.validation.constraints.Size;
 @Data
 public class UserCreateDTO  implements DTO {
     @NotEmpty(message = "The login must be not empty", groups = BasicInfo.class)
-    @Size(min = 2, max = 20, message = "login length must be between 2 and 20 char")
+    @Size(min = 2, max = 20, message = "login length must be between 2 and 20 char", groups = BasicInfo.class)
     @Valid
     private String login;
     @NotEmpty(message = "The password is required", groups = BasicInfo.class)
-    @Size(min = 8, max = 30, message = "password length must be between 2 and 20 char", groups = AdvanceInfo.class)
+    @Size(min = 8, max = 30, message = "password length must be between 2 and 20 char", groups = BasicInfo.class)
     private String password;
     @NotEmpty(message = "The first name is required.", groups = AdvanceInfo.class)
     @Size(min = 2, max = 40, message = "password length must be between 2 and 20 char", groups = AdvanceInfo.class)

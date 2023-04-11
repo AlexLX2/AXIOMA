@@ -1,4 +1,4 @@
-package md.akdev_service_management.sm.utils;
+package md.akdev_service_management.sm.exceptions;
 
 import lombok.Data;
 import lombok.Getter;

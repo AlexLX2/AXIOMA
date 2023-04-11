@@ -1,6 +1,7 @@
 package md.akdev_service_management.sm.models.user;
 
 import lombok.Data;
+import md.akdev_service_management.sm.models.company.Company;
 import md.akdev_service_management.sm.models.user.User;
 import md.akdev_service_management.sm.utils.DTO;
 
@@ -22,6 +23,6 @@ public class Roles implements DTO {
     @ManyToMany(mappedBy = "roles")
     List<User> users;
 
-//    @ManyToMany(mappedBy = "roles")
-//    List<Company> companies;
+    @OneToMany(fetch = FetchType.LAZY)
+    List<Company> company;
 }

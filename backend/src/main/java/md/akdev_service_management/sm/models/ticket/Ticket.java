@@ -1,7 +1,6 @@
 package md.akdev_service_management.sm.models.ticket;
 
 import lombok.*;
-import md.akdev_service_management.sm.models.company.WorkSpaces;
 import md.akdev_service_management.sm.models.user.Roles;
 import md.akdev_service_management.sm.models.user.User;
 import md.akdev_service_management.sm.utils.DTO;
@@ -71,7 +70,7 @@ public class Ticket implements DTO {
     private List<TicketBody> ticketBody;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="work_spaces_id", referencedColumnName = "id")
+    @JoinColumn(name="role_id", referencedColumnName = "id")
     private Roles roles;
 
     public Integer getId(){

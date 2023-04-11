@@ -2,7 +2,7 @@ package md.akdev_service_management.sm.services.user;
 
 import md.akdev_service_management.sm.models.user.User;
 import md.akdev_service_management.sm.repositories.user.UserRepository;
-import md.akdev_service_management.sm.utils.NotFoundException;
+import md.akdev_service_management.sm.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -7,9 +7,9 @@ import md.akdev_service_management.sm.models.ticket.TicketStatus;
 import md.akdev_service_management.sm.services.ticket.TicketCategoryService;
 import md.akdev_service_management.sm.services.ticket.TicketPriorityService;
 import md.akdev_service_management.sm.services.ticket.TicketStatusService;
-import md.akdev_service_management.sm.utils.CstErrorResponse;
-import md.akdev_service_management.sm.utils.DuplicateException;
-import md.akdev_service_management.sm.utils.NotFoundException;
+import md.akdev_service_management.sm.exceptions.CstErrorResponse;
+import md.akdev_service_management.sm.exceptions.DuplicateException;
+import md.akdev_service_management.sm.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
@@ -152,8 +152,7 @@ public class CatalogueController {
     @ExceptionHandler({NotFoundException.class, DuplicateException.class})
     private ResponseEntity<CstErrorResponse> handleException(Exception e){
         CstErrorResponse cstErrorResponse = new CstErrorResponse(
-                e.getMessage(),
-                System.currentTimeMillis()
+                e.getMessage()
         );
         return new ResponseEntity<>(cstErrorResponse, HttpStatus.UNPROCESSABLE_ENTITY );
     }
