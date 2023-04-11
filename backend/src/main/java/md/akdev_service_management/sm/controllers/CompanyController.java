@@ -63,7 +63,7 @@ public class CompanyController {
             companyService.updateCompany(company);
             vRet = Map.of("result", "update successfully");
         }
-        return    ResponseEntity.ok(Map.of("result", vRet));
+        return    ResponseEntity.ok(vRet);
     }
 
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
