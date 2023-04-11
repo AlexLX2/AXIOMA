@@ -42,7 +42,9 @@ public class UserRolesController {
 
     @GetMapping("get_all_roles")
     public ResponseEntity<?> getAllRoles(){
-        return ResponseEntity.ok(roleService.getAllRoles());
+        List<RolesDTO> rolesDTOS = new ArrayList<>(mappingUtils.mapList(new ArrayList<>(roleService
+                .getAllRoles()), RolesDTO.class));
+        return ResponseEntity.ok(rolesDTOS);
     }
 
     @GetMapping("get_by_username/{username}")
@@ -65,7 +67,7 @@ public class UserRolesController {
         for(UserRole ur: userRoles){
             Map<String, String> users = new HashMap<>();
                 users.put("id", String.valueOf(ur.getUser().getId()));
-                users.put("username", ur.getUser().getLogin());
+                users.put("login", ur.getUser().getLogin());
           finUser.add(users);
         }
 
@@ -108,7 +110,7 @@ public class UserRolesController {
             }
         }
 
-        return ResponseEntity.ok("roles mapped to user successfully");
+        return ResponseEntity.ok(Map.of("result","roles mapped to user successfully"));
     }
 
    @PostMapping("/add_users_by_single_role")
@@ -130,7 +132,7 @@ public class UserRolesController {
                 throw new DuplicateException(e.getMostSpecificCause().getMessage());
             }
         }
-        return ResponseEntity.ok("users mapped to role");
+        return ResponseEntity.ok(Map.of("result","users mapped to role") );
     }
 
 

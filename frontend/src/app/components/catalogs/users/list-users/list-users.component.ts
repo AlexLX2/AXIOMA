@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {EmployeeService} from "../../../../services/employee.service";
-import {Employee} from "../../../../interfaces/employee";
 import {TitleService} from "../../../../services/title.service";
+import {UserService} from "../../../../services/user.service";
+import {User} from "../../../../interfaces/user";
 
 @Component({
   selector: 'app-list-users',
@@ -9,9 +9,9 @@ import {TitleService} from "../../../../services/title.service";
   styleUrls: ['./list-users.component.scss']
 })
 export class ListUsersComponent implements OnInit {
-  emplList: Employee[] = [];
+  userList: User[] = [];
 
-  constructor(private emplService: EmployeeService,
+  constructor(private userService: UserService,
               private titleService: TitleService) {
   }
   ngOnInit(): void {
@@ -20,14 +20,20 @@ export class ListUsersComponent implements OnInit {
   }
 
   private initData() {
-    this.emplService.getAllEmployees().subscribe(data => {
-      for(let item of data) {
-          this.emplList.push(item);
-      }
-      this.emplList = data;
+    this.userService.getAllUsers().subscribe(data => {
+      console.log('data', data)
+      // for(let item of data) {
+      //     this.userList.push(item);
+      // }
+      this.userList = data;
       console.log('data', data)
     })
 
-    console.log('empl list: ', this.emplList);
+    console.log('empl list: ', this.userList);
+  }
+
+  editUser(login: string) {
+    console.log('login', login);
+    //TODO add edit user code
   }
 }

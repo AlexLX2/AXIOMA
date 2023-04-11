@@ -1,0 +1,43 @@
+<div class="dashboard-content__body content-body">
+    <form action="#" class="content-body__rows ticket-info">
+        <div class="ticket-info__header">
+            <div class="ticket-info__top ticket-create user-create__roles">
+                <div class="user-create__colum">
+                    <h2>User info:</h2>
+                    <div class="ticket-create__line">
+                        <span class="ticket-create__lable">Role name:</span>
+                        <input class="form-control rounded-5" [ngModel]="currentRole | rolename" [ngModelOptions]="{standalone:true}" required type="text">
+<!--                               formControlName="roleName"-->
+
+                    </div>
+                    <div  class="ticket-create__line">
+                        <span class="ticket-create__lable">Users:</span>
+                        <ng-select class="custom"
+                                   [multiple]="true"
+                                   [items]="availableUserList"
+                                   bindLabel = "login"
+                                   [hideSelected]="true"
+                                   [compareWith]="compareObjects"
+                                   [(ngModel)]="selectedUserList"
+                                   (ngModelChange)="updateAvailableOptions()"
+                                   [ngModelOptions]="{standalone:true}"
+                        >
+                            <ng-option *ngFor="let user of availableUserList"
+                                       [value]=user > {{user.firstName}} {{user.lastName}}</ng-option>
+                        </ng-select>
+                    </div>
+                </div>
+
+            </div>
+            <div class="form-ticket__elements">
+                <div class="form-ticket__row">
+                    <div class="form-ticket__btns">
+                        <button (click)="editRole()" class="btn-block">Update role</button>
+                        <!--                                        <a (click)="createUser()" class="ticket-body__show btn-block"> Create user </a>-->
+                        <a class="ticket-body__show ticket-body__show_border btn-block" routerLink="/roles">Cancel</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

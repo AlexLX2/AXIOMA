@@ -29,6 +29,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {AlertModule} from "./_alert";
 import { ListRolesComponent } from './components/catalogs/users/list-roles/list-roles.component';
 import { EditCatalogItemComponent } from './components/catalogs/edit-catalog-item/edit-catalog-item.component';
+import { EditUserComponent } from './components/catalogs/users/edit-user/edit-user.component';
+import { EditRoleComponent } from './components/catalogs/users/edit-role/edit-role.component';
+import { RolenamePipe } from './pipes/rolename.pipe';
 
 @NgModule({
   declarations: [
@@ -49,7 +52,10 @@ import { EditCatalogItemComponent } from './components/catalogs/edit-catalog-ite
     ListUsersComponent,
     CreateUserComponent,
     ListRolesComponent,
-    EditCatalogItemComponent
+    EditCatalogItemComponent,
+    EditUserComponent,
+    EditRoleComponent,
+    RolenamePipe
   ],
     imports: [
         BrowserModule,

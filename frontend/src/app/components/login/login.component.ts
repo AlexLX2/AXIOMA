@@ -4,6 +4,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {StorageService} from "../../services/storage.service";
 import {Login} from "../../interfaces/login";
+import {AlertService} from "../../_alert";
 
 @Component({
   selector: 'app-login',
@@ -23,7 +24,8 @@ export class LoginComponent implements OnInit{
               private storageService: StorageService,
               private fb: FormBuilder,
               private route: ActivatedRoute,
-              private router: Router) {
+              private router: Router,
+              private alertService: AlertService) {
     this.loginForm = fb.group({
       login: new FormControl('', [Validators.required, Validators.min(2), Validators.max(30)]),
       password: new FormControl('', [Validators.required, Validators.min(8), Validators.max(30)])
@@ -41,6 +43,7 @@ export class LoginComponent implements OnInit{
       this.authService.login(this.userLogin).subscribe(data =>{
         if(!data['jwt-token']){
           console.error('Auth error:', data.message)
+          this.alertService.error(data.message, { autoClose: true});
       } else {
           this.storageService.addItem('token', data['jwt-token'])
           this.router.navigateByUrl(this.returnUrl);

@@ -37,7 +37,6 @@ public class UserController {
         this.passwordEncoder = passwordEncoder;
     }
     @PostMapping("/new")
-
     public ResponseEntity<?> newUser(@Validated({BasicInfo.class, AdvanceInfo.class}) @RequestBody UserCreateDTO user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         try {
@@ -75,7 +74,7 @@ public class UserController {
             throw new NotFoundException();
         }
 
-        return ResponseEntity.ok("update successful");
+        return ResponseEntity.ok(Map.of("result","update successful"));
     }
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteUser(@PathVariable("id") int id){
