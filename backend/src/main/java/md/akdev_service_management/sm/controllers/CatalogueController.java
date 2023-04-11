@@ -1,13 +1,12 @@
 package md.akdev_service_management.sm.controllers;
 
-import md.akdev_service_management.sm.dto.CatalogueDTO;
-import md.akdev_service_management.sm.models.TicketCategory;
-import md.akdev_service_management.sm.models.TicketPriority;
-import md.akdev_service_management.sm.models.TicketStatus;
-import md.akdev_service_management.sm.repositories.TicketCategoryRepository;
-import md.akdev_service_management.sm.services.TicketCategoryService;
-import md.akdev_service_management.sm.services.TicketPriorityService;
-import md.akdev_service_management.sm.services.TicketStatusService;
+import md.akdev_service_management.sm.dto.catalogue.CatalogueDTO;
+import md.akdev_service_management.sm.models.ticket.TicketCategory;
+import md.akdev_service_management.sm.models.ticket.TicketPriority;
+import md.akdev_service_management.sm.models.ticket.TicketStatus;
+import md.akdev_service_management.sm.services.ticket.TicketCategoryService;
+import md.akdev_service_management.sm.services.ticket.TicketPriorityService;
+import md.akdev_service_management.sm.services.ticket.TicketStatusService;
 import md.akdev_service_management.sm.utils.CstErrorResponse;
 import md.akdev_service_management.sm.utils.DuplicateException;
 import md.akdev_service_management.sm.utils.NotFoundException;

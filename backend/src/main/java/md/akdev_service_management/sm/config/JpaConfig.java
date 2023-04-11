@@ -1,6 +1,6 @@
 package md.akdev_service_management.sm.config;
 
-import md.akdev_service_management.sm.services.UserService;
+import md.akdev_service_management.sm.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,9 +1,8 @@
 package md.akdev_service_management.sm.config;
 
-import md.akdev_service_management.sm.models.User;
+import md.akdev_service_management.sm.models.user.User;
 import md.akdev_service_management.sm.security.UsersDetails;
-import md.akdev_service_management.sm.services.UserService;
-import md.akdev_service_management.sm.utils.NotFoundException;
+import md.akdev_service_management.sm.services.user.UserService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.AuditorAware;

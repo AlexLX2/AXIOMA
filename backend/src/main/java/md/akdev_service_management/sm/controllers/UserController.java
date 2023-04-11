@@ -1,11 +1,11 @@
 package md.akdev_service_management.sm.controllers;
 
-import md.akdev_service_management.sm.dto.UserCreateDTO;
-import md.akdev_service_management.sm.dto.UserDTO;
-import md.akdev_service_management.sm.models.AdvanceInfo;
-import md.akdev_service_management.sm.models.BasicInfo;
-import md.akdev_service_management.sm.models.User;
-import md.akdev_service_management.sm.services.UserService;
+import md.akdev_service_management.sm.dto.user.UserCreateDTO;
+import md.akdev_service_management.sm.dto.user.UserDTO;
+import md.akdev_service_management.sm.models.ticket.AdvanceInfo;
+import md.akdev_service_management.sm.models.ticket.BasicInfo;
+import md.akdev_service_management.sm.models.user.User;
+import md.akdev_service_management.sm.services.user.UserService;
 import md.akdev_service_management.sm.utils.CstErrorResponse;
 import md.akdev_service_management.sm.utils.DuplicateException;
 import md.akdev_service_management.sm.utils.MappingUtils;
@@ -18,7 +18,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 

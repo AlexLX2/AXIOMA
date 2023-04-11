@@ -1,16 +1,20 @@
 package md.akdev_service_management.sm.controllers;
 
-import md.akdev_service_management.sm.dto.*;
-import md.akdev_service_management.sm.models.*;
+import md.akdev_service_management.sm.dto.ticket.*;
+import md.akdev_service_management.sm.models.ticket.Ticket;
+import md.akdev_service_management.sm.models.ticket.TicketAttachment;
+import md.akdev_service_management.sm.models.ticket.TicketBody;
+import md.akdev_service_management.sm.models.user.User;
 import md.akdev_service_management.sm.security.IAuthenticationFacade;
-import md.akdev_service_management.sm.services.*;
+import md.akdev_service_management.sm.services.ticket.TicketAttachmentService;
+import md.akdev_service_management.sm.services.ticket.TicketBodyService;
+import md.akdev_service_management.sm.services.ticket.TicketServices;
 import md.akdev_service_management.sm.utils.MappingUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -61,6 +65,7 @@ public class TicketController {
 
         return  ResponseEntity.ok(mappingUtils.mapList(ticketPage, TicketHeaderDTO.class));
     }
+
 
     @GetMapping("/count")
     public ResponseEntity<?> getCount(){

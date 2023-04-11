@@ -1,12 +1,12 @@
 package md.akdev_service_management.sm.controllers;
 
-import md.akdev_service_management.sm.dto.*;
-import md.akdev_service_management.sm.models.Roles;
-import md.akdev_service_management.sm.models.User;
-import md.akdev_service_management.sm.models.UserRole;
-import md.akdev_service_management.sm.services.RoleService;
-import md.akdev_service_management.sm.services.UserRoleService;
-import md.akdev_service_management.sm.services.UserService;
+import md.akdev_service_management.sm.dto.user.*;
+import md.akdev_service_management.sm.models.user.Roles;
+import md.akdev_service_management.sm.models.user.User;
+import md.akdev_service_management.sm.models.user.UserRole;
+import md.akdev_service_management.sm.services.user.RoleService;
+import md.akdev_service_management.sm.services.user.UserRoleService;
+import md.akdev_service_management.sm.services.user.UserService;
 import md.akdev_service_management.sm.utils.CstErrorResponse;
 import md.akdev_service_management.sm.utils.DuplicateException;
 import md.akdev_service_management.sm.utils.MappingUtils;
