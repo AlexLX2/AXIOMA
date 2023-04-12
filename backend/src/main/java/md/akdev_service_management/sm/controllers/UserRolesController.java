@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -75,7 +76,7 @@ public class UserRolesController {
     }
 
     @PostMapping("/new_role_user")
-    public ResponseEntity<?> newUserRole(@RequestBody UserRoleDTO userRoleDTO){
+    public ResponseEntity<?> newUserRole(@RequestBody @Valid UserRoleDTO userRoleDTO){
 
         UserRole userRole  = new UserRole();
 
@@ -92,7 +93,7 @@ public class UserRolesController {
     }
 
     @PostMapping("/add_roles_by_single_user")
-    public ResponseEntity<?> addRolesBySingleUser(@RequestBody UserRolesDTO userRolesDTO){
+    public ResponseEntity<?> addRolesBySingleUser(@RequestBody @Valid UserRolesDTO userRolesDTO){
 
         User user = userService.finByUsername(userRolesDTO.getUser()).orElseThrow(NotFoundException::new);
         userRoleService.deleteByUser(user);
@@ -114,7 +115,7 @@ public class UserRolesController {
     }
 
    @PostMapping("/add_users_by_single_role")
-   public ResponseEntity<?>addUsersBySingleRole(@RequestBody UsersRoleDTO usersRoleDTO){
+   public ResponseEntity<?>addUsersBySingleRole(@RequestBody @Valid UsersRoleDTO usersRoleDTO){
 
         Roles role = roleService.findByRoleName(usersRoleDTO.getRole()).orElseThrow(NotFoundException::new);
 
