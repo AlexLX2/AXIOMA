@@ -6,6 +6,7 @@ import {FooterService} from "../../../../services/footer.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Company} from "../../../../interfaces/company";
+import {LoaderService} from "../../../../services/loader.service";
 
 @Component({
   selector: 'app-edit-company',
@@ -16,7 +17,6 @@ export class EditCompanyComponent implements OnInit{
 
   vForm: FormGroup;
   currentCompany?: Company;
-
   constructor(private alertService: AlertService,
               private companyService: CompanyService,
               private titleService: TitleService,
@@ -24,6 +24,9 @@ export class EditCompanyComponent implements OnInit{
               private route: ActivatedRoute,
               private router: Router,
               private fb: FormBuilder) {
+    this.titleService.showTitleMsg("Edit company", '', false);
+    this.footerService.enablePagination(false);
+
     this.vForm = fb.group({
       name: new FormControl('', Validators.required),
       address: new FormControl(''),
@@ -38,8 +41,9 @@ export class EditCompanyComponent implements OnInit{
         this.currentCompany = comp;
         this.initForm();
       })
-    })
+    });
   }
+
 
   editCompany() {
 
