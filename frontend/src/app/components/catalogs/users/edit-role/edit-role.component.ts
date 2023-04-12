@@ -6,11 +6,7 @@ import {TitleService} from "../../../../services/title.service";
 import {FooterService} from "../../../../services/footer.service";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {AlertService} from "../../../../_alert";
-
-interface RoleWithUsers {
-    role: string,
-    users: {login: string}[]
-}
+import {Role} from "../../../../interfaces/role";
 
 @Component({
     selector: 'app-edit-role',
@@ -19,7 +15,8 @@ interface RoleWithUsers {
 })
 export class EditRoleComponent implements OnInit {
 
-    currentRole: string = '';
+    currentRole?: Role;
+    roleName: string = '';
 
     selectedUserList: {
         id: number,
@@ -28,53 +25,14 @@ export class EditRoleComponent implements OnInit {
 
     allUserList: User[] = [];
     availableUserList: User[] = [];
-    vForm: FormGroup = new FormGroup<any>('');
 
     constructor(private userService: UserService,
                 private route: ActivatedRoute,
                 private titleService: TitleService,
                 private footerService: FooterService,
-                private fb: FormBuilder,
                 private router: Router,
                 private alertService: AlertService) {
 
-
-        this.vForm = this.fb.group({
-            roleName: '',
-            userList: []
-        });
-
-    }
-
-    editRole() {
-        console.log('userlist ', this.selectedUserList);
-
-        const newRole: RoleWithUsers = {
-            role: this.currentRole,
-            users: this.selectedUserList
-        }
-
-        console.log('roleusers', newRole);
-
-        this.userService.addUsersByRole(newRole).subscribe(data => {
-            console.log('data', data);
-            this.alertService.success(data.result, {
-                keepAfterRouteChange: true,
-                autoClose: true
-            });
-            this.router.navigateByUrl('/roles');
-        }, error => {
-            this.alertService.error(error, {
-                keepAfterRouteChange: true,
-                autoClose: true
-            });
-            this.router.navigateByUrl('/roles');
-        });
-
-    }
-
-    compareObjects(obj1: any, obj2: any) {
-        return obj1 && obj2 ? obj1.id === obj2.id : obj1 === obj2;
     }
 
     ngOnInit(): void {
@@ -85,22 +43,76 @@ export class EditRoleComponent implements OnInit {
 
 
             this.route.params.subscribe(data => {
-                this.currentRole  = data['id'];
-                this.userService.getUsersByRole(data['id']).subscribe(users => {
-                    this.selectedUserList = users[data['id']]
-                        .map(({id, login}: { id: number, login: string }) => ({ id: parseInt(String(id)), login}));
-                     // console.log('roleuserlist', this.selectedUserList);
-                    this.availableUserList = this.allUserList.filter(user => {
-                        return !this.selectedUserList.some(user2 => user.id===user2.id);
+                this.userService.getRoleById(data['id']).subscribe(role => {
+                    console.log('role', role);
+                    this.currentRole = role;
+                    this.roleName = role.name;
+                    this.userService.getUsersByRole(this.roleName).subscribe(users => {
+                        console.log('users', users);
+                        this.selectedUserList = users[this.roleName]
+                            .map(({id, login}: { id: number, login: string }) => ({id: parseInt(String(id)), login}));
+                        this.availableUserList = this.allUserList.filter(user => {
+                            return !this.selectedUserList.some(user2 => user.id === user2.id);
+                        })
                     })
-                })
+                });
+
             });
         });
+    }
+
+    editRole() {
+        console.log('userlist ', this.selectedUserList);
+
+        console.log('currentrole', this.currentRole);
+
+        console.log('rolename', this.roleName);
+
+        if (this.currentRole) {
+
+            const newRole: { role: string; id: number | undefined; users: { id: number; login: string }[] } = {
+                id: this.currentRole.id,
+                role: this.roleName.replace('ROLE_',''),
+                users: this.selectedUserList
+            };
+
+            console.log('roleusers', newRole);
+
+
+            this.currentRole.name = this.roleName.replace('ROLE_','');
+            this.userService.updateRole(this.currentRole).subscribe(data => {
+                console.log('data', data);
+                this.userService.addUsersByRole(newRole).subscribe(data => {
+                    this.alertService.success(data.result, {
+                        keepAfterRouteChange: true,
+                        autoClose: true
+                    });
+                    this.router.navigateByUrl('/roles');
+                }, error => {
+                    this.alertService.error(error.result, {
+                        keepAfterRouteChange: true,
+                        autoClose: true
+                    });
+                    this.router.navigateByUrl('/roles');
+                });
+            })
+        }
+
+
+    }
+
+    compareObjects(obj1: any, obj2: any) {
+        return obj1 && obj2 ? obj1.id === obj2.id : obj1 === obj2;
     }
 
     updateAvailableOptions() {
         this.availableUserList = this.allUserList.filter(user =>
             !this.selectedUserList.some(selectedUser =>
                 this.compareObjects(user, selectedUser)));
+    }
+
+    changeRolename($event: any) {
+        console.log('event', $event);
+        this.roleName = $event;
     }
 }

@@ -1,12 +1,19 @@
 <div class="dashboard-content__body content-body">
-    <div  class="content-body__rows ticket-info">
+    <form [formGroup]="vForm" action="#" class="content-body__rows ticket-info">
         <div class="ticket-info__header">
             <div class="ticket-info__top ticket-create user-create__roles">
                 <div class="user-create__colum">
-                    <h2>User info:</h2>
                     <div class="ticket-create__line">
                         <span class="ticket-create__lable">Role name:</span>
-                        <input class="form-control rounded-5" [ngModel]="roleName | rolename" (ngModelChange)="changeRolename($event)" [ngModelOptions]="{standalone:true}" required type="text">
+                        <input class="form-control rounded-5" formControlName="name" required type="text">
+                    </div>
+                    <div class="ticket-create__line">
+                        <span class="ticket-create__lable">Company:</span>
+                        <ng-select class="custom" formControlName="company" required>
+                            <ng-option
+                                    *ngFor="let company of companyList"
+                                    [value]="company"> {{company.name}}</ng-option>
+                        </ng-select>
                     </div>
                     <div  class="ticket-create__line">
                         <span class="ticket-create__lable">Users:</span>
@@ -30,12 +37,12 @@
             <div class="form-ticket__elements">
                 <div class="form-ticket__row">
                     <div class="form-ticket__btns">
-                        <button (click)="editRole()" class="btn-block">Update role</button>
+                        <button (click)="createRole()" class="btn-block">Create role</button>
                         <!--                                        <a (click)="createUser()" class="ticket-body__show btn-block"> Create user </a>-->
-                        <a class="ticket-body__show ticket-body__show_border btn-block" routerLink="/roles">Cancel</a>
+                        <a class="ticket-body__show ticket-body__show_border btn-block" routerLink="/users">Cancel</a>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </form>
 </div>

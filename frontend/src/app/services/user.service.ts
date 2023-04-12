@@ -6,6 +6,7 @@ import {Employee} from "../interfaces/employee";
 import {User} from "../interfaces/user";
 import {Role} from "../interfaces/role";
 import {UserRole} from "../interfaces/user-role";
+import {BackendResponse} from "../interfaces/backend-response";
 
 @Injectable({
   providedIn: 'root'
@@ -52,6 +53,18 @@ export class UserService {
 
   addUsersByRole(roleUsers: any): Observable<any> {
     return this.http.post(`${this.baseUrl}/api/user_role/add_users_by_single_role`, roleUsers);
+  }
+
+  getRoleById(id: number): Observable<Role> {
+    return this.http.get<Role>(`${this.baseUrl}/api/role/${id}`);
+  }
+
+  updateRole(role: Role): Observable<any> {
+    return this.http.patch(`${this.baseUrl}/api/role/update/${role.id}`, role);
+  }
+
+  createRole(role: Role): Observable<BackendResponse> {
+    return this.http.post<BackendResponse>(`${this.baseUrl}/api/role/new`, role);
   }
 
 

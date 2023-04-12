@@ -14,7 +14,7 @@
             <tr *ngFor="let role of roleList">
                 <td>{{role.name | rolename}}</td>
                 <td>     <span class="content-row__username">
-                    <a routerLink="edit/{{role.name}}">
+                    <a routerLink="edit/{{role.id}}">
                                     <svg  class="action_icon" fill="#000000" height="24px" id="Capa_1" version="1.1"
                                           viewBox="0 0 348.882 348.882" width="24px"
                                           xml:space="preserve" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g
@@ -29,6 +29,6 @@
             </tbody>
         </table>
 
-        <button class="btn-block" routerLink="/users/create">Create user</button>
+        <button class="btn-block" routerLink="create">Create role</button>
     </div>
 </div>

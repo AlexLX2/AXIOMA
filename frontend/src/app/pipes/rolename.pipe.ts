@@ -6,7 +6,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class RolenamePipe implements PipeTransform {
 
   transform(value: string, ...args: unknown[]): unknown {
-    return value.substring(5);
+    return value.replace('ROLE_', '');
   }
 
 }

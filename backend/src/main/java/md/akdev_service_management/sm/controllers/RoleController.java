@@ -61,7 +61,7 @@ public class RoleController {
         roles.setName(vPrefix + rolesDTO.getName());
         roles.setCompany(company);
         roleRepository.save(roles);
-        return ResponseEntity.ok(Map.of("result", "new role successfully created with id - " + roles.getId()));
+        return ResponseEntity.ok(Map.of("result", roles.getId()));
     }
 
     @PatchMapping("/update/{id}")

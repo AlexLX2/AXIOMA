@@ -35,6 +35,7 @@ import { RolenamePipe } from './pipes/rolename.pipe';
 import { ListCompanyComponent } from './components/catalogs/company/list-company/list-company.component';
 import { CreateCompanyComponent } from './components/catalogs/company/create-company/create-company.component';
 import { EditCompanyComponent } from './components/catalogs/company/edit-company/edit-company.component';
+import { CreateRoleComponent } from './components/catalogs/users/create-role/create-role.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import { EditCompanyComponent } from './components/catalogs/company/edit-company
     RolenamePipe,
     ListCompanyComponent,
     CreateCompanyComponent,
-    EditCompanyComponent
+    EditCompanyComponent,
+    CreateRoleComponent
   ],
     imports: [
         BrowserModule,

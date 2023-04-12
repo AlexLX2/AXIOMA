@@ -1,3 +1,3 @@
 export interface BackendResponse {
-    result: string;
+    result: any;
 }

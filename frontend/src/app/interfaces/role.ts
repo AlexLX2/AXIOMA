@@ -1,4 +1,7 @@
+import {Company} from "./company";
+
 export interface Role {
-    id?: string;
+    id?: number;
     name: string;
+    company?: Company;
 }
