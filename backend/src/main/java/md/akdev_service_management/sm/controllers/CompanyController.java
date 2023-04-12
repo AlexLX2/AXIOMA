@@ -53,7 +53,7 @@ public class CompanyController {
     }
 
     @PatchMapping("/update/{id}")
-    public ResponseEntity<?>updateCompany(@PathVariable("id") int id, @RequestBody CompanyDTO companyDTO){
+    public ResponseEntity<?>updateCompany(@PathVariable("id") int id, @RequestBody @Valid CompanyDTO companyDTO){
         Map<String, String> vRet = Map.of("result", "update failed");
 
         if(companyService.findById(id).isPresent()){

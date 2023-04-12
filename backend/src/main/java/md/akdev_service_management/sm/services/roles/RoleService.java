@@ -27,4 +27,28 @@ public class RoleService {
     public List<Roles> getAllRoles() {
         return roleRepository.findAll();
     }
+
+    public Optional<Roles> findById(int id){
+        return roleRepository.findById(id);
+    }
+
+    public List<Roles> findAll(){
+     return  roleRepository.findAll();
+    }
+
+    @Transactional
+    public void newRole(Roles roles){
+        roleRepository.save(roles);
+    }
+
+    @Transactional
+    public void updateRole(Roles roles){
+
+        roleRepository.findById(roles.getId()).ifPresent(
+                roleToUpdate -> {
+                    roleToUpdate.setName(roles.getName());
+                    roleRepository.save(roleToUpdate);
+                }
+        );
+    }
 }
