@@ -117,7 +117,7 @@ public class UserRolesController {
    @PostMapping("/add_users_by_single_role")
    public ResponseEntity<?>addUsersBySingleRole(@RequestBody @Valid UsersRoleDTO usersRoleDTO){
 
-        Roles role = roleService.findByRoleName(usersRoleDTO.getRole()).orElseThrow(NotFoundException::new);
+        Roles role = roleService.findById(usersRoleDTO.getId()).orElseThrow(NotFoundException::new);
 
         userRoleService.deleteByRole(role);
 
