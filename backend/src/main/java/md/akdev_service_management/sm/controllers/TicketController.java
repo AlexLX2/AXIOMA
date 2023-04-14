@@ -1,10 +1,14 @@
 package md.akdev_service_management.sm.controllers;
 
+
+import com.fasterxml.jackson.annotation.JsonFilter;
+import com.fasterxml.jackson.databind.ser.FilterProvider;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import md.akdev_service_management.sm.dto.ticket.*;
 import md.akdev_service_management.sm.models.ticket.Ticket;
 import md.akdev_service_management.sm.models.ticket.TicketAttachment;
 import md.akdev_service_management.sm.models.ticket.TicketBody;
-import md.akdev_service_management.sm.models.user.User;
 import md.akdev_service_management.sm.security.IAuthenticationFacade;
 import md.akdev_service_management.sm.services.ticket.TicketAttachmentService;
 import md.akdev_service_management.sm.services.ticket.TicketBodyService;
@@ -16,14 +20,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
+import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.util.*;
 
 @RestController
 @CrossOrigin
 @RequestMapping("/api/tickets")
+@JsonFilter("ticketDTOFilter")
 public class TicketController {
     private final TicketServices ticketServices;
     private final TicketBodyService ticketBodyService;
@@ -42,51 +48,70 @@ public class TicketController {
         this.authenticationFacade = authenticationFacade;
     }
 
-    @RequestMapping(value = "/username", method = RequestMethod.GET)
-    @ResponseBody
-    public String currentUserNameSimple() {
-        Authentication authentication = authenticationFacade.getAuthentication();
-        return authentication.getName();
-    }
-
     @GetMapping("/{id}")
-    public TicketLazyDTO getTicketById(@PathVariable("id") int id) {
-        return mappingUtils.map(ticketServices.findById(id), TicketLazyDTO.class);
+    public ResponseEntity<?> getTicketById(@PathVariable("id") int id) {
+        TicketDTO ticketDTO = mappingUtils.map(ticketServices.findById(id), TicketDTO.class);
+        String[] ignorableFieldName = {};
+        MappingJacksonValue mapping = new MappingJacksonValue(ticketDTO);
+        mapping.setFilters(doFilter(ignorableFieldName));
+
+        return ResponseEntity.ok(mapping);
     }
 
     @GetMapping("/all")
+
     public ResponseEntity<?> getTicketAll(  @RequestParam(defaultValue = "0") Integer pageNo,
                                             @RequestParam(defaultValue = "10") Integer pageSize,
-                                            @RequestParam(defaultValue = "t.ticketId") String sortBy){
+                                            @RequestParam(defaultValue = "t.ticketId") String sortBy) {
 
         Pageable pageable = PageRequest.of(pageNo,pageSize, Sort.by(sortBy).descending());
         List<Ticket> ticketPage = ticketServices.findAll(pageable).getContent();
 
+        List<TicketDTO> ticketDTO = mappingUtils.mapList(ticketPage, TicketDTO.class);
 
-        return  ResponseEntity.ok(mappingUtils.mapList(ticketPage, TicketHeaderDTO.class));
+        String[]  ignorableFieldName = {"ticketBody","roles"};
+
+        MappingJacksonValue mapping = new MappingJacksonValue(ticketDTO);
+        mapping.setFilters(doFilter(ignorableFieldName));
+
+        return  ResponseEntity.ok(mapping);
     }
-
 
     @GetMapping("/count")
     public ResponseEntity<?> getCount(){
         return ResponseEntity.ok(ticketServices.findCount());
     }
 
-    @PostMapping("/createTicket")
-    public ResponseEntity<Map<String,Integer>> createTicket(@RequestBody TicketDTO ticketDTO){
+    @PostMapping("/new")
+    public ResponseEntity<?> createTicket(@RequestBody TicketDTO ticketDTO) {
 
-        Ticket ticket   = mappingUtils.map(ticketDTO, Ticket.class);
+        Ticket ticket = mappingUtils.map(ticketDTO, Ticket.class);
+
+        if(!Objects.isNull(ticket.getTicketBody())){
+            TicketBody ticketBody = new TicketBody(ticket);
+
+            ticket.getTicketBody().stream().findFirst().ifPresent(
+                    ticketBodyIf -> {
+
+                        if(!ticketBodyIf.getBody().isBlank()){
+                            ticketBody.setBody(ticketBodyIf.getBody());
+                        }
+
+                        if(!Objects.isNull(ticketBodyIf.getTicketAttachment())){
+                            ticketBody.setTicketAttachment(ticketBodyIf.getTicketAttachment());
+                        }
+
+                        ticket.setTicketBody(List.of(ticketBody));
+                    }
+
+            );
+        }
+
         ticketServices.newTicket(ticket);
 
-        return ResponseEntity.ok(Map.of("ticket id: ", ticket.getTicketId()));
+        return ResponseEntity.ok(Map.of("result", "new ticket created with id - "+ ticket.getTicketId()));
     }
 
-    @PostMapping("/createTicketHeader")
-    public ResponseEntity<Map<String,Integer>> createTicketHeader(@RequestBody Ticket ticket){
-
-        ticketServices.newTicket(ticket);
-        return ResponseEntity.ok(Map.of("ticketId", ticket.getTicketId()));
-    }
 
     @PostMapping("/createTicketBody")
     public ResponseEntity<?>createTicketBody(@RequestBody TicketBody ticketBody){
@@ -98,10 +123,10 @@ public class TicketController {
     @PostMapping("/createAttachment")
     public ResponseEntity<Map<String,Integer>>storeAttachments(@RequestParam("ticketBodyId") int id,
                                                                @RequestPart("files") MultipartFile[] files) {
-
-        TicketBody ticketBody = ticketBodyService.getTicketBodyById(id).orElse(new TicketBody());
-        User user = ticketBodyService.getTicketBodyById(id).stream().findAny().orElseThrow().getCreatedBy(); //ToDo убрать
-        ticketAttachmentService.storeFile(files,ticketBody,user);
+//
+        // TicketBody ticketBody = ticketBodyService.getTicketBodyById(id).orElse(new TicketBody());
+//        User user = ticketBodyService.getTicketBodyById(id).stream().findAny().orElseThrow().getCreatedBy(); //ToDo убрать
+//        ticketAttachmentService.storeFile(files,ticketBody,user);
 
         return ResponseEntity.ok(Map.of("attachmentAllOk", 1));
     }
@@ -114,6 +139,13 @@ public class TicketController {
     @GetMapping("/getAttachmentById/{id}")
     public TicketAttachmentDTO getAttachmentById(@PathVariable("id") int id){
         return mappingUtils.map(ticketAttachmentService.getById(id), TicketAttachmentDTO.class);
+    }
+
+
+    public FilterProvider doFilter(String[] in){
+        SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.serializeAllExcept(in);
+
+        return new SimpleFilterProvider().addFilter("ticketDTOFilter", filter);
     }
 
     @CrossOrigin(exposedHeaders = "Content-Disposition")

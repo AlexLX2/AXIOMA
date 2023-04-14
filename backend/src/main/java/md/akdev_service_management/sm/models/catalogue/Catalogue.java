@@ -2,6 +2,7 @@ package md.akdev_service_management.sm.models.catalogue;
 
 import lombok.Data;
 import md.akdev_service_management.sm.models.user.User;
+import md.akdev_service_management.sm.utils.DTO;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedBy;
@@ -14,7 +15,7 @@ import java.time.LocalDateTime;
 @Data
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public abstract class Catalogue implements Serializable {
+public abstract class Catalogue implements Serializable , DTO {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

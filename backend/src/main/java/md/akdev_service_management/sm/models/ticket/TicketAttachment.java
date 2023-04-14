@@ -3,10 +3,12 @@ package md.akdev_service_management.sm.models.ticket;
 import lombok.*;
 
 import md.akdev_service_management.sm.models.user.User;
+import md.akdev_service_management.sm.utils.DTO;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -18,7 +20,8 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 @Entity
 @Table(name = "ticket_attachment")
-public class TicketAttachment implements Serializable {
+@EntityListeners(AuditingEntityListener.class)
+public class TicketAttachment implements Serializable, DTO {
 
     @Id
     @Column(name = "id")

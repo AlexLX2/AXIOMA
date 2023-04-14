@@ -9,15 +9,13 @@ public class CatalogueDTO implements DTO {
     private int id;
     private String name;
     private boolean valid;
-    private String createdBy;
-    private String changedBy;
+
 
     public CatalogueDTO(Catalogue catalogue){
         this.id = catalogue.getId();
         this.name = catalogue.getName();
         this.valid = catalogue.isValid();
-        this.changedBy = catalogue.getChangedBy().getFullName();
-        this.createdBy = catalogue.getCreatedBy().getFullName();
+
     }
 
 

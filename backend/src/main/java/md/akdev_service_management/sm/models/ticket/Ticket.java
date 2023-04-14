@@ -1,5 +1,6 @@
 package md.akdev_service_management.sm.models.ticket;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import md.akdev_service_management.sm.models.user.Roles;
 import md.akdev_service_management.sm.models.user.User;
@@ -66,7 +67,7 @@ public class Ticket implements DTO {
     @JoinColumn(name ="category", referencedColumnName = "id")
     private TicketCategory category;
 
-    @OneToMany(mappedBy = "ticket", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL)
     private List<TicketBody> ticketBody;
 
     @ManyToOne(fetch = FetchType.EAGER)
