@@ -6,6 +6,9 @@ import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import md.akdev_service_management.sm.dto.ticket.*;
+import md.akdev_service_management.sm.exceptions.CstErrorResponse;
+import md.akdev_service_management.sm.exceptions.DuplicateException;
+import md.akdev_service_management.sm.exceptions.NotFoundException;
 import md.akdev_service_management.sm.models.ticket.Ticket;
 import md.akdev_service_management.sm.models.ticket.TicketAttachment;
 import md.akdev_service_management.sm.models.ticket.TicketBody;
@@ -19,8 +22,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -37,6 +42,8 @@ public class TicketController {
     private final MappingUtils mappingUtils;
     private final IAuthenticationFacade authenticationFacade;
 
+    private int someId;
+    String vRet;
 
     @Autowired
     public TicketController(TicketServices ticketServices, TicketBodyService ticketBodyService
@@ -98,7 +105,8 @@ public class TicketController {
                         }
 
                         if(!Objects.isNull(ticketBodyIf.getTicketAttachment())){
-                            ticketBody.setTicketAttachment(ticketBodyIf.getTicketAttachment());
+                            TicketAttachment ticketAttachment = new TicketAttachment(ticketBodyIf);
+                            ticketBody.setTicketAttachment(List.of(ticketAttachment));
                         }
 
                         ticket.setTicketBody(List.of(ticketBody));
@@ -113,14 +121,14 @@ public class TicketController {
     }
 
 
-    @PostMapping("/createTicketBody")
-    public ResponseEntity<?>createTicketBody(@RequestBody TicketBody ticketBody){
-
-        ticketBodyService.saveTicketBody(ticketBody);
-        return ResponseEntity.ok(Map.of("ticketBodyId", ticketBody.getId()));
+    @PostMapping("/new_body")
+    public ResponseEntity<?>createTicketBody(@RequestBody TicketBodyDTO ticketBodyDTO){
+        vRet = "fail to create new ticket body";
+            doBody(ticketBodyDTO);
+        return ResponseEntity.ok(Map.of("result", vRet));
     }
 
-    @PostMapping("/createAttachment")
+    @PostMapping("/new_attachment")
     public ResponseEntity<Map<String,Integer>>storeAttachments(@RequestParam("ticketBodyId") int id,
                                                                @RequestPart("files") MultipartFile[] files) {
 //
@@ -148,6 +156,29 @@ public class TicketController {
         return new SimpleFilterProvider().addFilter("ticketDTOFilter", filter);
     }
 
+
+    private void doBody(TicketBodyDTO ticketBodyDTO){
+
+        ticketServices.findById(ticketBodyDTO.getTicket()).ifPresent(
+
+                ticket -> {
+                    TicketBody ticketBody = new TicketBody(ticket);
+
+                    if(!ticketBodyDTO.getBody().isBlank()){
+                        ticketBody.setBody(ticketBodyDTO.getBody());
+                    }
+
+                    if(!Objects.isNull(ticketBodyDTO.getTicketAttachment())){
+                        TicketAttachment ticketAttachment = new TicketAttachment(ticketBody);
+                        ticketBody.setTicketAttachment(List.of(ticketAttachment));
+                    }
+                    ticketBodyService.saveTicketBody(ticketBody);
+
+                    vRet = "new ticket body was created with id " +  ticketBody.getId();
+                }
+        );
+    }
+
     @CrossOrigin(exposedHeaders = "Content-Disposition")
     @GetMapping("/files/{id}")
     public ResponseEntity<byte[]> getFile(@PathVariable int id) {
@@ -156,6 +187,15 @@ public class TicketController {
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + ticketAttachment.getFileName() + "\"")
                 .body(ticketAttachment.getFileContent());
+    }
+
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ExceptionHandler({NotFoundException.class, DuplicateException.class})
+    private ResponseEntity<CstErrorResponse> handeException(Exception e){
+        CstErrorResponse cstErrorResponse = new CstErrorResponse(
+                e.getMessage()
+        );
+        return new ResponseEntity<>(cstErrorResponse, HttpStatus.UNPROCESSABLE_ENTITY );
     }
 
 }

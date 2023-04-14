@@ -63,4 +63,7 @@ public class TicketAttachment implements Serializable, DTO {
     @JoinColumn(name="changed_by", referencedColumnName = "id")
     private User changedBy;
 
+    public TicketAttachment(TicketBody ticketBody) {
+        this.ticketBody = ticketBody;
+    }
 }

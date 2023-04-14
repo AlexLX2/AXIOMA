@@ -11,16 +11,24 @@ import md.akdev_service_management.sm.dto.catalogue.PriorityDTO;
 import md.akdev_service_management.sm.dto.catalogue.StatusDTO;
 import md.akdev_service_management.sm.dto.user.RolesDTO;
 import md.akdev_service_management.sm.models.ticket.Ticket;
+import md.akdev_service_management.sm.models.user.User;
 import md.akdev_service_management.sm.utils.DTO;
 import md.akdev_service_management.sm.utils.MappingUtils;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.modelmapper.AbstractConverter;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.ReadOnlyProperty;
 
+import javax.persistence.Column;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -43,7 +51,10 @@ public class TicketDTO implements DTO {
     @NotNull(message = "Ticket role must be not empty")
     private RolesDTO roles;
     private List<TicketBodyDTO> ticketBody;
-
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private LocalDateTime createdAt;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private LocalDateTime changedAt;
 
     @Override
     public ModelMapper updateModelMapper(ModelMapper mapper, MappingUtils mappingUtils){

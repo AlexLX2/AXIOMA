@@ -1,5 +1,6 @@
 package md.akdev_service_management.sm.dto.ticket;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import md.akdev_service_management.sm.dto.user.UserDTO;
 import md.akdev_service_management.sm.models.ticket.TicketBody;
@@ -19,6 +20,8 @@ public class TicketBodyDTO implements DTO {
     protected int id;
     protected int ticket;
     protected String body;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    protected LocalDateTime createdAt;
     protected List<TicketAttachmentLazyDTO> ticketAttachment;
 
     public TicketBodyDTO() {
