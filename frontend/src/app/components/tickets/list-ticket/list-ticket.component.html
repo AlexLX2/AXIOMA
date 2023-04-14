@@ -5,22 +5,22 @@
     <div class="content-body__rows">
         <!--							<a *ngFor="let ticket of ticketList" routerLink="/tickets/{{ticket.ticketId}}"-->
         <a (click)="openTicket(ticket.ticketId)" *ngFor="let ticket of ticketList"
-           [ngClass]="{'_red': ticket.status==='overdue',
+           [ngClass]="{'_red': ticket.status.name==='overdue',
 							   '_active': isTicketOpened&&ticket.ticketId===currentTicketId}"
            class="content-body__row content-row">
-								<span [ngClass]="{'content-row__icon_blue': ticket.status === 'open',
-								'content-row__icon_green': ticket.status==='new',
-								'content-row__icon_red': ticket.status==='overdue',
-								'content-row__icon_with': ticket.status ==='closed'}"
+								<span [ngClass]="{'content-row__icon_blue': ticket.status.name === 'open',
+								'content-row__icon_green': ticket.status.name==='new',
+								'content-row__icon_red': ticket.status.name==='overdue',
+								'content-row__icon_with': ticket.status.name ==='closed'}"
                                       class="content-row__icon content-row__icon_blue"></span>
             <div class="content-row__column">
                 <div class="content-row__title">
                     {{ticket.title}}
                 </div>
-                <span [ngClass]="{'icon-high': ticket.priority==='high'}" class="content-row__lable icon-high"> </span>
+                <span [ngClass]="{'icon-high': ticket.priority.name==='high'}" class="content-row__lable icon-high"> </span>
             </div>
             <div class="content-row__column">
-                <span class="content-row__username">{{ticket.createdBy}}</span>
+                <span class="content-row__username">{{ticket.author}}</span>
             </div>
             <div class="content-row__column">
                 <span class="content-row__date">Created: {{ticket.createdAt | date}}</span>

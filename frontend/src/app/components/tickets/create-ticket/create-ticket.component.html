@@ -5,10 +5,10 @@
                 <div class="ticket-create__colum">
                     <div class="ticket-create__line">
                         <span class="ticket-create__lable">*Client:</span>
-                        <ng-select class="custom" formControlName="client" required>
+                        <ng-select class="custom" formControlName="role" required>
                             <ng-option
-                                    *ngFor="let empl of employeeList"
-                                    [value]="empl.id"> {{empl.firstName}} {{empl.lastName}}</ng-option>
+                                    *ngFor="let role of roleList"
+                                    [value]="role"> {{role.name | rolename}}</ng-option>
                         </ng-select>
                     </div>
                     <div class="ticket-create__line">
@@ -28,21 +28,21 @@
                         <span class="ticket-create__lable">Category:</span>
                         <ng-select class="custom" formControlName="category">
                             <ng-option *ngFor="let category of categoryList"
-                                       [value]="category.id"> {{category.name | titlecase}}</ng-option>
+                                       [value]="category"> {{category.name | titlecase}}</ng-option>
                         </ng-select>
                     </div>
                     <div class="ticket-create__line">
                         <span class="ticket-create__lable">Priority:</span>
                         <ng-select class="custom" formControlName="priority">
                             <ng-option *ngFor="let priority of priorityList"
-                                       [value]="priority.id"> {{priority.name | titlecase}}</ng-option>
+                                       [value]="priority"> {{priority.name | titlecase}}</ng-option>
                         </ng-select>
                     </div>
                     <div class="ticket-create__line">
                         <span class="ticket-create__lable">Status:</span>
                         <ng-select class="custom" formControlName="status">
                             <ng-option *ngFor="let status of statusList"
-                                       [value]="status.id"> {{status.name | titlecase}}</ng-option>
+                                       [value]="status"> {{status.name | titlecase}}</ng-option>
                         </ng-select>
                     </div>
 

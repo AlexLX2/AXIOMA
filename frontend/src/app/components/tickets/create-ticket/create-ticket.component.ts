@@ -8,6 +8,11 @@ import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {Ticket} from "../../../interfaces/ticket";
 import {TicketBody} from "../../../interfaces/ticket-body";
 import {TitleService} from "../../../services/title.service";
+import {UserService} from "../../../services/user.service";
+import {Role} from "../../../interfaces/role";
+import {AlertService} from "../../../_alert";
+import {Router} from "@angular/router";
+import {FooterService} from "../../../services/footer.service";
 
 @Component({
     selector: 'app-new-ticket',
@@ -17,12 +22,10 @@ import {TitleService} from "../../../services/title.service";
 export class CreateTicketComponent implements OnInit {
 
     priorityList: Catalog[] = [];
-
     employeeList: Employee[] = [];
-
     categoryList: Catalog[] = [];
-
     statusList: Catalog[] = [];
+    roleList: Role[] = []
 
     newTicket?: Ticket;
     fileName: string = 'Select file';
@@ -33,19 +36,23 @@ export class CreateTicketComponent implements OnInit {
     constructor(private catalogService: CatalogService,
                 private ticketService: TicketService,
                 private titleService: TitleService,
+                private footerService: FooterService,
+                private alertService: AlertService,
                 private emplService: EmployeeService,
+                private userService: UserService,
+                private router: Router,
                 private fb: FormBuilder) {
 
         this.vForm = fb.group(
             {
-                employee:     new FormControl(''),
-                status:       new FormControl(null),
-                client:       new FormControl(''),
-                subject:      new FormControl(''),
-                category:     new FormControl(null),
-                priority:     new FormControl(null),
-                file:         new FormControl(''),
-                body:         new FormControl('')
+                role: new FormControl(''),
+                status: new FormControl(null),
+                client: new FormControl(''),
+                subject: new FormControl(''),
+                category: new FormControl(null),
+                priority: new FormControl(null),
+                file: new FormControl(''),
+                body: new FormControl('')
             }
         );
 
@@ -54,8 +61,14 @@ export class CreateTicketComponent implements OnInit {
 
     ngOnInit(): void {
         this.titleService.showTitleMsg('Create ticket', '', false);
+        this.footerService.enablePagination(false);
+
         this.emplService.getAllEmployees().subscribe(data => {
             this.employeeList = data;
+        });
+
+        this.userService.getAllRoles().subscribe( roles => {
+            this.roleList = roles;
         });
 
         this.catalogService.getCatalogItemList('status').subscribe(
@@ -68,15 +81,13 @@ export class CreateTicketComponent implements OnInit {
             data => {
                 this.priorityList = data;
             }
-        )
+        );
 
         this.catalogService.getCatalogItemList('category').subscribe(
             data => {
                 this.categoryList = data;
             }
-        )
-
-
+        );
     }
 
     createTicket() {
@@ -85,27 +96,32 @@ export class CreateTicketComponent implements OnInit {
         ticketBody.push(
             {
                 body: this.vForm.get('body')?.value,
-                from: "AK",
-                id: 0,
-                subject: this.vForm.get('subject')?.value,
                 ticketAttachment: [],
-                to: "VB"
+                id: 0
             }
         )
 
         this.newTicket = {
-            author: "AK",
-            category:  this.vForm.get('category')?.value,
+            author: 'AK (ak@akdev.md)',
+            category: this.vForm.get('category')?.value,
             priority: this.vForm.get('priority')?.value,
-            status:   this.vForm.get('status')?.value,
+            status: this.vForm.get('status')?.value,
             ticketBody: ticketBody,
             ticketId: 0,
-            title:  this.vForm.get('subject')?.value};
+            title: this.vForm.get('subject')?.value,
+            roles: this.vForm.get('role')?.value
+        };
 
         console.log('new ticket', this.newTicket);
 
-        this.ticketService.createTicketHeader(this.newTicket).subscribe(data => {
-            console.log('createticket', data);
+        this.ticketService.createTicket(this.newTicket).subscribe(data => {
+            this.alertService.success(data.result, {
+                keepAfterRouteChange: true,
+                autoClose: true
+            });
+            this.router.navigateByUrl('/tickets');
+        }, error => {
+            this.alertService.error(error.result);
         });
     }
 

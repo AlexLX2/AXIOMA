@@ -1,11 +1,13 @@
 import {TicketBody} from "./ticket-body";
+import {Catalog} from "./catalog";
+import {Role} from "./role";
 
 export interface Ticket {
 
     author: string;
-    category: string;
-    priority: string;
-    status: string;
+    category: Catalog;
+    priority: Catalog;
+    status: Catalog;
     ticketId: number;
     title: string;
     ticketBody?: TicketBody[];
@@ -13,5 +15,6 @@ export interface Ticket {
     createdAt?: Date;
     changedBy?: string;
     changedAt?: Date;
+    roles?: Role;
 }
 

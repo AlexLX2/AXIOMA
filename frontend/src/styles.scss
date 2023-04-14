@@ -509,7 +509,7 @@ h6 {
 }
 
 .main_content {
-  height: 85%;
+  height: 90%;
 }
 
 .aside {
@@ -997,9 +997,17 @@ body[data-theme=light] .dropdown__item_conf,
 }
 .dashboard-content__footer {
   background: #F9F9F9;
-  padding: 20px;
-  height: 6rem;
+  padding: 10px;
+  height: 3rem;
 }
+
+@media (min-height: 1024px) {
+  .dashboard-content__footer {
+    padding: 20px;
+    height: 5rem;
+  }
+}
+
 @media (max-width: 500px) {
   .dashboard-content__footer {
     padding: 10px;

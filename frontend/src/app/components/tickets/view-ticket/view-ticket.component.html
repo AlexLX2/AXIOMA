@@ -6,13 +6,13 @@
             </h4>
             <div class="ticket-info__info">
                 <div class="ticket-info__status icon-high">
-                    {{currentTicket.priority}}
+                    {{currentTicket.priority.name}}
                 </div>
-                <span>{{currentTicket.category}}</span>
+                <span>{{currentTicket.category.name}}</span>
             </div>
         </div>
         <div class="ticket-info__top ticket-body">
-            <p class="ticket-body__text">{{currentTicket.ticketBody[0].subject}}</p>
+            <p class="ticket-body__text" [innerHTML]="currentTicket.ticketBody[0].body | safehtml">{{currentTicket.ticketBody[0].body}}</p>
             <div class="ticket-body__bottom">
                 <div class="ticket-body__l">
                     <span class="ticket-body__name">{{currentTicket.ticketBody[0].createdBy}}</span>
@@ -29,7 +29,7 @@
     </div>
     <div >
         <div class="ticket-info__message message-ticket"
-             *ngFor="let ticketBody of currentTicket.ticketBody"
+             *ngFor="let ticketBody of currentTicket.ticketBody.slice(1)"
              [ngClass]="{'message-ticket_modif': isAgentBody(ticketBody)}">
             <p class="message-ticket__text"
                [innerHTML]="ticketBody.body | safehtml" >

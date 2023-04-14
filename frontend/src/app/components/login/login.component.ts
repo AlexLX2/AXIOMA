@@ -5,6 +5,8 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {StorageService} from "../../services/storage.service";
 import {Login} from "../../interfaces/login";
 import {AlertService} from "../../_alert";
+import {TitleService} from "../../services/title.service";
+import {FooterService} from "../../services/footer.service";
 
 @Component({
   selector: 'app-login',
@@ -25,7 +27,9 @@ export class LoginComponent implements OnInit{
               private fb: FormBuilder,
               private route: ActivatedRoute,
               private router: Router,
-              private alertService: AlertService) {
+              private alertService: AlertService,
+              private titleService: TitleService,
+              private footerService: FooterService) {
     this.loginForm = fb.group({
       login: new FormControl('', [Validators.required, Validators.min(2), Validators.max(30)]),
       password: new FormControl('', [Validators.required, Validators.min(8), Validators.max(30)])
@@ -34,6 +38,8 @@ export class LoginComponent implements OnInit{
 
   ngOnInit(): void {
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    this.titleService.showTitleMsg('','',false);
+    this.footerService.enablePagination(false);
   }
   login() {
     this.userLogin.login = this.loginForm.get('login')?.value;

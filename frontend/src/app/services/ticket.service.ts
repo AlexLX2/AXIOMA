@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {environment} from "../../environments/environment";
 import {Ticket} from "../interfaces/ticket";
+import {BackendResponse} from "../interfaces/backend-response";
 
 @Injectable({
   providedIn: 'root'
@@ -21,8 +22,8 @@ export class TicketService {
     return this.http.get(`${this.baseUrl}/api/tickets/${id}`);
   }
 
-  createTicket(ticket: Ticket): Observable<any> {
-    return this.http.post(`${this.baseUrl}/api/tickets/createTicket`, ticket);
+  createTicket(ticket: Ticket): Observable<BackendResponse> {
+    return this.http.post<BackendResponse>(`${this.baseUrl}/api/tickets/new`, ticket);
   }
 
   createTicketHeader(ticket: Ticket): Observable<any> {
