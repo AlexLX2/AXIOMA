@@ -31,10 +31,10 @@ public class TicketAttachmentService {
         this.modelMapper = modelMapper;
     }
 
-    public void storeFile(MultipartFile[] files, TicketBody ticketBody, User user) {
+    public void storeFile(MultipartFile[] files, TicketBody ticketBody) {
 
-        Arrays.asList(files).stream().forEach(file -> {
-            byte[] bytes = new byte[0];
+        Arrays.stream(files).forEach(file -> {
+            byte[] bytes ;
             String fileName;
             try {
                 bytes = file.getBytes();
@@ -45,8 +45,6 @@ public class TicketAttachmentService {
                 TicketAttachment ticketAttachment = convertToTicketAttachment(ticketAttachmentDTO);
                 ticketAttachment.setTicketBody(ticketBody);
                 ticketAttachment.setFileType(file.getContentType());
-                ticketAttachment.setChangedBy(user);
-                ticketAttachment.setCreatedBy(user);
                 ticketAttachmentRepository.save(ticketAttachment);
 
             } catch (IOException e) {
