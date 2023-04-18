@@ -21,10 +21,10 @@ import {CreateRoleComponent} from "./components/catalogs/users/create-role/creat
 const routes: Routes = [
   { path: '', component: ListTicketComponent, canActivate: [AuthGuard], pathMatch:"full" },
   { path: 'login', component: LoginComponent },
-  { path: 'tickets/:id', component: ListTicketComponent, canActivate: [AuthGuard]},
   { path: 'tickets', component: ListTicketComponent, canActivate: [AuthGuard] },
+  { path: 'tickets/:id', component: ListTicketComponent, canActivate: [AuthGuard]},
   { path: 'tickets-create', component: CreateTicketComponent, canActivate: [AuthGuard] },
-  { path: 'tickets-open', component: ListTicketComponent, canActivate: [AuthGuard] },
+  // { path: 'tickets-open', component: ListTicketComponent, canActivate: [AuthGuard] },
   { path: 'tickets-redactor', component: RedactorTicketComponent, canActivate: [AuthGuard] },
   { path: 'reports', component: ReportsComponent, canActivate: [AuthGuard] },
   { path: 'catalogs', component:ListCatalogsComponent, canActivate: [AuthGuard], pathMatch:'full'},
@@ -33,11 +33,11 @@ const routes: Routes = [
   { path: 'users/create', component:CreateUserComponent, canActivate: [AuthGuard], pathMatch:'prefix'},
   { path: 'users/edit/:id', component:EditUserComponent, canActivate: [AuthGuard], pathMatch:'prefix'},
   { path: 'roles', component: ListRolesComponent, canActivate: [AuthGuard]},
-  { path: 'roles/edit/:id', component: EditRoleComponent, canActivate: [AuthGuard]},
   { path: 'roles/create', component: CreateRoleComponent, canActivate: [AuthGuard]},
+  { path: 'roles/edit/:id', component: EditRoleComponent, canActivate: [AuthGuard]},
   { path: 'companies', component: ListCompanyComponent, canActivate: [AuthGuard]},
-  { path: 'companies/edit/:id', component: EditCompanyComponent, canActivate: [AuthGuard]},
-  { path: 'companies/create', component: CreateCompanyComponent, canActivate: [AuthGuard]}
+  { path: 'companies/create', component: CreateCompanyComponent, canActivate: [AuthGuard]},
+  { path: 'companies/edit/:id', component: EditCompanyComponent, canActivate: [AuthGuard]}
 
 ];
 

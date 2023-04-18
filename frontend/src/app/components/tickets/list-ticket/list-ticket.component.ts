@@ -15,6 +15,13 @@ export class ListTicketComponent implements OnInit {
   ticketList: Ticket[] = [];
 
   public currentTicketId: number = 0;
+
+  pageSizes: number[] = [10,20,50];
+
+  pageSize: number = 10;
+  pagNum: number = 1;
+  totalTickets: number = 1;
+
   constructor(private ticketService: TicketService,
               private titleService: TitleService,
               private footerService: FooterService,
@@ -22,19 +29,38 @@ export class ListTicketComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
     this.titleService.showTitleMsg('Tickets', '', true);
     this.footerService.enablePagination(false);
     this.loaderService.show();
-    this.ticketService.getAllTickets().subscribe(data => {
-      this.ticketList = data;
-      console.log('Ticket list: ', this.ticketList);
-         this.loaderService.hide();
-    });
+    this.ticketService.getTicketCount().subscribe(count => {
+      this.totalTickets = count;
+    })
+    this.initTicketList();
 
   }
 
   openTicket(ticketId: number) {
     this.currentTicketId = ticketId;
     this.isTicketOpened = true;
+  }
+
+   initTicketList() {
+    console.log('curent page', this.pagNum);
+    this.ticketService.getAllTickets(this.pageSize, this.pagNum).subscribe(data => {
+      this.ticketList = data;
+      console.log('Ticket list: ', this.ticketList);
+      this.loaderService.hide();
+    });
+  }
+
+  changePageNum($event: number) {
+    this.pagNum = $event;
+    this.initTicketList();
+  }
+
+  changePageSize($event: number) {
+    this.pageSize = $event;
+    this.initTicketList();
   }
 }

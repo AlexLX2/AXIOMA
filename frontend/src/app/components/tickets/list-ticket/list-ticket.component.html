@@ -17,7 +17,8 @@
                 <div class="content-row__title">
                     {{ticket.title}}
                 </div>
-                <span [ngClass]="{'icon-high': ticket.priority.name==='high'}" class="content-row__lable icon-high"> </span>
+                <span [ngClass]="{'icon-high': ticket.priority.name==='high'}"
+                      class="content-row__lable icon-high"> </span>
             </div>
             <div class="content-row__column">
                 <span class="content-row__username">{{ticket.author}}</span>
@@ -27,6 +28,22 @@
                 <span class="content-row__username">Edited: {{ticket.changedAt | date}}</span>
             </div>
         </a>
+        <div class="pagination_cont" *ngIf="!isTicketOpened">
+            <div class="page-size">
+            <ng-select placeholder="10" [clearable]="false" [(ngModel)]="pageSize" [items]="pageSizes" (change)="changePageSize($event)">
+<!--                <ng-option class="page-size-items">10</ng-option>-->
+<!--                <ng-option class="page-size-items">20</ng-option>-->
+<!--                <ng-option class="page-size-items">50</ng-option>-->
+            </ng-select>
+                &nbsp; per page
+            </div>
+            <ngb-pagination
+                    [collectionSize]=totalTickets
+                    (pageChange)="changePageNum($event)"
+                    [(page)]="pagNum"
+                    [pageSize]=pageSize>
+            </ngb-pagination>
+        </div>
     </div>
 
     <!--			  Открытый тикет-->

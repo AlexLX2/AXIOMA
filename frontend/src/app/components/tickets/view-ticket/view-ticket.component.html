@@ -21,7 +21,7 @@
                         , {{currentTicket.ticketBody[0].createdAt | date}}
                     </div>
                 </div>
-                <a href="#" class="ticket-body__show  btn-block">
+                <a *ngIf="currentTicket.ticketBody[0].ticketAttachment.length>0" href="#" class="ticket-body__show  btn-block">
                     <span>Show attachments</span>
                 </a>
             </div>
@@ -39,13 +39,17 @@
                     <span class="ticket-body__name">{{ticketBody.createdBy}}</span>
                     <div class="ticket-body__date">
                         <span class="ticket-body__hor">{{ticketBody.createdAt | date:'HH:mm'}}</span>
-                        , {{ticketBody.createdAt | date:'DD MMM YYYY'}}
+                        , {{ticketBody.createdAt | date:'dd MMM YYYY'}}
                     </div>
                 </div>
-                <div class="ticket-body__r">
-                    <a  *ngIf="ticketBody.ticketAttachment" href="#" class="ticket-body__show ticket-body__show_blue btn-block">
-                        <span>Show attachments</span>
-                    </a>
+                <div class="ticket-body__r"  *ngIf="ticketBody.ticketAttachment.length>0">
+                    <button *ngFor="let att of ticketBody.ticketAttachment" (click)="openFile(att.id)" class="ticket-body__show ticket-body__show_blue btn-block">
+                        <span> {{att.fileName}}</span>
+                    </button>
+<!--                    <a  *ngIf="ticketBody.ticketAttachment.length>0" href="#" class="ticket-body__show ticket-body__show_blue btn-block">-->
+<!--                        <span>Show attachments</span>-->
+
+<!--                    </a>-->
                     <a href="#" class="ticket-body__reply">
                         <span>Reply</span>
                     </a>
@@ -167,12 +171,28 @@
 
 <!--            </div>-->
 <!--        </div>-->
-
-
     </div>
 
     <div class="ticket-info__footer form-ticket">
-        <form action="#" class="form-ticket__elements">
-            <textarea class="form-ticket__textarea" name="text" id="#">Start typing...</textarea>
-        </form>
+<!--        <form action="#" class="form-ticket__elements">-->
+<!--            <textarea class="form-ticket__textarea" name="text" id="#">Start typing...</textarea>-->
+<!--        </form>-->
+        <div class="h-25 pb-3 pt-3 border-0 quill-body-create">
+            <quill-editor [(ngModel)]="body"></quill-editor>
+        </div>
+        <div class="form-ticket__row">
+        <div>
+            <input (change)="selectFile($event)"
+                   class="form-control rounded-5 m-auto"
+                   id="fileInput"
+                   multiple
+                   name="fileInput"
+                   type="file"
+            />
+        </div>
+        <div class="form-ticket__btns">
+            <a class="ticket-body__show btn-block" (click)="createBody()"> Send </a>
+            <a class="ticket-body__show ticket-body__show_border btn-block" routerLink="tickets/">Cancel</a>
+        </div>
+        </div>
     </div>

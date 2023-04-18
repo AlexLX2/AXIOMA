@@ -19,7 +19,7 @@ export class ReportsComponent implements OnInit{
   }
 
   private initData() {
-    this.ticketService.getAllTickets().subscribe(data => {
+    this.ticketService.getAllTickets(10, 1).subscribe(data => {
       this.ticketList = data;
     })
   }

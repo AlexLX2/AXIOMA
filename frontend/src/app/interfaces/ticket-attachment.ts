@@ -1,5 +1,6 @@
 export interface TicketAttachment {
     bodyId: number,
     id:number,
-    file: File
+    file: File,
+    fileName: string
 }

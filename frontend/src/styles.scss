@@ -941,8 +941,7 @@ body[data-theme=light] .dropdown__item_conf,
 .dashboard-content__line {
   max-width: 280px;
   height: 40px;
-  margin: 0;
-  margin-right: 33px;
+  margin: 0 33px 0 0;
 }
 .dashboard-content__line .log-form__inp {
   padding-left: 25px;
@@ -998,7 +997,7 @@ body[data-theme=light] .dropdown__item_conf,
 .dashboard-content__footer {
   background: #F9F9F9;
   padding: 10px;
-  height: 3rem;
+  height: 4rem;
 }
 
 @media (min-height: 1024px) {
@@ -1047,6 +1046,9 @@ body[data-theme=light] .log-form__line_search {
   height: 100vh;
 }
 .content-body__rows {
+  display: flex;
+  flex-direction: column;
+  min-height: 80vh;
   margin-top: 20px;
   height: 100vh;
   overflow-y: auto;
@@ -1245,7 +1247,7 @@ body[data-theme=light] .log-form__line_search {
 
 .footer-dash {
   display: flex;
-  align-items: center;
+  //align-items: center;
   justify-content: space-between;
   color: #4E5559;
   /* .footer-dash__column */
@@ -1341,7 +1343,7 @@ body[data-theme=light] .log-form__line_search {
 }
 .footer-dash__dropdown {
   width: 80px;
-  height: 25px;
+  //height: 25px;
   border: 1px solid #4E5559;
   margin-right: 7px;
   border-radius: 5px;
@@ -1353,9 +1355,8 @@ body[data-theme=light] .log-form__line_search {
   color: #4E5559;
   font-size: 16px;
   display: flex;
-  padding: 0;
   justify-content: space-between;
-  padding-left: 17px;
+  padding: 0 0 0 17px;
   align-items: center;
 }
 .footer-dash__dropdown .dropdown__name path {
@@ -1389,7 +1390,6 @@ body[data-theme=light] .log-form__line_search {
   background-color: #F2FDFF;
 }
 .footer-dash__dropdown .dropdown__icon {
-  padding-left: 2px;
   width: 22px;
   height: auto;
   border-left: 1px solid #4E5559;
@@ -1397,12 +1397,40 @@ body[data-theme=light] .log-form__line_search {
 }
 
 .pagination {
-  /* .pagination__nav */
-  /* .pagination__list */
-  /* .pagination__li */
-  /* .pagination__btn */
-  /* .pagination__item */
+   //.pagination__nav
+   //.pagination__list
+   //.pagination__li
+   //.pagination__btn
+   //.pagination__item
 }
+.pagination_cont {
+  margin-top: auto;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.page-size {
+  display: flex;
+  padding: 0 5rem;
+  font-size: 20px;
+}
+
+.page-size-items {
+  background-color: #00D1FF;
+  border-color: #00D1FF;
+  color: #F2FDFF;
+}
+
+ngb-pagination  .page-item.active .page-link{
+  background-color: #00D1FF;
+  border-color: #00D1FF;
+  color: #F2FDFF;
+}
+
+ngb-pagination  .page-item .page-link{
+  color: #00D1FF;
+}
+
 .pagination__nav {
   margin: 0 10px;
 }

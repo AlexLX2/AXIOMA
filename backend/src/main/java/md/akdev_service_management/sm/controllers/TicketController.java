@@ -190,7 +190,7 @@ public class TicketController {
 
         ticketBodyService.saveTicketBody(ticketBody);
 
-        vRet = "new ticket body was created with id " +  ticketBody.getId();
+        vRet = String.valueOf(ticketBody.getId());
         }
 
 

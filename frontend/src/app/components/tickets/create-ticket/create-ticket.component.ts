@@ -55,8 +55,6 @@ export class CreateTicketComponent implements OnInit {
                 body: new FormControl('')
             }
         );
-
-
     }
 
     ngOnInit(): void {
@@ -67,7 +65,7 @@ export class CreateTicketComponent implements OnInit {
             this.employeeList = data;
         });
 
-        this.userService.getAllRoles().subscribe( roles => {
+        this.userService.getAllRoles().subscribe(roles => {
             this.roleList = roles;
         });
 
@@ -97,7 +95,8 @@ export class CreateTicketComponent implements OnInit {
             {
                 body: this.vForm.get('body')?.value,
                 ticketAttachment: [],
-                id: 0
+                id: 0,
+                ticket: 0
             }
         )
 
