@@ -37,6 +37,7 @@ public class TicketServices {
     }
 
     @Transactional
+    @PreAuthorize("hasPermission(#ticket, 'WRITE')")
     public void newTicket(Ticket ticket){
         ticketRepository.save(ticket);
 

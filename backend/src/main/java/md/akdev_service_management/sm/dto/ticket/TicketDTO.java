@@ -10,6 +10,7 @@ import md.akdev_service_management.sm.dto.catalogue.CategoryDTO;
 import md.akdev_service_management.sm.dto.catalogue.PriorityDTO;
 import md.akdev_service_management.sm.dto.catalogue.StatusDTO;
 import md.akdev_service_management.sm.dto.user.RolesDTO;
+import md.akdev_service_management.sm.models.acl.AclObjectIdentity;
 import md.akdev_service_management.sm.models.ticket.Ticket;
 import md.akdev_service_management.sm.models.user.User;
 import md.akdev_service_management.sm.utils.DTO;
@@ -48,8 +49,8 @@ public class TicketDTO implements DTO {
     private PriorityDTO priority;
     @NotNull(message = "Ticket category must be not empty")
     private CategoryDTO category;
-    @NotNull(message = "Ticket role must be not empty")
-    private RolesDTO roles;
+    @NotNull(message = "You probably don't have rights to create ticket")
+    private AclObjectIdentity acl;
     private List<TicketBodyDTO> ticketBody;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private LocalDateTime createdAt;

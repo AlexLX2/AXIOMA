@@ -2,6 +2,7 @@ package md.akdev_service_management.sm.models.ticket;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
+import md.akdev_service_management.sm.models.acl.AclObjectIdentity;
 import md.akdev_service_management.sm.models.user.Roles;
 import md.akdev_service_management.sm.models.user.User;
 import md.akdev_service_management.sm.utils.DTO;
@@ -71,11 +72,11 @@ public class Ticket implements DTO {
     private List<TicketBody> ticketBody;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="role_id", referencedColumnName = "id")
-    private Roles roles;
+    @JoinColumn(name="acl_id", referencedColumnName = "id")
+    private AclObjectIdentity acl;
 
-    public Integer getId(){
-        return roles.getId();
+    public Long getId(){
+        return acl.getId();
     }
 
 }

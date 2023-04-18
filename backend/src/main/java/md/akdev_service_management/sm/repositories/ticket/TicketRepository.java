@@ -15,18 +15,17 @@ public interface TicketRepository extends JpaRepository<Ticket,Integer> {
 
     Ticket findByTicketId(Integer id);
 
-    @Query("select  distinct t from AclObjectIdentity aoi" +
-            " inner join AclClass cls on aoi.objectIdClass.id = cls.id" +
-            " inner join AclEntry ent on aoi.id = ent.aclObjectIdentity.id" +
-            " inner join AclSid sid on ent.sid.id = sid.id" +
-            " inner join Ticket t on t.roles.id= aoi.objectIdIdentity" +
-            " inner join Roles rl on sid.sid = rl.name" +
-            " inner join UserRole ur on rl.id = ur.role.id" +
-            " inner join User us on us.id = ur.user.id" +
-            " where ent.granting = true " +
-            " and ent.mask = 1" +
-            " and us.login = ?#{principal.username}" +
-            " and cls.classField = 'md.akdev_service_management.sm.models.ticket.Ticket'" )
+    @Query(value = "select t from AclObjectIdentity aoi\n" +
+            "    inner join AclClass cls on aoi.objectIdClass.id = cls.id\n" +
+            "    inner join AclEntry ae on aoi.id = ae.aclObjectIdentity.id\n" +
+            "    inner join AclSid sid on ae.sid.id = sid.id\n" +
+            "    inner join Ticket t on aoi.id = t.acl.id\n" +
+            "    inner join Roles rl on rl.name = sid.sid\n" +
+            "    inner join UserRole ur on rl.id = ur.role.id\n" +
+            "    inner join User us on ur.user.id = us.id\n" +
+            "where ae.granting = true\n" +
+            "and ae.mask = 1 and us.login =?#{principal.username}\n" +
+            "and cls.classField = 'md.akdev_service_management.sm.models.ticket.Ticket'")
     Page<Ticket> findAll(Pageable pageable);
 
 }

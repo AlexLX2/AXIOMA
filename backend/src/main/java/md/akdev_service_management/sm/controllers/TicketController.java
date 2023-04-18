@@ -26,8 +26,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
-import org.springframework.security.access.prepost.PostAuthorize;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -59,6 +57,7 @@ public class TicketController {
     }
 
     @GetMapping("/{id}")
+
     public ResponseEntity<?> getTicketById(@PathVariable("id") int id) {
        TicketDTO ticketDTO;
         try {
@@ -67,7 +66,7 @@ public class TicketController {
             throw new AccessDeniedException(e.getMessage());
         }
 
-        String[] ignorableFieldName = {};
+        String[] ignorableFieldName = {"acl"};
         MappingJacksonValue mapping = new MappingJacksonValue(ticketDTO);
         mapping.setFilters(doFilter(ignorableFieldName));
         return ResponseEntity.ok(mapping);
@@ -84,7 +83,7 @@ public class TicketController {
 
         List<TicketDTO> ticketDTO = mappingUtils.mapList(ticketPage, TicketDTO.class);
 
-        String[]  ignorableFieldName = {"ticketBody","roles"};
+        String[]  ignorableFieldName = {"ticketBody","acl"};
 
         MappingJacksonValue mapping = new MappingJacksonValue(ticketDTO);
         mapping.setFilters(doFilter(ignorableFieldName));
@@ -138,11 +137,12 @@ public class TicketController {
     @PostMapping("/new_attachment/")
     public ResponseEntity<?>storeAttachments(@RequestParam("bodyId") Integer bodyId,
                                              @RequestPart("files") MultipartFile[] files) {
-
         ticketBodyService.getTicketBodyById(bodyId).ifPresentOrElse(
                 ticketBody -> {
+
                         ticketAttachmentService.storeFile(files, ticketBody);
                         vRet = "attachment successfully uploaded";
+
                 },() -> vRet = "ticket body not found"
         );
 
