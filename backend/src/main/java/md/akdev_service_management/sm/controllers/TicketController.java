@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import md.akdev_service_management.sm.dto.ticket.*;
+import md.akdev_service_management.sm.exceptions.AccessDeniedException;
 import md.akdev_service_management.sm.exceptions.CstErrorResponse;
 import md.akdev_service_management.sm.exceptions.DuplicateException;
 import md.akdev_service_management.sm.exceptions.NotFoundException;
@@ -26,10 +27,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
+import java.util.function.Supplier;
 
 @RestController
 @CrossOrigin
@@ -57,11 +60,16 @@ public class TicketController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getTicketById(@PathVariable("id") int id) {
-        TicketDTO ticketDTO = mappingUtils.map(ticketServices.findById(id), TicketDTO.class);
+       TicketDTO ticketDTO;
+        try {
+            ticketDTO = mappingUtils.map(ticketServices.findById(id), TicketDTO.class);
+        }catch (org.springframework.security.access.AccessDeniedException e){
+            throw new AccessDeniedException(e.getMessage());
+        }
+
         String[] ignorableFieldName = {};
         MappingJacksonValue mapping = new MappingJacksonValue(ticketDTO);
         mapping.setFilters(doFilter(ignorableFieldName));
-
         return ResponseEntity.ok(mapping);
     }
 
@@ -123,20 +131,22 @@ public class TicketController {
 
     @PostMapping("/new_body")
     public ResponseEntity<?>createTicketBody(@RequestBody TicketBodyDTO ticketBodyDTO){
-        vRet = "fail to create new ticket body";
             doBody(ticketBodyDTO);
         return ResponseEntity.ok(Map.of("result", vRet));
     }
 
-    @PostMapping("/new_attachment")
-    public ResponseEntity<Map<String,Integer>>storeAttachments(@RequestParam("ticketBodyId") int id,
-                                                               @RequestPart("files") MultipartFile[] files) {
-//
-        // TicketBody ticketBody = ticketBodyService.getTicketBodyById(id).orElse(new TicketBody());
-//        User user = ticketBodyService.getTicketBodyById(id).stream().findAny().orElseThrow().getCreatedBy(); //ToDo убрать
-//        ticketAttachmentService.storeFile(files,ticketBody,user);
+    @PostMapping("/new_attachment/")
+    public ResponseEntity<?>storeAttachments(@RequestParam("bodyId") Integer bodyId,
+                                             @RequestPart("files") MultipartFile[] files) {
 
-        return ResponseEntity.ok(Map.of("attachmentAllOk", 1));
+        ticketBodyService.getTicketBodyById(bodyId).ifPresentOrElse(
+                ticketBody -> {
+                        ticketAttachmentService.storeFile(files, ticketBody);
+                        vRet = "attachment successfully uploaded";
+                },() -> vRet = "ticket body not found"
+        );
+
+        return ResponseEntity.ok(Map.of("result", vRet));
     }
 
     @GetMapping("/getAttachmentByTicketBodyId/{id}")
@@ -159,25 +169,31 @@ public class TicketController {
 
     private void doBody(TicketBodyDTO ticketBodyDTO){
 
-        ticketServices.findById(ticketBodyDTO.getTicket()).ifPresent(
+        Ticket  ticket;
 
-                ticket -> {
-                    TicketBody ticketBody = new TicketBody(ticket);
+        try {
+            ticket = ticketServices.findById(ticketBodyDTO.getTicket());
+        }catch (org.springframework.security.access.AccessDeniedException e){
+            throw  new AccessDeniedException(e.getMessage());
+        }
 
-                    if(!ticketBodyDTO.getBody().isBlank()){
-                        ticketBody.setBody(ticketBodyDTO.getBody());
-                    }
+        TicketBody ticketBody = new TicketBody(ticket);
 
-                    if(!Objects.isNull(ticketBodyDTO.getTicketAttachment())){
-                        TicketAttachment ticketAttachment = new TicketAttachment(ticketBody);
-                        ticketBody.setTicketAttachment(List.of(ticketAttachment));
-                    }
-                    ticketBodyService.saveTicketBody(ticketBody);
+        if(!ticketBodyDTO.getBody().isBlank()){
+            ticketBody.setBody(ticketBodyDTO.getBody());
+        }
 
-                    vRet = "new ticket body was created with id " +  ticketBody.getId();
-                }
-        );
-    }
+        if(!Objects.isNull(ticketBodyDTO.getTicketAttachment())){
+            TicketAttachment ticketAttachment = new TicketAttachment(ticketBody);
+            ticketBody.setTicketAttachment(List.of(ticketAttachment));
+        }
+
+        ticketBodyService.saveTicketBody(ticketBody);
+
+        vRet = "new ticket body was created with id " +  ticketBody.getId();
+        }
+
+
 
     @CrossOrigin(exposedHeaders = "Content-Disposition")
     @GetMapping("/files/{id}")
@@ -190,7 +206,7 @@ public class TicketController {
     }
 
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-    @ExceptionHandler({NotFoundException.class, DuplicateException.class})
+    @ExceptionHandler({NotFoundException.class, DuplicateException.class, AccessDeniedException.class})
     private ResponseEntity<CstErrorResponse> handeException(Exception e){
         CstErrorResponse cstErrorResponse = new CstErrorResponse(
                 e.getMessage()

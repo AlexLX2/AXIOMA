@@ -1,6 +1,7 @@
 package md.akdev_service_management.sm.repositories.ticket;
 
 import md.akdev_service_management.sm.models.ticket.Ticket;
+import md.akdev_service_management.sm.models.ticket.TicketBody;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,7 +13,8 @@ import java.util.Optional;
 @Repository
 public interface TicketRepository extends JpaRepository<Ticket,Integer> {
 
-    Optional<Ticket> findByTicketId(Integer id);
+    Ticket findByTicketId(Integer id);
+
     @Query("select  distinct t from AclObjectIdentity aoi" +
             " inner join AclClass cls on aoi.objectIdClass.id = cls.id" +
             " inner join AclEntry ent on aoi.id = ent.aclObjectIdentity.id" +
