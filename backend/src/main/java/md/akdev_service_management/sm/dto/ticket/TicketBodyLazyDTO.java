@@ -23,30 +23,5 @@ public class TicketBodyLazyDTO implements DTO{
     protected String changedBy;
     protected List<TicketAttachmentLazyDTO> ticketAttachment;
 
-//    @Override
-//    public ModelMapper updateModelMapper(ModelMapper mapper, MappingUtils mappingUtils){
-//        mapper.addMappings(ticketBodyMap(mappingUtils));
-//        return mapper;
-//    }
-//
-//    PropertyMap<TicketBody, TicketBodyLazyDTO> ticketBodyMap(MappingUtils mappingUtils) {
-//        return new PropertyMap<TicketBody, TicketBodyLazyDTO>() {
-//            @Override
-//            protected void configure() {
-//                Converter<TicketBody, List<TicketAttachmentLazyDTO>> mapTicketBody = new AbstractConverter<TicketBody, List<TicketAttachmentLazyDTO>>() {
-//                    @Override
-//                    protected List<TicketAttachmentLazyDTO> convert(TicketBody ticketBody) {
-//                        return mappingUtils.mapList(ticketBody.getTicketAttachment(), TicketAttachmentLazyDTO.class);
-//                    }
-//                };
-//
-//                using(mapTicketBody).map(source, destination.getTicketAttachment());
-//
-//                map().setChangedBy(source.getChangedBy().getFullName());
-//                map().setCreatedBy(source.getCreatedBy().getFullName());
-//
-//            }
-//        };
-//    }
 
 }

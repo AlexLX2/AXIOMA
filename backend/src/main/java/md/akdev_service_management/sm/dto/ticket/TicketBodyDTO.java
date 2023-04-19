@@ -3,6 +3,7 @@ package md.akdev_service_management.sm.dto.ticket;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import md.akdev_service_management.sm.dto.user.UserDTO;
+import md.akdev_service_management.sm.models.ticket.TicketAttachment;
 import md.akdev_service_management.sm.models.ticket.TicketBody;
 import md.akdev_service_management.sm.utils.DTO;
 import md.akdev_service_management.sm.utils.MappingUtils;
@@ -46,7 +47,6 @@ public class TicketBodyDTO implements DTO {
                 };
 
                 using(mapTicketBody).map(source, destination.getTicketAttachment());
-
 
             }
         };

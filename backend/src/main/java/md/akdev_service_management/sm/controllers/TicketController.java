@@ -2,6 +2,7 @@ package md.akdev_service_management.sm.controllers;
 
 
 import com.fasterxml.jackson.annotation.JsonFilter;
+
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
@@ -13,7 +14,6 @@ import md.akdev_service_management.sm.exceptions.NotFoundException;
 import md.akdev_service_management.sm.models.ticket.Ticket;
 import md.akdev_service_management.sm.models.ticket.TicketAttachment;
 import md.akdev_service_management.sm.models.ticket.TicketBody;
-import md.akdev_service_management.sm.security.IAuthenticationFacade;
 import md.akdev_service_management.sm.services.ticket.TicketAttachmentService;
 import md.akdev_service_management.sm.services.ticket.TicketBodyService;
 import md.akdev_service_management.sm.services.ticket.TicketServices;
@@ -29,8 +29,8 @@ import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.activation.MimetypesFileTypeMap;
 import java.util.*;
-import java.util.function.Supplier;
 
 @RestController
 @CrossOrigin
@@ -41,32 +41,28 @@ public class TicketController {
     private final TicketBodyService ticketBodyService;
     private final TicketAttachmentService ticketAttachmentService;
     private final MappingUtils mappingUtils;
-    private final IAuthenticationFacade authenticationFacade;
-
-    private int someId;
     String vRet;
 
     @Autowired
     public TicketController(TicketServices ticketServices, TicketBodyService ticketBodyService
-                            , TicketAttachmentService ticketAttachmentService, MappingUtils mappingUtils, IAuthenticationFacade authenticationFacade) {
+                            , TicketAttachmentService ticketAttachmentService, MappingUtils mappingUtils) {
         this.ticketServices = ticketServices;
         this.ticketBodyService = ticketBodyService;
         this.ticketAttachmentService = ticketAttachmentService;
         this.mappingUtils = mappingUtils;
-        this.authenticationFacade = authenticationFacade;
     }
 
     @GetMapping("/{id}")
 
-    public ResponseEntity<?> getTicketById(@PathVariable("id") int id) {
+    public ResponseEntity<?> getTicketById(@PathVariable("id") int id)  {
        TicketDTO ticketDTO;
         try {
             ticketDTO = mappingUtils.map(ticketServices.findById(id), TicketDTO.class);
         }catch (org.springframework.security.access.AccessDeniedException e){
             throw new AccessDeniedException(e.getMessage());
         }
+        String[] ignorableFieldName = {"acl","fileContent","fileType"};
 
-        String[] ignorableFieldName = {"acl"};
         MappingJacksonValue mapping = new MappingJacksonValue(ticketDTO);
         mapping.setFilters(doFilter(ignorableFieldName));
         return ResponseEntity.ok(mapping);
@@ -84,10 +80,8 @@ public class TicketController {
         List<TicketDTO> ticketDTO = mappingUtils.mapList(ticketPage, TicketDTO.class);
 
         String[]  ignorableFieldName = {"ticketBody","acl"};
-
         MappingJacksonValue mapping = new MappingJacksonValue(ticketDTO);
         mapping.setFilters(doFilter(ignorableFieldName));
-
         return  ResponseEntity.ok(mapping);
     }
 
@@ -101,6 +95,21 @@ public class TicketController {
 
         Ticket ticket = mappingUtils.map(ticketDTO, Ticket.class);
 
+        for(int i = 0; i < ticketDTO.getTicketBody().size(); i++){
+            for (int j = 0; j<ticketDTO.getTicketBody().get(i).getTicketAttachment().size(); j++){
+                Base64.Decoder decoder = Base64.getDecoder();
+
+                String strAttachment = ticketDTO.getTicketBody().get(i).getTicketAttachment().get(j).getFileContent();
+
+                byte[] decodedByte = decoder.decode(strAttachment.split(",")[1]);
+
+                ticket.getTicketBody().get(i).getTicketAttachment().get(j).setFileContent(decodedByte);
+                MimetypesFileTypeMap fileTypeMap = new MimetypesFileTypeMap();
+
+                ticket.getTicketBody().get(i).getTicketAttachment().get(j).setFileType(fileTypeMap.getContentType(strAttachment));
+            }
+        }
+
         if(!Objects.isNull(ticket.getTicketBody())){
             TicketBody ticketBody = new TicketBody(ticket);
 
@@ -112,8 +121,21 @@ public class TicketController {
                         }
 
                         if(!Objects.isNull(ticketBodyIf.getTicketAttachment())){
-                            TicketAttachment ticketAttachment = new TicketAttachment(ticketBodyIf);
-                            ticketBody.setTicketAttachment(List.of(ticketAttachment));
+                            List<TicketAttachment> ticketAttachmentList = new ArrayList<>();
+                            ticketBodyIf.getTicketAttachment().forEach(i -> {
+
+                                TicketAttachment ticketAttachment = new TicketAttachment(ticketBody);
+
+                                ticketAttachment.setFileType(i.getFileType());
+                                ticketAttachment.setFileContent(i.getFileContent());
+                                ticketAttachment.setFileName(i.getFileName());
+
+                                ticketAttachmentList.add(ticketAttachment);
+
+                            });
+                            ticketBody.setTicketAttachment(ticketAttachmentList);
+
+
                         }
 
                         ticket.setTicketBody(List.of(ticketBody));
@@ -162,7 +184,6 @@ public class TicketController {
 
     public FilterProvider doFilter(String[] in){
         SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.serializeAllExcept(in);
-
         return new SimpleFilterProvider().addFilter("ticketDTOFilter", filter);
     }
 

@@ -49,7 +49,7 @@ public class TicketDTO implements DTO {
     private PriorityDTO priority;
     @NotNull(message = "Ticket category must be not empty")
     private CategoryDTO category;
-    @NotNull(message = "You probably don't have rights to create ticket")
+    @NotNull(message = "You probably or your role don't have rights to create ticket")
     private AclObjectIdentity acl;
     private List<TicketBodyDTO> ticketBody;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
