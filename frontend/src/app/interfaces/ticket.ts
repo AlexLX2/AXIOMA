@@ -15,6 +15,6 @@ export interface Ticket {
     createdAt?: Date;
     changedBy?: string;
     changedAt?: Date;
-    roles?: Role;
+    acl?: {id:number};
 }
 

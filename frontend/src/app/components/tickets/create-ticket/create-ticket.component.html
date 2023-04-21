@@ -8,12 +8,12 @@
                         <ng-select class="custom" formControlName="role" required>
                             <ng-option
                                     *ngFor="let role of roleList"
-                                    [value]="role"> {{role.name | rolename}}</ng-option>
+                                    [value]="role.id"> {{role.name | rolename}}</ng-option>
                         </ng-select>
                     </div>
                     <div class="ticket-create__line">
                         <span class="ticket-create__lable">Assign to:</span>
-                        <ng-select [multiple]="true" class="custom" formControlName="employee">
+                        <ng-select [multiple]="true" class="custom">
                             <ng-option *ngFor="let empl of employeeList"
                                        [value]=empl.id> {{empl.firstName}} {{empl.lastName}}</ng-option>
                         </ng-select>

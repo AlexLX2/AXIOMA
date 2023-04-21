@@ -3,7 +3,6 @@
     <!--			Список тикетов			-->
 
     <div class="content-body__rows">
-        <!--							<a *ngFor="let ticket of ticketList" routerLink="/tickets/{{ticket.ticketId}}"-->
         <a (click)="openTicket(ticket.ticketId)" *ngFor="let ticket of ticketList"
            [ngClass]="{'_red': ticket.status.name==='overdue',
 							   '_active': isTicketOpened&&ticket.ticketId===currentTicketId}"
@@ -20,10 +19,10 @@
                 <span [ngClass]="{'icon-high': ticket.priority.name==='high'}"
                       class="content-row__lable icon-high"> </span>
             </div>
-            <div class="content-row__column">
+            <div class="content-row__column" *ngIf="!isTicketOpened">
                 <span class="content-row__username">{{ticket.author}}</span>
             </div>
-            <div class="content-row__column">
+            <div class="content-row__column" *ngIf="!isTicketOpened">
                 <span class="content-row__date">Created: {{ticket.createdAt | date}}</span>
                 <span class="content-row__username">Edited: {{ticket.changedAt | date}}</span>
             </div>
@@ -31,9 +30,6 @@
         <div class="pagination_cont" *ngIf="!isTicketOpened">
             <div class="page-size">
             <ng-select placeholder="10" [clearable]="false" [(ngModel)]="pageSize" [items]="pageSizes" (change)="changePageSize($event)">
-<!--                <ng-option class="page-size-items">10</ng-option>-->
-<!--                <ng-option class="page-size-items">20</ng-option>-->
-<!--                <ng-option class="page-size-items">50</ng-option>-->
             </ng-select>
                 &nbsp; per page
             </div>

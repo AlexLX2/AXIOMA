@@ -13,6 +13,7 @@ import {Role} from "../../../interfaces/role";
 import {AlertService} from "../../../_alert";
 import {Router} from "@angular/router";
 import {FooterService} from "../../../services/footer.service";
+import {TicketAttachment} from "../../../interfaces/ticket-attachment";
 
 @Component({
     selector: 'app-new-ticket',
@@ -25,7 +26,8 @@ export class CreateTicketComponent implements OnInit {
     employeeList: Employee[] = [];
     categoryList: Catalog[] = [];
     statusList: Catalog[] = [];
-    roleList: Role[] = []
+    roleList: Role[] = [];
+    attachmentList: TicketAttachment[] = [];
 
     newTicket?: Ticket;
     fileName: string = 'Select file';
@@ -93,12 +95,14 @@ export class CreateTicketComponent implements OnInit {
         const ticketBody: TicketBody[] = [];
         ticketBody.push(
             {
-                body: this.vForm.get('body')?.value,
-                ticketAttachment: [],
-                id: 0,
-                ticket: 0
+                body: this.vForm.get('body')?.value
             }
         )
+
+        if(this.attachmentList.length>0) {
+            console.log('atta', this.attachmentList);
+            ticketBody[0].ticketAttachment = this.attachmentList;
+        }
 
         this.newTicket = {
             author: 'AK (ak@akdev.md)',
@@ -108,7 +112,7 @@ export class CreateTicketComponent implements OnInit {
             ticketBody: ticketBody,
             ticketId: 0,
             title: this.vForm.get('subject')?.value,
-            roles: this.vForm.get('role')?.value
+            acl: {id: this.vForm.get('role')?.value}
         };
 
         console.log('new ticket', this.newTicket);
@@ -125,11 +129,19 @@ export class CreateTicketComponent implements OnInit {
     }
 
     selectFile(event: any): void {
-        console.log('Event', event);
         if (event.target.files && event.target.files[0]) {
             [...event.target.files].forEach((file: File) => {
                 this.files.push(file)
                 this.fileName = this.fileName + file.name;
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => {
+                    this.attachmentList.push({
+                        fileContent: reader.result? reader.result: '',
+                        fileName: file.name,
+                        fileType: file.type
+                    });
+                };
             })
         } else {
             this.fileName = 'Select File';

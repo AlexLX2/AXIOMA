@@ -89,7 +89,7 @@ export class ViewTicketComponent implements OnChanges, OnInit {
             fileName = fileName.split('=')[1];
             fileName = fileName.substring(1, fileName.length-1);
             const blob = new Blob([data.body]);
-            const url = window.URL.createObjectURL(blob);
+            const url = window['URL'].createObjectURL(blob);
             const link = document.createElement('a');
             link.href = url;
             link.download = fileName;

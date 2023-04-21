@@ -21,9 +21,9 @@
                         , {{currentTicket.ticketBody[0].createdAt | date}}
                     </div>
                 </div>
-                <a *ngIf="currentTicket.ticketBody[0].ticketAttachment.length>0" href="#" class="ticket-body__show  btn-block">
-                    <span>Show attachments</span>
-                </a>
+                <button *ngFor="let att of currentTicket.ticketBody[0].ticketAttachment" (click)="openFile(att.id)" class="ticket-body__show ticket-body__show_blue btn-block">
+                    <span> {{att.fileName}}</span>
+                </button>
             </div>
         </div>
     </div>
