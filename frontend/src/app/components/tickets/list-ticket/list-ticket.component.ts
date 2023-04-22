@@ -46,6 +46,7 @@ export class ListTicketComponent implements OnInit {
   }
 
    initTicketList() {
+    this.loaderService.show();
     console.log('curent page', this.pagNum);
     this.ticketService.getAllTickets(this.pageSize, this.pagNum).subscribe(data => {
       this.ticketList = data;

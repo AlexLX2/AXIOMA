@@ -7,6 +7,7 @@ import {Login} from "../../interfaces/login";
 import {AlertService} from "../../_alert";
 import {TitleService} from "../../services/title.service";
 import {FooterService} from "../../services/footer.service";
+import {JwtHelperService} from "@auth0/angular-jwt";
 
 @Component({
   selector: 'app-login',
@@ -29,7 +30,8 @@ export class LoginComponent implements OnInit{
               private router: Router,
               private alertService: AlertService,
               private titleService: TitleService,
-              private footerService: FooterService) {
+              private footerService: FooterService,
+              private jwtHelper: JwtHelperService) {
     this.loginForm = fb.group({
       login: new FormControl('', [Validators.required, Validators.min(2), Validators.max(30)]),
       password: new FormControl('', [Validators.required, Validators.min(8), Validators.max(30)])
@@ -51,7 +53,7 @@ export class LoginComponent implements OnInit{
           console.error('Auth error:', data.message)
           this.alertService.error(data.message, { autoClose: true});
       } else {
-          this.storageService.addItem('token', data['jwt-token'])
+          this.storageService.decodeToken(data['jwt-token']);
           this.router.navigateByUrl(this.returnUrl);
         }
       });

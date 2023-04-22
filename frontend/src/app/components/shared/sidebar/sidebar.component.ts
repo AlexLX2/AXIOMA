@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import { SidebarService, themeTypes } from './sidebar.service';
 import {AuthService} from "../../../services/auth.service";
+import {User} from "../../../interfaces/user";
 
 @Component({
   selector: 'axioma-sidebar',
@@ -19,6 +20,8 @@ export class SidebarComponent {
   public toggleConfDropdown = () =>
     (this.isOpenedConfDropdown = !this.isOpenedConfDropdown);
 
+  currentUser: User;
+
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
@@ -30,6 +33,8 @@ export class SidebarComponent {
       const newTheme = theme ? themeTypes.white : themeTypes.dark;
       this.sidebarService.switchTheme(newTheme);
     });
+
+    this.currentUser = this.authService.getCurrenUserInfo();
   }
 
   public themeForm = this.fb.group({
@@ -45,4 +50,12 @@ export class SidebarComponent {
         this.authService.logout();
         this.router.navigateByUrl('/login');
     }
+
+  isAdmin() {
+    return this.authService.isAdmin();
+  }
+
+  isAuthenticated() {
+    return this.authService.isAuthenticated();
+  }
 }
