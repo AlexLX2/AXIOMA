@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {JwtHelperService} from "@auth0/angular-jwt";
+import {User} from "../interfaces/user";
 
 @Injectable({
   providedIn: 'root'
@@ -10,15 +11,11 @@ export class StorageService {
   }
 
 
-  decodeToken(token: string) {
+  decodeToken(token: string): User {
     window.localStorage.clear();
     const decodedToken = this.jwtHelper.decodeToken(token);
-    this.addItem('lastName', decodedToken.lastName);
-    this.addItem('firstName', decodedToken.firstName);
-    this.addItem('email', decodedToken.email);
-    this.addItem('roles', decodedToken.roles);
     this.addItem('token', token);
-    this.addItem('login', decodedToken.login);
+    return decodedToken;
   }
 
   addItem(key: string, value: any) {

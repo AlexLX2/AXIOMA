@@ -53,7 +53,7 @@ export class LoginComponent implements OnInit{
           console.error('Auth error:', data.message)
           this.alertService.error(data.message, { autoClose: true});
       } else {
-          this.storageService.decodeToken(data['jwt-token']);
+          this.authService.setCurrentUserInfo(this.storageService.decodeToken(data['jwt-token']));
           this.router.navigateByUrl(this.returnUrl);
         }
       });
