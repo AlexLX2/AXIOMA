@@ -19,11 +19,14 @@ import javax.servlet.http.HttpServletResponse;
 @EnableWebSecurity
 public class SecurityConfig  {
     private static final String[] AUTH_WHITELIST = {
-            "/swagger-resources/**",
-            "/swagger-ui/**",
-            "/v3/api-docs",
-            "/v2/api-docs",
-            "/webjars/**"
+            "/index.html",
+            "/scripts*",
+            "/polyfill*",
+            "/main*",
+            "/runtime*",
+            "/styles*",
+            "/",
+            "/login*"
     };
 
     private final UserDetailsService userDetailsService;

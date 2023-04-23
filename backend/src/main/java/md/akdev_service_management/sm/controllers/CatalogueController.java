@@ -1,18 +1,17 @@
 package md.akdev_service_management.sm.controllers;
 
 import md.akdev_service_management.sm.dto.catalogue.CatalogueDTO;
+import md.akdev_service_management.sm.exceptions.CstErrorResponse;
+import md.akdev_service_management.sm.exceptions.DuplicateException;
+import md.akdev_service_management.sm.exceptions.NotFoundException;
 import md.akdev_service_management.sm.models.ticket.TicketCategory;
 import md.akdev_service_management.sm.models.ticket.TicketPriority;
 import md.akdev_service_management.sm.models.ticket.TicketStatus;
 import md.akdev_service_management.sm.services.ticket.TicketCategoryService;
 import md.akdev_service_management.sm.services.ticket.TicketPriorityService;
 import md.akdev_service_management.sm.services.ticket.TicketStatusService;
-import md.akdev_service_management.sm.exceptions.CstErrorResponse;
-import md.akdev_service_management.sm.exceptions.DuplicateException;
-import md.akdev_service_management.sm.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@RepositoryRestController
+@RestController
 public class CatalogueController {
     private final TicketCategoryService ticketCategoryService;
     private final TicketPriorityService priorityService;
