@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@CrossOrigin
 @RestController
 public class CatalogueController {
     private final TicketCategoryService ticketCategoryService;
@@ -69,7 +70,7 @@ public class CatalogueController {
        }else{
            throw new NotFoundException();
        }
-       return ResponseEntity.ok("update successful");
+        return ResponseEntity.ok(Map.of("result","update successful"));
     }
 
 
@@ -107,7 +108,7 @@ public class CatalogueController {
             throw new NotFoundException();
         }
 
-        return ResponseEntity.ok("update successful");
+        return ResponseEntity.ok(Map.of("result","update successful"));
     }
 
     ///##################////
@@ -143,7 +144,7 @@ public class CatalogueController {
         else {
             throw new NotFoundException();
         }
-        return ResponseEntity.ok("update successful");
+        return ResponseEntity.ok(Map.of("result","update successful"));
     }
 
 

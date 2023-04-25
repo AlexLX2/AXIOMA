@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
-import {map, Observable} from "rxjs";
+import {Observable} from "rxjs";
 import {Catalog} from "../interfaces/catalog";
 
 @Injectable({
@@ -16,17 +16,10 @@ export class CatalogService {
   getCatalogItemList(catalog: string): Observable<Catalog[]> {
     catalog = catalog.toLowerCase();
     return this.http.get<Catalog[]>(`${this.baseUrl}/${catalog}`);
-    //     // .pipe(
-    //     // map(data=> {
-    //     //       console.log('data', data)
-    //     //       return (<any>data)._embedded.catalogueDTOes;
-    //     //     }
-    //     // )
-    // );
   }
 
   editCatalogItem(catalog:string, catalogItem: Catalog): Observable<any> {
-    return this.http.post(`${this.baseUrl}/${catalog}/createCatalogue`, catalogItem);
+    return this.http.patch(`${this.baseUrl}/${catalog}/update`, catalogItem);
   }
 
   createCatalogItem(item: string, catalogType: string) {
@@ -35,5 +28,9 @@ export class CatalogService {
       name:item
     }
     return this.http.post(`${this.baseUrl}/${catalogType}/new`, catalogItem);
+  }
+
+  getCatalogItemById(catalogName: string, id: number): Observable<Catalog> {
+    return  this.http.get<Catalog>(`${this.baseUrl}/${catalogName}/${id}`);
   }
 }

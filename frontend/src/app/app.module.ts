@@ -21,14 +21,14 @@ import {NgSelectModule} from "@ng-select/ng-select";
 import {QuillModule} from "ngx-quill";
 import { ViewTicketComponent } from './components/tickets/view-ticket/view-ticket.component';
 import { SafehtmlPipe } from './pipes/safehtml.pipe';
-import { ListCatalogsComponent } from './components/catalogs/list-catalogs/list-catalogs.component';
+import { ListCatalogsComponent } from './components/catalogs/generic-catalogs/list-catalogs/list-catalogs.component';
 import { ListUsersComponent } from './components/catalogs/users/list-users/list-users.component';
 import {WebdatarocksPivotModule} from "ng-webdatarocks";
 import { CreateUserComponent } from './components/catalogs/users/create-user/create-user.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {AlertModule} from "./_alert";
 import { ListRolesComponent } from './components/catalogs/users/list-roles/list-roles.component';
-import { EditCatalogItemComponent } from './components/catalogs/edit-catalog-item/edit-catalog-item.component';
+import { ListCatalogItemsComponent } from './components/catalogs/generic-catalogs/list-catalog-items/list-catalog-items.component';
 import { EditUserComponent } from './components/catalogs/users/edit-user/edit-user.component';
 import { EditRoleComponent } from './components/catalogs/users/edit-role/edit-role.component';
 import { RolenamePipe } from './pipes/rolename.pipe';
@@ -36,6 +36,7 @@ import { ListCompanyComponent } from './components/catalogs/company/list-company
 import { CreateCompanyComponent } from './components/catalogs/company/create-company/create-company.component';
 import { EditCompanyComponent } from './components/catalogs/company/edit-company/edit-company.component';
 import { CreateRoleComponent } from './components/catalogs/users/create-role/create-role.component';
+import { EditCatalogItemComponent } from './components/catalogs/generic-catalogs/edit-catalog-item/edit-catalog-item.component';
 
 @NgModule({
   declarations: [
@@ -56,14 +57,15 @@ import { CreateRoleComponent } from './components/catalogs/users/create-role/cre
     ListUsersComponent,
     CreateUserComponent,
     ListRolesComponent,
-    EditCatalogItemComponent,
+    ListCatalogItemsComponent,
     EditUserComponent,
     EditRoleComponent,
     RolenamePipe,
     ListCompanyComponent,
     CreateCompanyComponent,
     EditCompanyComponent,
-    CreateRoleComponent
+    CreateRoleComponent,
+    EditCatalogItemComponent
   ],
     imports: [
         BrowserModule,
@@ -91,18 +93,8 @@ import { CreateRoleComponent } from './components/catalogs/users/create-role/cre
 })
 export class AppModule { }
 
-
-//TODO Add ticket messages (bodies) styling
-//TODO Add catalogues
-//TODO Fix main menu items
-//TODO Fix ticket list title
 //TODO Enable filters
 //TODO Enable sorting
-//TODO Enable pagination
-//TODO Add ticket edit/reply
-//TODO Fix create ticket
-//TODO Add clients directory
 //TODO Add employee directory
-//TODO Fix favicon
 //TODO Add due date to ticket
 //TODO Discuss about user-roles. How to divide ticket body from agent from ticket body from user?

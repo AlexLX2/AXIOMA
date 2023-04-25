@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {TitleService} from "../../../services/title.service";
-import {FooterService} from "../../../services/footer.service";
+import {TitleService} from "../../../../services/title.service";
+import {FooterService} from "../../../../services/footer.service";
 
 @Component({
   selector: 'app-list-catalogs',

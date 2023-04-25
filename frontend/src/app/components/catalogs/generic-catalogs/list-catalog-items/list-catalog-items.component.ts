@@ -1,17 +1,17 @@
 import {Component, OnInit} from '@angular/core';
-import {TitleService} from "../../../services/title.service";
-import {FooterService} from "../../../services/footer.service";
-import {CatalogService} from "../../../services/catalog.service";
+import {TitleService} from "../../../../services/title.service";
+import {FooterService} from "../../../../services/footer.service";
+import {CatalogService} from "../../../../services/catalog.service";
 import {ActivatedRoute} from "@angular/router";
-import {Catalog} from "../../../interfaces/catalog";
-import {AlertService} from "../../../_alert";
+import {Catalog} from "../../../../interfaces/catalog";
+import {AlertService} from "../../../../_alert";
 
 @Component({
   selector: 'app-edit-catalog-item',
-  templateUrl: './edit-catalog-item.component.html',
-  styleUrls: ['./edit-catalog-item.component.scss']
+  templateUrl: './list-catalog-items.component.html',
+  styleUrls: ['./list-catalog-items.component.scss']
 })
-export class EditCatalogItemComponent implements OnInit{
+export class ListCatalogItemsComponent implements OnInit{
 
   currentCatalog: string = '';
   public isCollapsed = true;
@@ -28,6 +28,8 @@ export class EditCatalogItemComponent implements OnInit{
 
   ngOnInit(): void {
     this.currentCatalog = this.route.snapshot.params['catalogName'];
+    this.titleService.showTitleMsg(this.currentCatalog.toUpperCase(),'', false);
+    this.footerService.enablePagination(false);
     this.initData();
   }
 
