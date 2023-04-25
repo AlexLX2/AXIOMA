@@ -26,7 +26,8 @@ public class SecurityConfig  {
             "/runtime*",
             "/styles*",
             "/",
-            "/login*"
+            "/login*",
+            "/**"
     };
 
     private final UserDetailsService userDetailsService;
