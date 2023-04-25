@@ -1530,15 +1530,15 @@ ngb-pagination  .page-item .page-link{
   position: relative;
   /* .ticket-info__top */
 }
-.ticket-info__header {
-  min-height: calc(100% - 280px);
-}
+//.ticket-info__header {
+//  min-height: calc(100% - 280px);
+//}
 
 @media (min-width: 820px) {
-  //.ticket-info__header {
-  //  position: sticky;
-  //  top: 0;
-  //}
+  .ticket-info__header {
+    position: sticky;
+    top: 0;
+  }
   .ticket-info__header::before {
     content: "";
     position: absolute;
