@@ -30,7 +30,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.activation.MimetypesFileTypeMap;
+import javax.annotation.Nullable;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin
@@ -95,20 +97,24 @@ public class TicketController {
 
         Ticket ticket = mappingUtils.map(ticketDTO, Ticket.class);
 
-        for(int i = 0; i < ticketDTO.getTicketBody().size(); i++){
-            for (int j = 0; j<ticketDTO.getTicketBody().get(i).getTicketAttachment().size(); j++){
-                Base64.Decoder decoder = Base64.getDecoder();
+            for (int i = 0; i < ticketDTO.getTicketBody().size(); i++) {
+                if (ticketDTO.getTicketBody().get(i).getTicketAttachment() != null) {
+                    for (int j = 0; j < ticketDTO.getTicketBody().get(i).getTicketAttachment().size(); j++) {
+                        Base64.Decoder decoder = Base64.getDecoder();
 
-                String strAttachment = ticketDTO.getTicketBody().get(i).getTicketAttachment().get(j).getFileContent();
+                        String strAttachment = ticketDTO.getTicketBody().get(i).getTicketAttachment().get(j).getFileContent();
 
-                byte[] decodedByte = decoder.decode(strAttachment.split(",")[1]);
+                        byte[] decodedByte = decoder.decode(strAttachment.split(",")[1]);
 
-                ticket.getTicketBody().get(i).getTicketAttachment().get(j).setFileContent(decodedByte);
-                MimetypesFileTypeMap fileTypeMap = new MimetypesFileTypeMap();
+                        ticket.getTicketBody().get(i).getTicketAttachment().get(j).setFileContent(decodedByte);
+                        MimetypesFileTypeMap fileTypeMap = new MimetypesFileTypeMap();
 
-                ticket.getTicketBody().get(i).getTicketAttachment().get(j).setFileType(fileTypeMap.getContentType(strAttachment));
+                        ticket.getTicketBody().get(i).getTicketAttachment().get(j).setFileType(fileTypeMap.getContentType(strAttachment));
+                    }
+                }
             }
-        }
+
+
 
         if(!Objects.isNull(ticket.getTicketBody())){
             TicketBody ticketBody = new TicketBody(ticket);
