@@ -1,9 +1,10 @@
 package md.akdev_service_management.sm.dto.catalogue;
 
 import lombok.Data;
+import md.akdev_service_management.sm.utils.DTO;
 
 @Data
-public class PriorityDTO {
+public class PriorityDTO implements DTO {
     Integer id;
     String name;
 }
