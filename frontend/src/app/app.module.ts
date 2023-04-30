@@ -16,7 +16,7 @@ import {JWT_OPTIONS, JwtHelperService} from "@auth0/angular-jwt";
 import {AuthInterceptor} from "./interceptors/auth.interceptor";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import { HoverClassDirective } from './directives/hover-class.directive';
-import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import {NgbAccordionModule, NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {NgSelectModule} from "@ng-select/ng-select";
 import {QuillModule} from "ngx-quill";
 import { ViewTicketComponent } from './components/tickets/view-ticket/view-ticket.component';
@@ -37,6 +37,7 @@ import { CreateCompanyComponent } from './components/catalogs/company/create-com
 import { EditCompanyComponent } from './components/catalogs/company/edit-company/edit-company.component';
 import { CreateRoleComponent } from './components/catalogs/users/create-role/create-role.component';
 import { EditCatalogItemComponent } from './components/catalogs/generic-catalogs/edit-catalog-item/edit-catalog-item.component';
+import { ListSettingsComponent } from './components/catalogs/settings/list-settings/list-settings.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import { EditCatalogItemComponent } from './components/catalogs/generic-catalogs
     CreateCompanyComponent,
     EditCompanyComponent,
     CreateRoleComponent,
-    EditCatalogItemComponent
+    EditCatalogItemComponent,
+    ListSettingsComponent
   ],
     imports: [
         BrowserModule,
@@ -78,7 +80,8 @@ import { EditCatalogItemComponent } from './components/catalogs/generic-catalogs
         QuillModule.forRoot(),
         WebdatarocksPivotModule,
         BrowserAnimationsModule,
-        AlertModule
+        AlertModule,
+        NgbAccordionModule
     ],
   providers: [[{
     provide: HTTP_INTERCEPTORS,
@@ -98,3 +101,4 @@ export class AppModule { }
 //TODO Add employee directory
 //TODO Add due date to ticket
 //TODO Discuss about user-roles. How to divide ticket body from agent from ticket body from user?
+//TODO Add body user and timestamp

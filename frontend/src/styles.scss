@@ -2,6 +2,7 @@
 @import url(https://fonts.googleapis.com/css?family=Inter:400,500,600,700,800,900&display=swap);
 @import "~bootstrap/dist/css/bootstrap.css";
 @import 'webdatarocks/webdatarocks.min.css';
+@import "~bootstrap-icons/font/bootstrap-icons.css";
 
 .wrapper {
   min-height: 100%;
@@ -15,6 +16,12 @@
 .wrapper > * {
   min-width: 0;
 }
+
+.settings-header {
+  color: #0d6efd;
+  background-color: black;
+}
+
 
 body[data-theme=dark] {
   --colors-wihte:#fff;
@@ -511,7 +518,7 @@ h6 {
 }
 
 .main_content {
-  height: calc(100% - 30px);
+  height: 100%;
   width: 100%;
   padding-right: 50px;
 }

@@ -1,0 +1,89 @@
+<div class="dashboard-content__body content-body">
+    <div class="accordion m-3" id="accordionExample">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+                <button aria-controls="collapseOne" aria-expanded="true" class="accordion-button settings-header"
+                        data-bs-target="#collapseOne" data-bs-toggle="collapse" type="button">
+                    General settings
+                </button>
+            </h2>
+            <div aria-labelledby="headingOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample"
+                 id="collapseOne">
+                <div class="accordion-body">
+                    <div class="mb-3">
+                        <label class="form-label" for="email">Email address</label>
+                        <input [(ngModel)]="email" (change)="updateSettingItem(email, 'email')" class="form-control" id="email" placeholder="name@example.com"
+                               type="email">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="password">Password</label>
+                        <input [(ngModel)]="password" (change)="updateSettingItem(password, 'password')" class="form-control" id="password" type=password>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="server">Server address</label>
+                        <input [(ngModel)]="server" (change)="updateSettingItem(server, 'mailServer')" class="form-control" id="server" placeholder="mail.example.com"
+                               type="text">
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" [(ngModel)]="enableAutoFetch" (change)="updateSettingItem(enableAutoFetch, 'auto_fetch_email')" type="checkbox" value="" id="enableAutoFetchEmail">
+                        <label class="form-check-label" for="enableAutoFetchEmail">
+                            Enable auto fetch email
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingTwo">
+                <button aria-controls="collapseTwo" aria-expanded="false" class="accordion-button collapsed"
+                        data-bs-target="#collapseTwo" data-bs-toggle="collapse" type="button">
+                    Default ticket values
+                </button>
+            </h2>
+            <div aria-labelledby="headingTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample"
+                 id="collapseTwo">
+                <div class="accordion-body">
+                    <div class="mb-3">
+                        <label class="form-label" for="category">Default category:</label>
+                        <ng-select [(ngModel)]="category" [clearable]="false" (change)="updateSettingItem($event.id, 'default_cat')" id="category" required>
+                            <ng-option
+                                    *ngFor="let cat of categories"
+                                    [value]="cat"> {{cat.name | titlecase}}</ng-option>
+                        </ng-select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="priority">Default priority:</label>
+                        <ng-select [(ngModel)]="priority" (change)="updateSettingItem($event.id, 'default_priority')" [clearable]="false" id="priority" required>
+                            <ng-option
+                                    *ngFor="let pri of priorities"
+                                    [value]="pri"> {{pri.name | titlecase}}</ng-option>
+                        </ng-select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="status">Default status:</label>
+                        <ng-select [(ngModel)]="status" (change)="updateSettingItem($event.id, 'default_status')" [clearable]="false" id="status" required>
+                            <ng-option
+                                    *ngFor="let st of statuses"
+                                    [value]="st"> {{st.name | titlecase}}</ng-option>
+                        </ng-select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingThree">
+                <button aria-controls="collapseThree" aria-expanded="false" class="accordion-button collapsed"
+                        data-bs-target="#collapseThree" data-bs-toggle="collapse" type="button">
+                    Other settings
+                </button>
+            </h2>
+            <div aria-labelledby="headingThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample"
+                 id="collapseThree">
+                <div class="accordion-body">
+                    Other settings
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -19,6 +19,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@ToString
 @RequiredArgsConstructor
 @Table(name = "ticket")
 @EntityListeners(AuditingEntityListener.class)
