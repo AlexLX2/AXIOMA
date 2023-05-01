@@ -1,27 +1,34 @@
 package md.akdev_service_management.sm.controllers;
 
 import md.akdev_service_management.sm.services.mail.MailService;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.stereotype.Controller;
 
 import javax.mail.Message;
 import java.util.List;
-import java.util.Map;
 
-@RestController
+@Controller
 public class MailController {
 
     private final MailService mailService;
+    private final JavaMailSender mailSender;
 
-    public MailController(MailService mailService) {
+    public MailController(MailService mailService, JavaMailSender mailSender) {
         this.mailService = mailService;
+        this.mailSender = mailSender;
     }
 
+    public List<Message> getMail(){
+        return mailService.readEmails();
+    }
 
-    @GetMapping("/get-mail")
-    public ResponseEntity<?> getMail(){
-        List<Message> messageList = mailService.readEmails();
-        return ResponseEntity.ok(Map.of("new messages", messageList.size()));
+    public void sendSimpleMessage(String to, String subject, String text) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("aksema@akdev.md");
+        message.setTo(to);
+        message.setSubject(subject);
+        message.setText(text);
+        mailSender.send(message);
     }
 }
