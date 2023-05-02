@@ -1,6 +1,8 @@
 package md.akdev_service_management.sm.services.mail;
 
 import md.akdev_service_management.sm.services.config.ConfigService;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import javax.mail.Folder;
@@ -16,9 +18,11 @@ import java.util.Properties;
 public class MailService {
 
     private final ConfigService configService;
+    private final JavaMailSender mailSender;
 
-    public MailService(ConfigService configService) {
+    public MailService(ConfigService configService, JavaMailSender mailSender) {
         this.configService = configService;
+        this.mailSender = mailSender;
     }
 
     public List<Message> readEmails() {
@@ -42,5 +46,15 @@ public class MailService {
             e.printStackTrace();
             return Collections.emptyList();
         }
+    }
+
+
+    public void sendSimpleMessage(String to, String subject, String text) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("aksema@akdev.md");
+        message.setTo(to);
+        message.setSubject(subject);
+        message.setText(text);
+        mailSender.send(message);
     }
 }
