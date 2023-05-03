@@ -21,6 +21,7 @@ export class ListSettingsComponent implements OnInit {
     email: string = '';
     password: string = '';
     server: string = '';
+    acl: string = '';
     category: Catalog | undefined;
     priority: Catalog | undefined;
     status: Catalog | undefined;
@@ -54,6 +55,10 @@ export class ListSettingsComponent implements OnInit {
             this.enableAutoFetch = Boolean(this.items.find(it => {
                 return it.name === 'auto_fetch_email'
             })!.value);
+
+            this.acl = this.items.find(it => {
+                return it.name === 'default_acl'
+            })!.value;
 
             this.catalogService.getCatalogItemList('category').subscribe(cat => {
                 this.categories = cat;

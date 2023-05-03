@@ -67,6 +67,10 @@
                                     [value]="st"> {{st.name | titlecase}}</ng-option>
                         </ng-select>
                     </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="acl">Password</label>
+                        <input [(ngModel)]="acl" (change)="updateSettingItem(acl, 'default_acl')" class="form-control" id="acl" type=password>
+                    </div>
                 </div>
             </div>
         </div>

@@ -1,6 +1,5 @@
 import {TicketBody} from "./ticket-body";
 import {Catalog} from "./catalog";
-import {Role} from "./role";
 
 export interface Ticket {
 
