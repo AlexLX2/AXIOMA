@@ -8,18 +8,17 @@ import md.akdev_service_management.sm.dto.catalogue.StatusDTO;
 import md.akdev_service_management.sm.dto.ticket.TicketBodyDTO;
 import md.akdev_service_management.sm.dto.ticket.TicketDTO;
 import md.akdev_service_management.sm.models.acl.AclObjectIdentity;
-import md.akdev_service_management.sm.models.ticket.TicketBody;
-import md.akdev_service_management.sm.security.JWTUtil;
+import md.akdev_service_management.sm.services.config.ConfigService;
 import md.akdev_service_management.sm.services.mail.MailService;
 import md.akdev_service_management.sm.services.ticket.TicketCategoryService;
 import md.akdev_service_management.sm.services.ticket.TicketPriorityService;
 import md.akdev_service_management.sm.services.ticket.TicketStatusService;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import javax.mail.Message;
@@ -34,8 +33,6 @@ import java.util.List;
 public class MailReceiver {
 
     private final MailService mailService;
-    private final ConfigController configController;
-
     private final TicketStatusService statusService;
     private final TicketPriorityService priorityService;
     private final TicketCategoryService categoryService;
@@ -44,36 +41,43 @@ public class MailReceiver {
 
     private final TicketController ticketController;
 
-    private final AuthenticationManager authenticationManager;
 
-    public MailReceiver(MailService mailService, ConfigController configController, TicketStatusService statusService, TicketPriorityService priorityService, TicketCategoryService categoryService, MappingUtils mappingUtils, TicketController ticketController, AuthenticationManager authenticationManager) {
+    private final ConfigService configService;
+
+    private final UserDetailsService userDetailsService;
+
+
+    public MailReceiver(MailService mailService, TicketStatusService statusService, TicketPriorityService priorityService, TicketCategoryService categoryService, MappingUtils mappingUtils, TicketController ticketController, ConfigService configService, UserDetailsService userDetailsService) {
         this.mailService = mailService;
-        this.configController = configController;
         this.statusService = statusService;
         this.priorityService = priorityService;
         this.categoryService = categoryService;
         this.mappingUtils = mappingUtils;
         this.ticketController = ticketController;
-        this.authenticationManager = authenticationManager;
+        this.configService = configService;
+        this.userDetailsService = userDetailsService;
     }
 
     @Scheduled(fixedRate = 300000)
     public void executeTask() {
 
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                "vbrizitschi","Abracadabra!123"
-        );
+
+        String login = configService.getValue("default_mail_user");
+
+        UserDetails userDetails = userDetailsService.loadUserByUsername(login);
+
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+                userDetails,
+                userDetails.getPassword(),
+                userDetails.getAuthorities());
 
         try {
-            SecurityContext context = SecurityContextHolder.createEmptyContext();
-            SecurityContextHolder.setContext(context);
-            context.setAuthentication(authenticationManager.authenticate(authenticationToken));
-
-        }catch (BadCredentialsException e ){
+            SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+        } catch (BadCredentialsException e) {
             e.getCause();
         }
 
-        boolean enableAutoFetch = Boolean.parseBoolean(this.configController.getConfigByName("auto_fetch_email").getValue());
+        boolean enableAutoFetch = Boolean.parseBoolean(configService.getValue("auto_fetch_email"));
 
         if (enableAutoFetch) {
             List<Message> messageList = mailService.readEmails();
@@ -97,27 +101,23 @@ public class MailReceiver {
         ticketDTO.setStatus(mappingUtils.map(
                 statusService.findById(
                         Integer.parseInt(
-                                configController.getConfigByName("default_status")
-                                        .getValue())).get(),StatusDTO.class));
+                                configService.getValue("default_status"))).get(), StatusDTO.class));
         ticketDTO.setPriority(mappingUtils.map(
                 priorityService.findById(
                         Integer.parseInt(
-                                configController.getConfigByName("default_priority").getValue()
-                        )).get(), PriorityDTO.class
-                ));
+                                configService.getValue("default_priority"))).get(), PriorityDTO.class
+        ));
         ticketDTO.setCategory(mappingUtils.map(
                 categoryService.findById(
                         Integer.parseInt(
-                                configController.getConfigByName("default_cat").getValue()
-                        )).get(), CategoryDTO.class
-                ));
+                                configService.getValue("default_cat"))).get(), CategoryDTO.class
+        ));
 
         AclObjectIdentity aclObjectIdentity = new AclObjectIdentity();
         aclObjectIdentity.setId(2L);
         ticketDTO.setAcl(aclObjectIdentity);
 
-        TicketBodyDTO ticketBodyDTO = new TicketBodyDTO()
-        ;
+        TicketBodyDTO ticketBodyDTO = new TicketBodyDTO();
 
 
         ticketBodyDTO.setBody(message.getContent().toString());

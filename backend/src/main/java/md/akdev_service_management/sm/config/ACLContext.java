@@ -1,6 +1,8 @@
 package md.akdev_service_management.sm.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.ehcache.EhCacheFactoryBean;
 import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.context.annotation.Bean;
@@ -13,30 +15,38 @@ import org.springframework.security.acls.domain.*;
 import org.springframework.security.acls.jdbc.BasicLookupStrategy;
 import org.springframework.security.acls.jdbc.JdbcMutableAclService;
 import org.springframework.security.acls.jdbc.LookupStrategy;
+import org.springframework.security.acls.model.AclCache;
 import org.springframework.security.acls.model.PermissionGrantingStrategy;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 
 import javax.sql.DataSource;
+import java.util.Objects;
 
 @Configuration
+@EnableCaching
 public class ACLContext {
     private final DataSource dataSource;
 
+    private final CacheManager cacheManager;
     @Autowired
-    public ACLContext(DataSource dataSource) {
+    public ACLContext(DataSource dataSource, CacheManager cacheManager) {
         this.dataSource = dataSource;
+        this.cacheManager = cacheManager;
     }
 
     @Bean
-    public EhCacheBasedAclCache aclCache() {
-        return new EhCacheBasedAclCache(aclEhCacheFactoryBean().getObject(), permissionGrantingStrategy(), aclAuthorizationStrategy());
+    public AclCache aclCache() {
+        return new SpringCacheBasedAclCache(
+                cacheManager.getCache("aclCache"),
+                permissionGrantingStrategy(),
+                aclAuthorizationStrategy());
     }
 
     @Bean
     public EhCacheFactoryBean aclEhCacheFactoryBean(){
         EhCacheFactoryBean ehCacheFactoryBean =  new EhCacheFactoryBean();
-        ehCacheFactoryBean.setCacheManager(aclCacheManager().getObject());
+        ehCacheFactoryBean.setCacheManager(Objects.requireNonNull(aclCacheManager().getObject()));
         ehCacheFactoryBean.setCacheName("aclCache");
         return ehCacheFactoryBean;
     }
