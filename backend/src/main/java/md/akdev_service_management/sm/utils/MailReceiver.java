@@ -8,11 +8,18 @@ import md.akdev_service_management.sm.dto.catalogue.StatusDTO;
 import md.akdev_service_management.sm.dto.ticket.TicketBodyDTO;
 import md.akdev_service_management.sm.dto.ticket.TicketDTO;
 import md.akdev_service_management.sm.models.acl.AclObjectIdentity;
+import md.akdev_service_management.sm.models.ticket.TicketBody;
+import md.akdev_service_management.sm.security.JWTUtil;
 import md.akdev_service_management.sm.services.mail.MailService;
 import md.akdev_service_management.sm.services.ticket.TicketCategoryService;
 import md.akdev_service_management.sm.services.ticket.TicketPriorityService;
 import md.akdev_service_management.sm.services.ticket.TicketStatusService;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import javax.mail.Message;
@@ -37,9 +44,9 @@ public class MailReceiver {
 
     private final TicketController ticketController;
 
+    private final AuthenticationManager authenticationManager;
 
-
-    public MailReceiver(MailService mailService, ConfigController configController, TicketStatusService statusService, TicketPriorityService priorityService, TicketCategoryService categoryService, MappingUtils mappingUtils, TicketController ticketController) {
+    public MailReceiver(MailService mailService, ConfigController configController, TicketStatusService statusService, TicketPriorityService priorityService, TicketCategoryService categoryService, MappingUtils mappingUtils, TicketController ticketController, AuthenticationManager authenticationManager) {
         this.mailService = mailService;
         this.configController = configController;
         this.statusService = statusService;
@@ -47,10 +54,25 @@ public class MailReceiver {
         this.categoryService = categoryService;
         this.mappingUtils = mappingUtils;
         this.ticketController = ticketController;
+        this.authenticationManager = authenticationManager;
     }
 
     @Scheduled(fixedRate = 300000)
     public void executeTask() {
+
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                "vbrizitschi","Abracadabra!123"
+        );
+
+        try {
+            SecurityContext context = SecurityContextHolder.createEmptyContext();
+            SecurityContextHolder.setContext(context);
+            context.setAuthentication(authenticationManager.authenticate(authenticationToken));
+
+        }catch (BadCredentialsException e ){
+            e.getCause();
+        }
+
         boolean enableAutoFetch = Boolean.parseBoolean(this.configController.getConfigByName("auto_fetch_email").getValue());
 
         if (enableAutoFetch) {
@@ -90,9 +112,14 @@ public class MailReceiver {
                         )).get(), CategoryDTO.class
                 ));
 
-        ticketDTO.setAcl(new AclObjectIdentity());
+        AclObjectIdentity aclObjectIdentity = new AclObjectIdentity();
+        aclObjectIdentity.setId(2L);
+        ticketDTO.setAcl(aclObjectIdentity);
 
-        TicketBodyDTO ticketBodyDTO = new TicketBodyDTO();
+        TicketBodyDTO ticketBodyDTO = new TicketBodyDTO()
+        ;
+
+
         ticketBodyDTO.setBody(message.getContent().toString());
 
         ticketDTO.setTicketBody(Collections.singletonList(ticketBodyDTO));
