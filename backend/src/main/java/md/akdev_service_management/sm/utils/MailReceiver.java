@@ -96,7 +96,7 @@ public class MailReceiver {
     private TicketDTO convertMessageToTicketDTO(Message message) throws MessagingException, IOException {
         TicketDTO ticketDTO = new TicketDTO();
         ticketDTO.setTitle(message.getSubject());
-        ticketDTO.setAuthor(Arrays.stream(message.getFrom()).findFirst().toString());
+        ticketDTO.setAuthor(String.valueOf(Arrays.stream(message.getFrom()).findFirst().get()));
 
         ticketDTO.setStatus(mappingUtils.map(
                 statusService.findById(
@@ -114,7 +114,7 @@ public class MailReceiver {
         ));
 
         AclObjectIdentity aclObjectIdentity = new AclObjectIdentity();
-        aclObjectIdentity.setId(2L);
+        aclObjectIdentity.setId(Long.valueOf(configService.getValue("default_acl")));
         ticketDTO.setAcl(aclObjectIdentity);
 
         TicketBodyDTO ticketBodyDTO = new TicketBodyDTO();

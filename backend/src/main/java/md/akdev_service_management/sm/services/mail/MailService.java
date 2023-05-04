@@ -1,14 +1,13 @@
 package md.akdev_service_management.sm.services.mail;
 
+import com.sun.mail.imap.protocol.FLAGS;
 import md.akdev_service_management.sm.services.config.ConfigService;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-import javax.mail.Folder;
-import javax.mail.Message;
-import javax.mail.Session;
-import javax.mail.Store;
+import javax.mail.*;
+import javax.mail.search.FlagTerm;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -39,8 +38,17 @@ public class MailService {
             Store store = session.getStore("imap");
             store.connect(mailServer, email, password);
             Folder inbox = store.getFolder("INBOX");
-            inbox.open(Folder.READ_ONLY);
-            Message[] messages = inbox.getMessages();
+            inbox.open(Folder.READ_WRITE);
+            Message[] messages = inbox.search(new FlagTerm(new Flags(Flags.Flag.SEEN), false));
+            Arrays.stream(messages).forEach( (message -> {
+                try {
+                    message.setFlag(Flags.Flag.SEEN, true);
+                } catch (MessagingException e) {
+                    throw new RuntimeException(e);
+                }
+            }));
+            inbox.close(true);
+            store.close();
             return Arrays.asList(messages);
         } catch (Exception e) {
             e.printStackTrace();

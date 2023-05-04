@@ -45,7 +45,7 @@ public class TicketServices {
     @PreAuthorize("hasPermission(#ticket, 'WRITE')")
     public void newTicket(Ticket ticket){
         ticketRepository.save(ticket);
-//        mailService.sendSimpleMessage(ticket.getCreatedBy().getEmail(),ticket.getTitle(),ticket.getTicketBody().get(0).getBody());
+        mailService.sendSimpleMessage(ticket.getCreatedBy().getEmail(),ticket.getTitle(),ticket.getTicketBody().get(0).getBody());
 
     }
 }
